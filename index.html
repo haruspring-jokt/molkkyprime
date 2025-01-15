@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+
+<head>
+    <!-- meta -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=yes">
+
+    <!-- spectre -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- molkkyprime -->
+    <link rel="stylesheet" href="./style/style.css">
+    <script src="./script/script.js"></script>
+
+    <title>モルック関東プライムリーグ</title>
+</head>
+
+<body>
+    <div class="container">
+        <header class="bd-header">
+            <!-- navbar -->
+            <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="./"><img src="./asset/logo.png"
+                            alt="Mölkky Kanto Prime League Logo"></a>
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                        data-target="navbarBasicExample">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div id="navbarBasicExample" class="navbar-menu">
+                    <div class="navbar-start">
+                        <a class="navbar-item" href="./schedule/">日程・結果・順位表</a>
+                        <a class="navbar-item" href="./club/">クラブ・選手</a>
+                        <a class="navbar-item" href="./news/">ニュース</a>
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">More</a>
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item">ルール</a>
+                                <a class="navbar-item">データ <strong>*Comming Soon*</strong></a>
+                                <a class="navbar-link">過去のシーズン
+                                    <a class="navbar-item" href="./past/202324/">シーズン2023-24</a>
+                                    <a class="navbar-item" href="./past/2023/">シーズン2023</a>
+                                </a>
+                                <a class="navbar-item" href="./entry/">エントリー</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <div class="buttons columns">
+                                <a class="column button is-info" target="_blank" href="https://x.com/molkkyprime/">
+                                    Twitter(X)
+                                </a>
+                                <a class="column button is-danger" target="_blank"
+                                    href="https://youtube.com/@molkkyclanjajapatatas/">YouTube</a>
+                                <a class="column button is-dark" target="_blank"
+                                    href="https://suzuri.jp/haruspring_jokt/">SUZURI</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+    </div>
+
+    <!-- main -->
+    <div class="container">
+        <!-- Title -->
+        <section class="hero is-halfheight mkpl-bg-cover is-dark">
+            <div class="hero-body mkpl-bg-filter">
+                <h1 class="title is-size-2 mkpl-title">モルック関東プライムリーグ
+                    <p class="subtitle is-size-6">Mölkky Kanto Prime League</p>
+                    <p class="subtitle is-size-5"><strong>競技モルックの長期リーグ戦</strong></p>
+                    <p class="subtitle is-size-6">モルック関東プライムリーグ #mkpl は、世界レベルの選手育成と競技モルックのPRを目的とした大会です。</p>
+                </h1>
+            </div>
+        </section>
+
+        <!-- Participant Links -->
+        <section class="hero">
+            <div class="hero-body">
+                <h2 class="title is-size-3">シーズン2024-25 選手・スタッフ向けリンク</h2>
+                <div class="content">
+                    <h3 class="subtitle">共通</h3>
+                    <ul class="">
+                        <li><a href="./regulation/" target="_blank">規約</a></li>
+                        <li><a href="https://drive.google.com/file/d/1EheuTYzXLCBqkYUFI23C9OEZtFpx4Lgu/view"
+                                target="_blank">推奨スコアシート（PDF）</a></li>
+                    </ul>
+                    <h3 class="subtitle">プライムリーグ向け</h3>
+                    <ul class="">
+                        <li><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/"
+                                target="_blank">日程・結果・順位表スプレッドシート</a>
+                        </li>
+                        <li><a href="https://docs.google.com/presentation/d/1F1ZTMUHTkiqN0pbkweLLT0IrM5-WZOyHI0-K_GMPeR0/"
+                                target="_blank">シーズンガイド（Googleプレゼンテーション）</a></li>
+                    </ul>
+                    <h3 class="subtitle">プライムリーグチャレンジ向け</h3>
+                    <ul class="">
+                        <li><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/"
+                                target="_blank">日程・結果・順位表スプレッドシート</a>
+                        </li>
+                        <li><a href="https://docs.google.com/presentation/d/1_ZfZ-IxBkkIixzw2RsdMNSY49HHgg5CeYRlqrhMWA-8/"
+                                target="_blank">シーズンガイド（Googleプレゼンテーション）</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- news -->
+        <section class="hero">
+            <div class="hero-body">
+                <h3 class="title is-size-4">ニュース</h3>
+                <div class="subtitle">News</div>
+                <div class="content" id="news">
+                    <!-- news list -->
+                    <progress class="progress is-small is-primary" max="100"></progress>
+                </div>
+            </div>
+        </section>
+
+        <!-- yksi -->
+        <section class="hero">
+            <div class="hero-body">
+                <h3 class="title is-size-4">プライムリーグ（一部リーグ） シーズン2024-25</h3>
+                <div class="subtitle">Mölkky Kanto Prime League (Division 1) Season 2024-25</div>
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-16by9">
+                            <img class="is-rounded" src="./asset/yksi_cover.png" alt="mkpl-yksi-2425" />
+                        </figure>
+                    </div>
+                </div>
+                <div class="content">
+                    <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
+                    <table id="yksi-standings" class="table is-fullwidth is-striped">
+                        <th class="is-danger">
+                        <td class="is-danger">順位</td>
+                        <td class="is-danger">クラブ</td>
+                        <td class="is-danger">試合</td>
+                        <td class="is-danger">勝</td>
+                        <td class="is-danger">敗</td>
+                        <td class="is-danger">分</td>
+                        <td class="is-danger">セ率</td>
+                        <td class="is-danger">直対</td>
+                        </th>
+                        <!-- yksi standings -->
+                        <progress class="progress is-small is-primary" max="100"></progress>
+                    </table>
+                </div>
+                <div class="content">
+                    <h4 class="is-size-5">今月の試合</h4>
+                    <table id="yksi-monthly-schedule" class="table is-fullwidth is-striped">
+                        <th class="is-danger">
+                        <td class="is-danger">節</td>
+                        <td class="is-danger">日程</td>
+                        <td class="is-danger">ホーム</td>
+                        <td class="is-danger">結果</td>
+                        <td class="is-danger">アウェイ</td>
+                        </th>
+                    </table>
+                </div>
+                <small><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/"
+                        target="_blank">詳細はスプレッドシートへ</a></small>
+            </div>
+        </section>
+
+        <!-- kaksi -->
+        <section class="hero">
+            <div class="hero-body">
+                <h3 class="title is-size-4">プライムリーグチャレンジ（二部リーグ） シーズン2024-25</h3>
+                <div class="subtitle">Mölkky Kanto Prime League Challenge (Division 2) Season 2024-25</div>
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-16by9">
+                            <img class="is-rounded" src="./asset/kaksi_cover.png" alt="mkpl-kaksi-2425" />
+                        </figure>
+                    </div>
+                </div>
+                <div class="content">
+                    <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
+                    <table id="kaksi-standings" class="table is-fullwidth is-striped">
+                        <th class="is-primary">
+                        <td class="is-primary">順位</td>
+                        <td class="is-primary">クラブ</td>
+                        <td class="is-primary">試合</td>
+                        <td class="is-primary">勝</td>
+                        <td class="is-primary">敗</td>
+                        <td class="is-primary">分</td>
+                        <td class="is-primary">セ率</td>
+                        <td class="is-primary">直対</td>
+                        </th>
+                        <!-- kaksi standings -->
+                        <progress class="progress is-small is-primary" max="100"></progress>
+                    </table>
+                </div>
+                <div class="content">
+                    <h4 class="is-size-5">今月の試合</h4>
+                    <table id="kaksi-monthly-schedule" class="table is-fullwidth is-striped">
+                        <th class="is-primary">
+                        <td class="is-primary">節</td>
+                        <td class="is-primary">日程</td>
+                        <td class="is-primary">ホーム</td>
+                        <td class="is-primary">結果</td>
+                        <td class="is-primary">アウェイ</td>
+                        </th>
+                    </table>
+                </div>
+                <small><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/"
+                        target="_blank">詳細はスプレッドシートへ</a></small>
+            </div>
+        </section>
+
+        <!-- video -->
+        <section class="hero video">
+            <div class="hero-body">
+                <h3 class="title is-size-4">最新動画</h3>
+                <div class="subtitle">Latest Video</div>
+                <div class="content">
+                    <!-- youtube channel iframe -->
+                    <iframe width="100%" style="aspect-ratio: 16 / 9;" src="https://www.youtube.com/embed/videoseries?si=UVemaA60NpjVFDP2&amp;list=PLwLCDbfZ2rtmQ-s-3HqY2N2TKa6zBPiib" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- calender -->
+        <section class="hero calender">
+            <div class="hero-body">
+                <h3 class="title is-size-4">カレンダー</h3>
+                <div class="subtitle">Calender</div>
+                <div class="content">
+                    <!-- google calender iframe -->
+                    <iframe src="https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=Asia%2FTokyo&showPrint=0&showTitle=0&showNav=0&mode=AGENDA&showTabs=0&showCalendars=0&showTz=0&showDate=0&src=ZTQ0M2YxOGRiNTM1ZWRmZTNkNzc3MjIzZmU2NThmOTliZjliNmU0YWFjNmI4MTM0OTJlYWJlZGZkMjNkZWQzY0Bncm91cC5jYWxlbmRhci5nb29nbGUuY29t&color=%23616161" style="border-width:0" width="100%" height="600" frameborder="0" scrolling="no"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- accounts -->
+        <section class="hero accounts">
+            <div class="hero-body">
+                <h3 class="title is-size-4">プライムリーグ アカウント・リンク</h3>
+                <div class="subtitle">Accounts</div>
+                <div class="columns">
+                    <div class="column"><a href="https://x.com/molkkyprime/" target="_blank"><button
+                                class="button is-info">Twitter (X)</button></a></div>
+                    <div class="column"><a href="mailto:contact@molkkyprime.com" target="_blank"><button
+                                class="button is-light">Mail</button></a></div>
+                    <div class="column"><a href="https://discord.gg/pn5zzkUgCw/" target="_blank"><button
+                                class="button is-link">参加者用Discord</button></a></div>
+                    <div class="column"><a href="https://youtube.com/@molkkyclanjajapatatas/" target="_blank"><button
+                                class="button is-danger">YouTube</button></a></div>
+                </div>
+                <!-- google calender -->
+                <ul class="content columns">
+                    <li class="column"><a href="https://jajapatatas.com/" target="_blank">全国モルックカレンダー</a></li>
+                    <li class="column"><a href="https://blog.jajapatatas.com/" target="_blank">全国モルックカレンダーニュース</a></li>
+                    <ul>
+                        <li class="column"><a href="https://twitter.com/SLAPS_molkky" target="_blank">SLAPS Twitter</a>
+                        </li>
+                        <li class="column"><a href="https://x.com/mocj_vandal/" target="_blank">jaja patatas Twitter</a>
+                        </li>
+                        <li class="column"><a href="https://twitter.com/sugi_molkky" target="_blank">杉並エンジョイモルック
+                                Twitter</a></li>
+                        <li class="column"><a href="https://twitter.com/fuchu_mol" target="_blank">Fuchu-möl White
+                                Horses Twitter</a>
+                        </li>
+                        <li class="column"><a href="https://twitter.com/lowkey_molkky" target="_blank">löwkey with
+                                うんとこどっこいしょ大学
+                                Twitter</a></li>
+                        <li class="column"><a href="https://twitter.com/Kestaa1013" target="_blank">Kestää Twitter</a>
+                        </li>
+                        <li class="column"><a href="https://twitter.com/NXG_molkky" target="_blank">NEXT GENERATIONS
+                                Twitter</a></li>
+                        <li class="column"><a href="https://x.com/molkky634" target="_blank">武蔵野 Twitter</a>
+                    </ul>
+                </ul>
+            </div>
+        </section>
+
+        <!-- English -->
+        <section class="hero is-dark">
+            <div class="hero-body">
+                <h2 class="title is-size-5">What is Mölkky Kanto Prime League?</h2>
+                <div class="content">
+                    <p>Starting in 2023, Japan will be implementing a league called #Mölkky Prime League. #mkpl
+                        (unofficial
+                        and not affiliated with JMA)</p>
+                    <p>The Prime League will feature a maximum of 8 Mölkky club teams competing in a round-robin
+                        tournament
+                        over 7 months to determine the champion.</p>
+                    <p>Previous Mölkky tournaments were often one-day events where the winner was decided based on that
+                        day's performance and luck, but the new league format will better reflect the true abilities of
+                        players.</p>
+                    <p>Participating in the Prime League will also provide players with more opportunities to gain match
+                        experience, which will allow for more effective training for larger domestic and international
+                        tournaments.</p>
+                    <p>Additionally, some games will be streamed on YouTube, bringing attention to individual players
+                        and
+                        their personalities and playstyles, potentially creating "star players" and raising the overall
+                        level of Japan through the sharing of tactics and throwing techniques.</p>
+                    <p>Season 1 is set to begin in April and clubs and players are currently being scouted. </p>
+                    <p>We hope to raise awareness of the League among Mölkky players around the world and draw attention
+                        to
+                        the Mölkky scene in Japan.</p>
+                    <br />
+                    <p>Mölkky Prime League Chairman "haruspring"</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="content has-text-centered">
+            <p>Mölkky Kanto Prime League 2023</p>
+        </div>
+    </footer>
+</body>
+
+</html>

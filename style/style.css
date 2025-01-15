@@ -1,0 +1,14 @@
+.mkpl-bg-cover {
+    background-image: url(./background/cover.png);
+    background-color: transparent;
+    background-size: cover;
+    background-position: center;
+}
+
+.mkpl-bg-filter {
+    backdrop-filter: brightness(.8) contrast(.8) blur(4px);
+}
+
+.mkpl-title {
+    text-shadow: #222222 1px 1px 20px;
+}
