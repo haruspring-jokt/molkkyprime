@@ -1,3 +1,8 @@
+body {
+    font-family: "Noto Sans JP", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    font-optical-sizing: auto;
+}
+
 .mkpl-bg-cover {
     background-image: url(./background/cover.png);
     background-color: transparent;
