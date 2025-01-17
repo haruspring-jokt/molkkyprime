@@ -80,139 +80,139 @@
                 </div>
             </nav>
         </header>
-    </div>
 
-    <div class="container">
-        <!-- Title -->
-        <section class="hero is-medium mkpl-bg-cover is-dark">
-            <div class="hero-body mkpl-bg-filter">
-                <h1 class="title is-size-2 mkpl-title">日程・結果・順位表
-                    <p class="subtitle is-size-6">schedule / result / standings</p>
-                </h1>
+        <div class="container">
+            <!-- Title -->
+            <section class="hero is-medium mkpl-bg-cover is-dark">
+                <div class="hero-body mkpl-bg-filter">
+                    <h1 class="title is-size-2 mkpl-title">日程・結果・順位表
+                        <p class="subtitle is-size-6">schedule / result / standings</p>
+                    </h1>
+                </div>
+            </section>
+        </div>
+
+        <!-- yksi -->
+        <section class="hero">
+            <div class="hero-body">
+                <h3 class="title is-size-4">プライムリーグ（1部リーグ） シーズン2024-25</h3>
+                <div class="subtitle is-size-7">Mölkky Kanto Prime League (Division 1) Season 2024-25</div>
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-16by9">
+                            <img class="is-rounded" src="../asset/yksi_cover.png" alt="mkpl-yksi-2425" />
+                        </figure>
+                    </div>
+                </div>
+                <div class="content">
+                    <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
+                    <table id="yksi-standings" class="table is-fullwidth is-striped">
+                        <tr class="is-danger">
+                            <th class="is-danger">位</th>
+                            <th class="is-danger">クラブ</th>
+                            <th class="is-danger">点</th>
+                            <th class="is-danger">試</th>
+                            <th class="is-danger">勝</th>
+                            <th class="is-danger">敗</th>
+                            <th class="is-danger">分</th>
+                            <th class="is-danger">率</th>
+                        </tr>
+                        <!-- yksi standings -->
+                    </table>
+                    <div id="yksi-standings-progress"><progress class="progress is-small is-danger"
+                            max="100"></progress></div>
+                    <p class="is-size-7">8位のクラブが来シーズンプライムリーグ（1部）参加権を喪失、2部参加またはリーグ離脱。</p>
+                    <p class="is-size-7">※試合中の順位表は公式記録が発表されるまでの暫定記録となります。<br />
+                        ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
+                        - セット獲得率が高いクラブ<br />
+                        - 当該クラブ同士の対戦での勝点が上回る、または獲得セット数で上回るクラブ<br />
+                        - 当該クラブ同士の対戦での得点が上回るクラブ<br />
+                        - 総得失点差が高いクラブ<br />
+                        - 登録選手数が多いクラブ<br />
+                        - 上記でも決まらなかった場合は同順位<br />
+                        ※シーズンの5試合以上を4人構成で出場すること。
+                    </p>
+                </div>
+                <div class="content">
+                    <h4 class="is-size-5">試合一覧</h4>
+                    <table id="yksi-schedule" class="table is-fullwidth is-striped">
+                        <tr class="is-danger">
+                            <th class="is-danger">節</th>
+                            <th class="is-danger">日程</th>
+                            <th class="is-danger">ホーム</th>
+                            <th class="is-danger">結果</th>
+                            <th class="is-danger">アウェイ</th>
+                        </tr>
+                    </table>
+                    <div id="yksi-schedule-progress"><progress class="progress is-small is-danger" max="100"></progress>
+                    </div>
+                </div>
+                <p class="is-size-7">第1節・2節はフリー月としてシーズン中任意の時期に実施する。</p>
+                <small><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/"
+                        target="_blank">詳細はスプレッドシートへ</a></small>
+            </div>
+        </section>
+
+        <!-- kaksi -->
+        <section class="hero">
+            <div class="hero-body">
+                <h3 class="title is-size-4">プライムリーグチャレンジ（2部リーグ） シーズン2024-25</h3>
+                <div class="subtitle is-size-7">Mölkky Kanto Prime League Challenge (Division 2) Season 2024-25</div>
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-16by9">
+                            <img class="is-rounded" src="../asset/kaksi_cover.png" alt="mkpl-kaksi-2425" />
+                        </figure>
+                    </div>
+                </div>
+                <div class="content">
+                    <h4 class="is-size-5">順位表（各クラブ全10試合）</h4>
+                    <table id="kaksi-standings" class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary">位</th>
+                            <th class="is-primary">クラブ</th>
+                            <th class="is-primary">点</th>
+                            <th class="is-primary">試</th>
+                            <th class="is-primary">勝</th>
+                            <th class="is-primary">敗</th>
+                            <th class="is-primary">分</th>
+                            <th class="is-primary">率</th>
+                        </tr>
+                        <!-- kaksi standings -->
+                    </table>
+                    <div id="kaksi-standings-progress"><progress class="progress is-small is-primary"
+                            max="100"></progress></div>
+                    <p class="is-size-7">1位のクラブが来シーズンプライムリーグ（1部）参加権を獲得。</p>
+                    <p class="is-size-7">※試合中の順位表は公式記録が発表されるまでの暫定記録となります。<br />
+                        ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
+                        - セット獲得率が高いクラブ<br />
+                        - 当該クラブ同士の対戦での勝点が上回る、または獲得セット数で上回るクラブ<br />
+                        - 当該クラブ同士の対戦での得点が上回るクラブ<br />
+                        - 総得失点差が高いクラブ<br />
+                        - 登録選手数が多いクラブ<br />
+                        - 上記でも決まらなかった場合は同順位
+                    </p>
+                </div>
+                <div class="content">
+                    <h4 class="is-size-5">試合一覧</h4>
+                    <table id="kaksi-schedule" class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary">節</th>
+                            <th class="is-primary">日程</th>
+                            <th class="is-primary">ホーム</th>
+                            <th class="is-primary">結果</th>
+                            <th class="is-primary">アウェイ</th>
+                        </tr>
+                    </table>
+                    <p class="is-size-7">前半戦は2024年10月～12月、後半戦は2025年1月～3月に実施。</p>
+                    <div id="kaksi-schedule-progress"><progress class="progress is-small is-primary"
+                            max="100"></progress></div>
+                </div>
+                <small><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/"
+                        target="_blank">詳細はスプレッドシートへ</a></small>
             </div>
         </section>
     </div>
-
-    <!-- yksi -->
-    <section class="hero">
-        <div class="hero-body">
-            <h3 class="title is-size-4">プライムリーグ（1部リーグ） シーズン2024-25</h3>
-            <div class="subtitle is-size-7">Mölkky Kanto Prime League (Division 1) Season 2024-25</div>
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-16by9">
-                        <img class="is-rounded" src="../asset/yksi_cover.png" alt="mkpl-yksi-2425" />
-                    </figure>
-                </div>
-            </div>
-            <div class="content">
-                <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
-                <table id="yksi-standings" class="table is-fullwidth is-striped">
-                    <tr class="is-danger">
-                        <th class="is-danger">位</th>
-                        <th class="is-danger">クラブ</th>
-                        <th class="is-danger">点</th>
-                        <th class="is-danger">試</th>
-                        <th class="is-danger">勝</th>
-                        <th class="is-danger">敗</th>
-                        <th class="is-danger">分</th>
-                        <th class="is-danger">率</th>
-                    </tr>
-                    <!-- yksi standings -->
-                </table>
-                <div id="yksi-standings-progress"><progress class="progress is-small is-danger"
-                        max="100"></progress></div>
-                <p class="is-size-7">8位のクラブが来シーズンプライムリーグ（1部）参加権を喪失、2部参加またはリーグ離脱。</p>
-                <p class="is-size-7">※試合中の順位表は公式記録が発表されるまでの暫定記録となります。<br />
-                    ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
-                    - セット獲得率が高いクラブ<br />
-                    - 当該クラブ同士の対戦での勝点が上回る、または獲得セット数で上回るクラブ<br />
-                    - 当該クラブ同士の対戦での得点が上回るクラブ<br />
-                    - 総得失点差が高いクラブ<br />
-                    - 登録選手数が多いクラブ<br />
-                    - 上記でも決まらなかった場合は同順位<br />
-                    ※シーズンの5試合以上を4人構成で出場すること。
-                </p>
-            </div>
-            <div class="content">
-                <h4 class="is-size-5">試合一覧</h4>
-                <table id="yksi-schedule" class="table is-fullwidth is-striped">
-                    <tr class="is-danger">
-                        <th class="is-danger">節</th>
-                        <th class="is-danger">日程</th>
-                        <th class="is-danger">ホーム</th>
-                        <th class="is-danger">結果</th>
-                        <th class="is-danger">アウェイ</th>
-                    </tr>
-                </table>
-                <div id="yksi-schedule-progress"><progress class="progress is-small is-danger" max="100"></progress>
-                </div>
-            </div>
-            <p class="is-size-7">第1節・2節はフリー月としてシーズン中任意の時期に実施する。</p>
-            <small><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/"
-                    target="_blank">詳細はスプレッドシートへ</a></small>
-        </div>
-    </section>
-
-    <!-- kaksi -->
-    <section class="hero">
-        <div class="hero-body">
-            <h3 class="title is-size-4">プライムリーグチャレンジ（2部リーグ） シーズン2024-25</h3>
-            <div class="subtitle is-size-7">Mölkky Kanto Prime League Challenge (Division 2) Season 2024-25</div>
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-16by9">
-                        <img class="is-rounded" src="../asset/kaksi_cover.png" alt="mkpl-kaksi-2425" />
-                    </figure>
-                </div>
-            </div>
-            <div class="content">
-                <h4 class="is-size-5">順位表（各クラブ全10試合）</h4>
-                <table id="kaksi-standings" class="table is-fullwidth is-striped">
-                    <tr class="is-primary">
-                        <th class="is-primary">位</th>
-                        <th class="is-primary">クラブ</th>
-                        <th class="is-primary">点</th>
-                        <th class="is-primary">試</th>
-                        <th class="is-primary">勝</th>
-                        <th class="is-primary">敗</th>
-                        <th class="is-primary">分</th>
-                        <th class="is-primary">率</th>
-                    </tr>
-                    <!-- kaksi standings -->
-                </table>
-                <div id="kaksi-standings-progress"><progress class="progress is-small is-primary"
-                        max="100"></progress></div>
-                <p class="is-size-7">1位のクラブが来シーズンプライムリーグ（1部）参加権を獲得。</p>
-                <p class="is-size-7">※試合中の順位表は公式記録が発表されるまでの暫定記録となります。<br />
-                    ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
-                    - セット獲得率が高いクラブ<br />
-                    - 当該クラブ同士の対戦での勝点が上回る、または獲得セット数で上回るクラブ<br />
-                    - 当該クラブ同士の対戦での得点が上回るクラブ<br />
-                    - 総得失点差が高いクラブ<br />
-                    - 登録選手数が多いクラブ<br />
-                    - 上記でも決まらなかった場合は同順位
-                </p>
-            </div>
-            <div class="content">
-                <h4 class="is-size-5">試合一覧</h4>
-                <table id="kaksi-schedule" class="table is-fullwidth is-striped">
-                    <tr class="is-primary">
-                        <th class="is-primary">節</th>
-                        <th class="is-primary">日程</th>
-                        <th class="is-primary">ホーム</th>
-                        <th class="is-primary">結果</th>
-                        <th class="is-primary">アウェイ</th>
-                    </tr>
-                </table>
-                <p class="is-size-7">前半戦は2024年10月～12月、後半戦は2025年1月～3月に実施。</p>
-                <div id="kaksi-schedule-progress"><progress class="progress is-small is-primary"
-                        max="100"></progress></div>
-            </div>
-            <small><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/"
-                    target="_blank">詳細はスプレッドシートへ</a></small>
-        </div>
-    </section>
 
     <!-- Footer -->
     <footer class="footer">
