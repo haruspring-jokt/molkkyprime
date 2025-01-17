@@ -3,16 +3,6 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbzT2b0VNnz1jChrkzgDDS
 
 $(function () {
     /**
-     * 共通
-     */
-    // Check for click events on the navbar burger icon
-    $(".navbar-burger").click(function () {
-        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-        $(".navbar-burger").toggleClass("is-active");
-        $(".navbar-menu").toggleClass("is-active");
-    });
-
-    /**
      * ページ個別
      */
     // 各種データ取得・設定

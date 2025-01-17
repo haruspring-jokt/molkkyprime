@@ -21,6 +21,7 @@
 
     <!-- molkkyprime -->
     <link rel="stylesheet" href="../style/style.css">
+    <script src="../script/script.js"></script>
     <script src="../script/schedule/schedule.js"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4W483V0S8"></script>
@@ -37,57 +38,7 @@
 
 <body>
     <div class="container">
-        <header class="bd-header">
-            <!-- navbar -->
-            <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
-                <div class="navbar-brand">
-                    <a class="navbar-item" href="../"><img src="../asset/logo.png"
-                            alt="Mölkky Kanto Prime League Logo"></a>
-                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-                        data-target="navbarBasicExample">
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                    </a>
-                </div>
-                <div id="navbarBasicExample" class="navbar-menu">
-                    <div class="navbar-start">
-                        <a class="navbar-item" href="./">日程・結果・順位表</a>
-                        <a class="navbar-item" href="../club/">クラブ・選手</a>
-                        <a class="navbar-item" target="_blank"
-                            href="https://blog.jajapatatas.com/archive/category/%E3%83%A2%E3%83%AB%E3%83%83%E3%82%AF%E9%96%A2%E6%9D%B1%E3%83%97%E3%83%A9%E3%82%A4%E3%83%A0%E3%83%AA%E3%83%BC%E3%82%B0">ニュース<small
-                                class="is-size-7">（外部サイトへ）</small></a>
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link">More</a>
-                            <div class="navbar-dropdown">
-                                <a class="navbar-item" href="../entry/">エントリー <strong>*早くて2025年7月案内開始*</strong></a>
-                                <a class="navbar-item" href="../regulation/">ルール</a>
-                                <a class="navbar-item">データ <strong>*Comming Soon*</strong></a>
-                                <a class="navbar-link">過去のシーズン <strong>*Comming Soon*</strong>
-                                    <a class="navbar-item" href="../past/202324/">シーズン2023-24 <strong>*Comming
-                                            Soon*</strong></a>
-                                    <a class="navbar-item" href="../past/2023/">シーズン2023 <strong>*Comming
-                                            Soon*</strong></a>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="navbar-end">
-                        <div class="navbar-item">
-                            <div class="buttons columns">
-                                <a class="column button is-info" target="_blank" href="https://x.com/molkkyprime">
-                                    Twitter(X)
-                                </a>
-                                <a class="column button is-danger" target="_blank"
-                                    href="https://youtube.com/@molkkyclanjajapatatas/">YouTube</a>
-                                <a class="column button is-dark" target="_blank"
-                                    href="https://suzuri.jp/haruspring_jokt/">SUZURI</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+        <header id="mkpl-header" class="bd-header">
         </header>
 
         <div class="container">
@@ -117,14 +68,14 @@
                     <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
                     <table id="yksi-standings" class="table is-fullwidth is-striped">
                         <tr class="is-danger">
-                            <th class="is-danger">位</th>
-                            <th class="is-danger">クラブ</th>
-                            <th class="is-danger">試</th>
-                            <th class="is-danger">点</th>
-                            <th class="is-danger">勝</th>
-                            <th class="is-danger">敗</th>
-                            <th class="is-danger">分</th>
-                            <th class="is-danger">率</th>
+                            <th class="is-danger" align="center">位</th>
+                            <th class="is-danger" align="center">クラブ</th>
+                            <th class="is-danger" align="center">試</th>
+                            <th class="is-danger" align="center">点</th>
+                            <th class="is-danger" align="center">勝</th>
+                            <th class="is-danger" align="center">敗</th>
+                            <th class="is-danger" align="center">分</th>
+                            <th class="is-danger" align="center">率</th>
                         </tr>
                         <!-- yksi standings -->
                     </table>
@@ -146,11 +97,11 @@
                     <h4 class="is-size-5">試合一覧</h4>
                     <table id="yksi-schedule" class="table is-fullwidth is-striped">
                         <tr class="is-danger">
-                            <th class="is-danger">節</th>
-                            <th class="is-danger">日程</th>
-                            <th class="is-danger">ホーム</th>
-                            <th class="is-danger">結果</th>
-                            <th class="is-danger">アウェイ</th>
+                            <th class="is-danger" align="center">節</th>
+                            <th class="is-danger" align="center">日程</th>
+                            <th class="is-danger" align="center">ホーム</th>
+                            <th class="is-danger" align="center">結果</th>
+                            <th class="is-danger" align="center">アウェイ</th>
                         </tr>
                     </table>
                     <div id="yksi-schedule-progress"><progress class="progress is-small is-danger" max="100"></progress>
@@ -178,14 +129,14 @@
                     <h4 class="is-size-5">順位表（各クラブ全10試合）</h4>
                     <table id="kaksi-standings" class="table is-fullwidth is-striped">
                         <tr class="is-primary">
-                            <th class="is-primary">位</th>
-                            <th class="is-primary">クラブ</th>
-                            <th class="is-primary">試</th>
-                            <th class="is-primary">点</th>
-                            <th class="is-primary">勝</th>
-                            <th class="is-primary">敗</th>
-                            <th class="is-primary">分</th>
-                            <th class="is-primary">率</th>
+                            <th class="is-primary" align="center">位</th>
+                            <th class="is-primary" align="center">クラブ</th>
+                            <th class="is-primary" align="center">試</th>
+                            <th class="is-primary" align="center">点</th>
+                            <th class="is-primary" align="center">勝</th>
+                            <th class="is-primary" align="center">敗</th>
+                            <th class="is-primary" align="center">分</th>
+                            <th class="is-primary" align="center">率</th>
                         </tr>
                         <!-- kaksi standings -->
                     </table>
@@ -206,11 +157,11 @@
                     <h4 class="is-size-5">試合一覧</h4>
                     <table id="kaksi-schedule" class="table is-fullwidth is-striped">
                         <tr class="is-primary">
-                            <th class="is-primary">節</th>
-                            <th class="is-primary">日程</th>
-                            <th class="is-primary">ホーム</th>
-                            <th class="is-primary">結果</th>
-                            <th class="is-primary">アウェイ</th>
+                            <th class="is-primary" align="center">節</th>
+                            <th class="is-primary" align="center">日程</th>
+                            <th class="is-primary" align="center">ホーム</th>
+                            <th class="is-primary" align="center">結果</th>
+                            <th class="is-primary" align="center">アウェイ</th>
                         </tr>
                     </table>
                     <p class="is-size-7">前半戦は2024年10月～12月、後半戦は2025年1月～3月に実施。</p>

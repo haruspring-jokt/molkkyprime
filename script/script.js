@@ -1,169 +1,113 @@
-// データ取得先スプレッドシートAPIURL
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzT2b0VNnz1jChrkzgDDSlPV9_WELpJH5rF6zBPzLCeFu-1NGt3ddX55WApLjOgP3nGnw/exec";
-
 $(function () {
     /**
      * 共通
      */
+    appendHeader();
+    appendFooter();
     // Check for click events on the navbar burger icon
     $(".navbar-burger").click(function () {
         // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
         $(".navbar-burger").toggleClass("is-active");
         $(".navbar-menu").toggleClass("is-active");
     });
-
-    /**
-     * ページ個別
-     */
-    // 各種データ取得・設定
-    fetchRank("YKSI");
-    fetchRank("KAKSI");
-    fetchSchedule("YKSI");
-    fetchSchedule("KAKSI");
-    fetchNews();
 });
 
 /**
- * ニュース一覧取得
+ * ヘッダー追加
  */
-function fetchNews() {
-    var url = SHEET_URL;
-    url = url + "?api=NEWS_TOP";
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
-        var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
-        for (const i in datasJson) {
-            const news = datas[i];
-            var date = new Date(news['date']).toLocaleDateString();
-            $('#news-list').append(
-                `
-                <li><a href="https://blog.jajapatatas.com/entry/${news['id']}" target="_blank">（${date}） ${news['title']}</a></li>
-                `
-            );
-        }
-        $("#news-progress").empty();
-    });
-}
+function appendHeader() {
+    // 階層によって変化するリンクの設定
+    var top = "./";
+    var logo = "./asset/logo.png";
+    var schedule = "./schedule/";
+    var club = "./club/";
+    var news = "https://blog.jajapatatas.com/archive/category/%E3%83%A2%E3%83%AB%E3%83%83%E3%82%AF%E9%96%A2%E6%9D%B1%E3%83%97%E3%83%A9%E3%82%A4%E3%83%A0%E3%83%AA%E3%83%BC%E3%82%B0";
+    var entry = "./entry/";
+    var regulation = "./regulation/";
+    var past202324 = "./past/202324/";
+    var past2023 = "./past/2023/";
+    var twitter = "https://x.com/molkkyprime";
+    var youtube = "https://youtube.com/@molkkyclanjajapatatas/";
+    var suzuri = "https://suzuri.jp/haruspring_jokt/";
 
-/**
- * 順位表取得
- * @param str division ディヴィジョン 
- */
-function fetchRank(division) {
-    var url = SHEET_URL;
-    url = url + "?api=RANK_" + division;
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
-        var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
-        if (division == "YKSI") {
-            appendStandings(datas, datasJson, "#yksi-standings", "#yksi-standings-progress");
-        } else if (division == "KAKSI") {
-            appendStandings(datas, datasJson, "#kaksi-standings", "#kaksi-standings-progress");
+    if (location.pathname != "/") {
+        if (location.pathname.split("/").length == 3) {
+            // 2階層
+            top = "." + top;
+            logo = "." + logo;
+            schedule = "." + schedule;
+            club = "." + club;
+            entry = "." + entry;
+            regulation = "." + regulation;
+            past202324 = "." + past202324;
+            past2023 = "." + past2023;
+        } else if (location.pathname.split("/").length == 4) {
+            // 3階層
+            top = "../." + top;
+            logo = "../." + logo;
+            schedule = "../." + schedule;
+            club = "../." + club;
+            entry = "../." + entry;
+            regulation = "../." + regulation;
+            past202324 = "../." + past202324;
+            past2023 = "../." + past2023;
         }
-    });
-}
-
-/**
- * 日程取得
- * @param {*} division 
- */
-function fetchSchedule(division) {
-    var url = SHEET_URL;
-    url = url + "?api=MONTH_" + division;
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
-        var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
-        if (division == "YKSI") {
-            appendSchedule(datas, datasJson, '#yksi-monthly-schedule', "#yksi-schedule-progress")
-        } else if (division == "KAKSI") {
-            appendSchedule(datas, datasJson, '#kaksi-monthly-schedule', "#kaksi-schedule-progress")
-        }
-    });
-}
-
-/**
- * 順位表設定
- * @param {*} datas 
- * @param {*} datasJson 
- * @param {*} tableId 
- * @param {*} progressId 
- */
-function appendStandings(datas, datasJson, tableId, progressId) {
-    for (const i in datasJson) {
-        const rank = datas[i];
-        var ranknum = Number(rank['rank']);
-        var club = rank['cname'];
-        if (club.length > 16) {
-            // クラブ名が長い場合省略する
-            club = '<abbr title="' + rank['club'] + '">' + club.slice(0, 15) + '...' + '</abbr>';
-        }
-        $(tableId).append(
-            `
-                    <tr>
-                    <td class="is-size-7" align="right">${ranknum}</td>
-                    <td class="is-size-7">${club}</td>
-                    <td class="is-size-7" align="right">${rank['game']}</td>
-                    <td class="is-size-7" align="right">${rank['winpoint']}</td>
-                    <td class="is-size-7" align="right">${rank['win']}</td>
-                    <td class="is-size-7" align="right">${rank['lose']}</td>
-                    <td class="is-size-7" align="right">${rank['draw']}</td>
-                    <td class="is-size-7" align="right">${Math.floor(rank['setper'] * 100) / 100}</td>
-                    </tr>
-                    `
-        );
     }
-    $(progressId).empty();
+
+    $("#mkpl-header").append(`
+        <!-- navbar -->
+            <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="${top}"><img src="${logo}"
+                            alt="Mölkky Kanto Prime League Logo"></a>
+                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                        data-target="navbarBasicExample">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                </div>
+                <div id="navbarBasicExample" class="navbar-menu">
+                    <div class="navbar-start">
+                        <a class="navbar-item" href="${schedule}">日程・結果・順位表</a>
+                        <a class="navbar-item" href="${club}">クラブ・選手</a>
+                        <a class="navbar-item" target="_blank"
+                            href="${news}" target="_blank">ニュース<small class="is-size-7">（外部サイトへ）</small></a>
+                            <div class="navbar-item has-dropdown is-hoverable">
+                                <a class="navbar-link">More</a>
+                                <div class="navbar-dropdown">
+                                <a class="navbar-item" href="${entry}">エントリー <strong>*早くて2025年7月案内開始*</strong></a>
+                                <a class="navbar-item" href="${regulation}">ルール</a>
+                                <a class="navbar-item">データ <strong>*Comming Soon*</strong></a>
+                                <a class="navbar-link">過去のシーズン <strong>*Comming Soon*</strong>
+                                    <a class="navbar-item" href="${past202324}">シーズン2023-24 <strong>*Comming Soon*</strong></a>
+                                    <a class="navbar-item" href="${past2023}">シーズン2023 <strong>*Comming Soon*</strong></a>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="navbar-end">
+                        <div class="navbar-item">
+                            <div class="buttons columns">
+                                <a class="column button is-info" target="_blank" href="${twitter}">Twitter(X)</a>
+                                <a class="column button is-danger" target="_blank" href="${youtube}">YouTube</a>
+                                <a class="column button is-dark" target="_blank" href="${suzuri}">SUZURI</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        `);
 }
 
 /**
- * 日程設定
- * @param {*} datas 
- * @param {*} datasJson 
- * @param {*} tableId 
- * @param {*} progressId 
+ * フッター追加
  */
-function appendSchedule(datas, datasJson, tableId, progressId) {
-    for (const i in datasJson) {
-        const game = datas[i];
-        var gamedate = "";
-        if (game['date']) {
-            gamedate = new Date(game['date']).toLocaleDateString();
-        }
-        var hcn = game['hcn'];
-        var acn = game['acn'];
-        if (!(game['hsn'] == game['asn'])) {
-            if (game['hsn'] > game['asn']) {
-                hcn = "<strong>" + hcn + "</strong>";
-            } else {
-                acn = "<strong>" + acn + "</strong>";
-            }
-        }
-        $(tableId).append(
-            `
-            <tr>
-            <td class="is-size-7" aligh="right">${game['sec']}</td>
-            <td class="is-size-7" align="left">${gamedate}</td>
-            <td class="is-size-7" align="left">${game['hcn']}</td>
-            <td class="is-size-7" align="center">${game['hsn']} - ${game['asn']}</td>
-            <td class="is-size-7" align="left">${game['acn']}</td>
-            </tr>
-            `
-        );
-    }
-    $(progressId).empty();
+function appendFooter() {
+    $("#mkpl-footer").append(`
+        <div class="content has-text-centered">
+            <p>Mölkky Kanto Prime League 2023</p>
+        </div>
+    `);
 }

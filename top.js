@@ -1,4 +1,3 @@
-// データ取得先スプレッドシートAPIURL
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbzT2b0VNnz1jChrkzgDDSlPV9_WELpJH5rF6zBPzLCeFu-1NGt3ddX55WApLjOgP3nGnw/exec";
 
 $(function () {
@@ -8,9 +7,37 @@ $(function () {
     // 各種データ取得・設定
     fetchRank("YKSI");
     fetchRank("KAKSI");
-    fetchScheduleAll("YKSI");
-    fetchScheduleAll("KAKSI");
+    fetchSchedule("YKSI");
+    fetchSchedule("KAKSI");
+    fetchNews();
 });
+
+/**
+ * ニュース一覧取得
+ */
+function fetchNews() {
+    var url = SHEET_URL;
+    url = url + "?api=NEWS_TOP";
+    console.log(url);
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+    }).done(function (datas) {
+        var datasStringify = JSON.stringify(datas);
+        var datasJson = JSON.parse(datasStringify);
+        for (const i in datasJson) {
+            const news = datas[i];
+            var date = new Date(news['date']).toLocaleDateString();
+            $('#news-list').append(
+                `
+                <li><a href="https://blog.jajapatatas.com/entry/${news['id']}" target="_blank">（${date}） ${news['title']}</a></li>
+                `
+            );
+        }
+        $("#news-progress").empty();
+    });
+}
 
 /**
  * 順位表取得
@@ -36,12 +63,12 @@ function fetchRank(division) {
 }
 
 /**
- * 日程取得（全体）
+ * 日程取得
  * @param {*} division 
  */
-function fetchScheduleAll(division) {
+function fetchSchedule(division) {
     var url = SHEET_URL;
-    url = url + "?api=SCHEDULE_" + division;
+    url = url + "?api=MONTH_" + division;
     console.log(url);
     $.ajax({
         url: url,
@@ -51,9 +78,9 @@ function fetchScheduleAll(division) {
         var datasStringify = JSON.stringify(datas);
         var datasJson = JSON.parse(datasStringify);
         if (division == "YKSI") {
-            appendSchedule(datas, datasJson, '#yksi-schedule', "#yksi-schedule-progress")
+            appendSchedule(datas, datasJson, '#yksi-monthly-schedule', "#yksi-schedule-progress")
         } else if (division == "KAKSI") {
-            appendSchedule(datas, datasJson, '#kaksi-schedule', "#kaksi-schedule-progress")
+            appendSchedule(datas, datasJson, '#kaksi-monthly-schedule', "#kaksi-schedule-progress")
         }
     });
 }
@@ -78,7 +105,7 @@ function appendStandings(datas, datasJson, tableId, progressId) {
             `
                     <tr>
                     <td class="is-size-7" align="right">${ranknum}</td>
-                    <td class="is-size-7" align="right">${club}</td>
+                    <td class="is-size-7">${club}</td>
                     <td class="is-size-7" align="right">${rank['game']}</td>
                     <td class="is-size-7" align="right">${rank['winpoint']}</td>
                     <td class="is-size-7" align="right">${rank['win']}</td>
@@ -120,13 +147,12 @@ function appendSchedule(datas, datasJson, tableId, progressId) {
             <tr>
             <td class="is-size-7" align="right">${game['sec']}</td>
             <td class="is-size-7" align="left">${gamedate}</td>
-            <td class="is-size-7" align="center">${hcn}</td>
+            <td class="is-size-7" align="center">${game['hcn']}</td>
             <td class="is-size-7" align="center">${game['hsn']} - ${game['asn']}</td>
-            <td class="is-size-7" align="center">${acn}</td>
+            <td class="is-size-7" align="center">${game['acn']}</td>
             </tr>
             `
         );
     }
     $(progressId).empty();
 }
-
