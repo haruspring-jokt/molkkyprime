@@ -51,19 +51,19 @@ function appendPlayers(datas, datasJson, tableId, progressId, color) {
         if (i > 0 && player['cid'] != datas[i - 1]['cid']) {
             appendstr = appendstr + `
                 <tr class="${color}">
-                    <th class="${color}">選手</th>
-                    <th class="${color}" colspan="2">クラブ</th>
+                    <th class="${color} is-size-6">選手</th>
+                    <th class="${color} is-size-6" colspan="2">クラブ</th>
                 </tr>
             `;
         }
         appendstr = appendstr + `
-            <tr>
+            <tr class="mkpl-player-row-1">
             <input type="hidden" name="${player['pid']}" value="${player['pid']}" /> 
             <td class="is-size-6" align="left">${pname}</td>
             <td class="is-size-7" align="left">${player['cname']}</td>
             <td class="is-size-7" align="left">${player['position']}</td>
             </tr>
-            <tr>
+            <tr class="mkpl-player-row-2">
             <td class="is-size-7" align="left" colspan="3"">${player['transfer']}
         `;
         if (player['team']) {
@@ -78,7 +78,7 @@ function appendPlayers(datas, datasJson, tableId, progressId, color) {
         }
         if (player['remark']) {
             appendstr = appendstr + `
-                <br />備考: ${player['remark']}
+                <br />${player['remark']}
             `;
         }
         appendstr = appendstr + "</td></tr>"

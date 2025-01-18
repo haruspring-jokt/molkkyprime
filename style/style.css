@@ -17,3 +17,19 @@ body {
 .mkpl-title {
     text-shadow: #222222 1px 1px 20px;
 }
+
+.is-size-7 {
+    font-size: 0.8em !important;
+}
+
+.is-size-6 {
+    font-size: 0.9em !important;
+}
+
+.table td {
+    vertical-align: middle !important;
+}
+
+.table th {
+    text-align: center !important;
+}

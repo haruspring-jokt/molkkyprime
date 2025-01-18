@@ -10,6 +10,7 @@ $(function () {
     fetchSchedule("YKSI");
     fetchSchedule("KAKSI");
     fetchNews();
+    fetchAward("YKSI");
 });
 
 /**
@@ -36,6 +37,26 @@ function fetchNews() {
             );
         }
         $("#news-progress").empty();
+    });
+}
+
+/**
+ * 個人賞取得
+ */
+function fetchAward(division) {
+    var url = SHEET_URL;
+    url = url + "?api=AWARD_" + division;
+    console.log(url);
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+    }).done(function (datas) {
+        var datasStringify = JSON.stringify(datas);
+        var datasJson = JSON.parse(datasStringify);
+        if (division == "YKSI") {
+            appendAward(datas, datasJson, "yksi");
+        }
     });
 }
 
@@ -86,6 +107,81 @@ function fetchSchedule(division) {
 }
 
 /**
+ * 個人賞設定
+ */
+function appendAward(datas, datasJson, division) {
+    var qhDatas = datas['qhArray'];
+    for (const i in qhDatas) {
+        if (i >= 10) {
+            break;
+        }
+        var row = qhDatas[i];
+        var qhpro = Math.floor(row['qhpro'] * 100 * 100) / 100 + "%";
+        var qhByThrow = Math.floor(row['qh']) + "/" + Math.floor(row['throw']);
+        $("#" + division + "-award-qh").append(`
+            <tr>
+            <td class="is-size-7" align="left">${row['pname']}</td>
+            <td class="is-size-7" align="left">${row['cname']}</td>
+            <td class="is-size-7" align="right">${qhpro}</td>
+            <td class="is-size-7" align="right">${qhByThrow}</td>
+            </tr>
+        `);
+    }
+
+    var faDatas = datas['faArray'];
+    for (const i in faDatas) {
+        if (i >= 10) {
+            break;
+        }
+        var row = faDatas[i];
+        var fapro = Math.floor(row['faupro'] * 100 * 100) / 100 + "%";
+        var throws = Math.floor(row['fault']) + "/" + Math.floor(row['throw']);
+        $("#" + division + "-award-fa").append(`
+            <tr>
+            <td class="is-size-7" align="left">${row['pname']}</td>
+            <td class="is-size-7" align="left">${row['cname']}</td>
+            <td class="is-size-7" align="right">${fapro}</td>
+            <td class="is-size-7" align="right">${throws}</td>
+            </tr>
+        `);
+    }
+
+    var optDatas = datas['optArray'];
+    for (const i in optDatas) {
+        if (i >= 10) {
+            break;
+        }
+        var row = optDatas[i];
+        var opt = Math.floor(row['opt'] * 100) / 100;
+        var throws = Math.floor(row['throw']);
+        $("#" + division + "-award-opt").append(`
+            <tr>
+            <td class="is-size-7" align="left">${row['pname']}</td>
+            <td class="is-size-7" align="left">${row['cname']}</td>
+            <td class="is-size-7" align="right">${opt}</td>
+            <td class="is-size-7" align="right">${throws}</td>
+            </tr>
+        `);
+    }
+
+    var finDatas = datas['finArray'];
+    for (const i in finDatas) {
+        if (i >= 10) {
+            break;
+        }
+        var row = finDatas[i];
+        var finish = Math.floor(row['finish']);
+        $("#" + division + "-award-fin").append(`
+            <tr>
+            <td class="is-size-7" align="left">${row['pname']}</td>
+            <td class="is-size-7" align="left">${row['cname']}</td>
+            <td class="is-size-7" align="right">${finish}</td>
+            </tr>
+        `);
+    }
+}
+
+/**
  * 順位表設定
  * @param {*} datas 
  * @param {*} datasJson 
@@ -132,6 +228,8 @@ function appendSchedule(datas, datasJson, tableId, progressId) {
         var gamedate = "";
         if (game['date']) {
             gamedate = new Date(game['date']).toLocaleDateString();
+        } else {
+            gamedate = "日程調整中";
         }
         var hcn = game['hcn'];
         var acn = game['acn'];
