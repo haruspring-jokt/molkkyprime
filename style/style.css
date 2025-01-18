@@ -33,3 +33,7 @@ body {
 .table th {
     text-align: center !important;
 }
+
+.table {
+    min-width: 320px !important;
+}

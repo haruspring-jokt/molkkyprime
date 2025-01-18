@@ -131,19 +131,21 @@
                 </div>
                 <div class="content">
                     <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
-                    <table id="yksi-standings" class="table is-fullwidth is-striped">
-                        <tr class="is-danger">
-                            <th class="is-danger is-size-7" align="center">位</th>
-                            <th class="is-danger is-size-7" align="center">クラブ</th>
-                            <th class="is-danger is-size-7" align="center">試</th>
-                            <th class="is-danger is-size-7" align="center">点</th>
-                            <th class="is-danger is-size-7" align="center">勝</th>
-                            <th class="is-danger is-size-7" align="center">敗</th>
-                            <th class="is-danger is-size-7" align="center">分</th>
-                            <th class="is-danger is-size-7" align="center">率</th>
-                        </tr>
-                        <!-- yksi standings -->
-                    </table>
+                    <div class="table-container">
+                        <table id="yksi-standings" class="table is-fullwidth is-striped">
+                            <tr class="is-danger">
+                                <th class="is-danger is-size-7" align="center">位</th>
+                                <th class="is-danger is-size-7" align="center">クラブ</th>
+                                <th class="is-danger is-size-7" align="center">試</th>
+                                <th class="is-danger is-size-7" align="center">点</th>
+                                <th class="is-danger is-size-7" align="center">勝</th>
+                                <th class="is-danger is-size-7" align="center">敗</th>
+                                <th class="is-danger is-size-7" align="center">分</th>
+                                <th class="is-danger is-size-7" align="center">率</th>
+                            </tr>
+                            <!-- yksi standings -->
+                        </table>
+                    </div>
                     <div id="yksi-standings-progress"><progress class="progress is-small is-danger"
                             max="100"></progress></div>
                     <p class="is-size-7">8位のクラブが来シーズンプライムリーグ（1部）参加権を喪失、2部参加またはリーグ離脱。</p>
@@ -160,63 +162,74 @@
                 </div>
                 <div class="content">
                     <h4 class="is-size-5">今月の試合</h4>
-                    <table id="yksi-monthly-schedule" class="table is-fullwidth is-striped">
-                        <tr class="is-danger">
-                            <th class="is-danger is-size-7" align="center">節</th>
-                            <th class="is-danger is-size-7" align="center">日程</th>
-                            <th class="is-danger is-size-7" align="center">ホーム</th>
-                            <th class="is-danger is-size-7" align="center">結果</th>
-                            <th class="is-danger is-size-7" align="center">アウェイ</th>
-                        </tr>
-                    </table>
+                    <div class="table-container">
+                        <table id="yksi-monthly-schedule" class="table is-fullwidth is-striped">
+                            <tr class="is-danger">
+                                <th class="is-danger is-size-7" align="center">節</th>
+                                <th class="is-danger is-size-7" align="center">日程</th>
+                                <th class="is-danger is-size-7" align="center">ホーム</th>
+                                <th class="is-danger is-size-7" align="center">結果</th>
+                                <th class="is-danger is-size-7" align="center">アウェイ</th>
+                            </tr>
+                        </table>
+                    </div>
                     <div id="yksi-schedule-progress"><progress class="progress is-small is-danger" max="100"></progress>
                     </div>
                 </div>
                 <p class="is-size-7">第1節・2節はフリー月としてシーズン中任意の時期に実施する。</p>
-                <p class="content is-size-7"><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/"
+                <p class="content is-size-7"><a
+                        href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/"
                         target="_blank">詳細はスプレッドシートへ</a></p>
                 <!-- award -->
                 <div class="content">
                     <h4 class="is-size-5">個人賞暫定順位</h4>
                     <!-- qh -->
                     <h5 class="is-size-6">QH賞 <small class="is-size-7">* Quality Hit（狙い通りの投擲）</small></h4>
-                    <table id="yksi-award-qh" class="table is-fullwidth is-striped">
-                        <tr class="is-danger">
-                            <th class="is-danger is-size-7" align="center">選手</th>
-                            <th class="is-danger is-size-7" align="center">クラブ</th>
-                            <th class="is-danger is-size-7" align="center">QH率</th>
-                            <th class="is-danger is-size-7" align="center">QH/投</th>
-                        </tr>
-                    </table>
-                    <!-- fault -->
-                    <h5 class="is-size-6">フォルト回避賞</h5>
-                    <table id="yksi-award-fa" class="table is-fullwidth is-striped">
-                        <tr class="is-danger">
-                            <th class="is-danger is-size-7" align="center">選手</th>
-                            <th class="is-danger is-size-7" align="center">クラブ</th>
-                            <th class="is-danger is-size-7" align="center">FA率</th>
-                            <th class="is-danger is-size-7" align="center">FA/投</th>
-                        </tr>
-                    </table>
-                    <!-- opt -->
-                    <h5 class="is-size-6">OPT賞 <small class="is-size-7">* On Plus Throwing（得点効率指標）</small></h5>
-                    <table id="yksi-award-opt" class="table is-fullwidth is-striped">
-                        <tr class="is-danger">
-                            <th class="is-danger is-size-7" align="center">選手</th>
-                            <th class="is-danger is-size-7" align="center">クラブ</th>
-                            <th class="is-danger is-size-7" align="center">OPT</th>
-                            <th class="is-danger is-size-7" align="center">投</th>
-                        </tr>
-                    </table>
-                    <!-- finish -->
-                    <h5 class="is-size-6">フィニッシュ賞</h5>
-                    <table id="yksi-award-fin" class="table is-fullwidth is-striped">
-                        <tr class="is-danger">
-                            <th class="is-danger is-size-7" align="center">選手</th>
-                            <th class="is-danger is-size-7" align="center">クラブ</th>
-                            <th class="is-danger is-size-7" align="center">FIN数</th>
-                        </tr>
-                    </table>
+                        <div class="table-container">
+                            <table id="yksi-award-qh" class="table is-hoverable is-striped">
+                                <tr class="is-danger">
+                                    <th class="is-danger is-size-7" align="center">選手</th>
+                                    <th class="is-danger is-size-7" align="center">クラブ</th>
+                                    <th class="is-danger is-size-7" align="center">QH率</th>
+                                    <th class="is-danger is-size-7" align="center">QH/投</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- fault -->
+                        <h5 class="is-size-6">フォルト回避賞</h5>
+                        <div class="table-container">
+                            <table id="yksi-award-fa" class="table is-hoverable is-striped">
+                                <tr class="is-danger">
+                                    <th class="is-danger is-size-7" align="center">選手</th>
+                                    <th class="is-danger is-size-7" align="center">クラブ</th>
+                                    <th class="is-danger is-size-7" align="center">FA率</th>
+                                    <th class="is-danger is-size-7" align="center">FA/投</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- opt -->
+                        <h5 class="is-size-6">OPT賞 <small class="is-size-7">* On Plus Throwing（得点効率指標）</small></h5>
+                        <div class="table-container">
+                            <table id="yksi-award-opt" class="table is-hoverable is-striped">
+                                <tr class="is-danger">
+                                    <th class="is-danger is-size-7" align="center">選手</th>
+                                    <th class="is-danger is-size-7" align="center">クラブ</th>
+                                    <th class="is-danger is-size-7" align="center">OPT</th>
+                                    <th class="is-danger is-size-7" align="center">投</th>
+                                </tr>
+                            </table>
+                        </div>
+                        <!-- finish -->
+                        <h5 class="is-size-6">フィニッシュ賞</h5>
+                        <div class="table-container">
+                            <table id="yksi-award-fin" class="table is-hoverable is-striped">
+                                <tr class="is-danger">
+                                    <th class="is-danger is-size-7" align="center">選手</th>
+                                    <th class="is-danger is-size-7" align="center">クラブ</th>
+                                    <th class="is-danger is-size-7" align="center">FIN数</th>
+                                </tr>
+                            </table>
+                        </div>
                 </div>
             </div>
         </section>
@@ -234,20 +247,22 @@
                     </div>
                 </div>
                 <div class="content">
-                    <h4 class="is-size-5">順位表（各クラブ全10試合）</h4>
-                    <table id="kaksi-standings" class="table is-fullwidth is-striped">
-                        <tr class="is-primary">
-                            <th class="is-primary is-size-7" align="center">位</th>
-                            <th class="is-primary is-size-7" align="center">クラブ</th>
-                            <th class="is-primary is-size-7" align="center">試</th>
-                            <th class="is-primary is-size-7" align="center">点</th>
-                            <th class="is-primary is-size-7" align="center">勝</th>
-                            <th class="is-primary is-size-7" align="center">敗</th>
-                            <th class="is-primary is-size-7" align="center">分</th>
-                            <th class="is-primary is-size-7" align="center">率</th>
-                        </tr>
-                        <!-- kaksi standings -->
-                    </table>
+                    <div class="table-container">
+                        <h4 class="is-size-5">順位表（各クラブ全10試合）</h4>
+                        <table id="kaksi-standings" class="table is-fullwidth is-striped">
+                            <tr class="is-primary">
+                                <th class="is-primary is-size-7" align="center">位</th>
+                                <th class="is-primary is-size-7" align="center">クラブ</th>
+                                <th class="is-primary is-size-7" align="center">試</th>
+                                <th class="is-primary is-size-7" align="center">点</th>
+                                <th class="is-primary is-size-7" align="center">勝</th>
+                                <th class="is-primary is-size-7" align="center">敗</th>
+                                <th class="is-primary is-size-7" align="center">分</th>
+                                <th class="is-primary is-size-7" align="center">率</th>
+                            </tr>
+                            <!-- kaksi standings -->
+                        </table>
+                    </div>
                     <div id="kaksi-standings-progress"><progress class="progress is-small is-primary"
                             max="100"></progress></div>
                     <p class="is-size-7">1位のクラブが来シーズンプライムリーグ（1部）参加権を獲得。</p>
@@ -262,16 +277,18 @@
                     </p>
                 </div>
                 <div class="content">
-                    <h4 class="is-size-5">今月の試合</h4>
-                    <table id="kaksi-monthly-schedule" class="table is-fullwidth is-striped">
-                        <tr class="is-primary">
-                            <th class="is-primary is-size-7" align="center">節</th>
-                            <th class="is-primary is-size-7" align="center">日程</th>
-                            <th class="is-primary is-size-7" align="center">ホーム</th>
-                            <th class="is-primary is-size-7" align="center">結果</th>
-                            <th class="is-primary is-size-7" align="center">アウェイ</th>
-                        </tr>
-                    </table>
+                    <div class="table-container">
+                        <h4 class="is-size-5">今月の試合</h4>
+                        <table id="kaksi-monthly-schedule" class="table is-fullwidth is-striped">
+                            <tr class="is-primary">
+                                <th class="is-primary is-size-7" align="center">節</th>
+                                <th class="is-primary is-size-7" align="center">日程</th>
+                                <th class="is-primary is-size-7" align="center">ホーム</th>
+                                <th class="is-primary is-size-7" align="center">結果</th>
+                                <th class="is-primary is-size-7" align="center">アウェイ</th>
+                            </tr>
+                        </table>
+                    </div>
                     <p class="is-size-7">前半戦は2024年10月～12月、後半戦は2025年1月～3月に実施。</p>
                     <div id="kaksi-schedule-progress"><progress class="progress is-small is-primary"
                             max="100"></progress></div>
