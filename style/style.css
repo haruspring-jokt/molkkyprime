@@ -37,3 +37,7 @@ body {
 .table {
     min-width: 320px !important;
 }
+
+.mkpl-under-header {
+    min-height: 52px !important;
+}

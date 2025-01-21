@@ -1,24 +1,16 @@
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzT2b0VNnz1jChrkzgDDSlPV9_WELpJH5rF6zBPzLCeFu-1NGt3ddX55WApLjOgP3nGnw/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74uBMyiS7zG2tWl6ew5MDU8Rdqr8ErfIVhMoRakEY6iB1i63tg/exec";
 
 $(function () {
     /**
      * ページ個別
      */
     // 各種データ取得・設定
-    fetchRank("YKSI");
-    fetchRank("KAKSI");
-    fetchSchedule("YKSI");
-    fetchSchedule("KAKSI");
-    fetchNews();
-    fetchAward("YKSI");
+    fetchData();
 });
 
-/**
- * ニュース一覧取得
- */
-function fetchNews() {
+function fetchData() {
     var url = SHEET_URL;
-    url = url + "?api=NEWS_TOP";
+    url = url + "?api=TOP";
     console.log(url);
     $.ajax({
         url: url,
@@ -27,90 +19,43 @@ function fetchNews() {
     }).done(function (datas) {
         var datasStringify = JSON.stringify(datas);
         var datasJson = JSON.parse(datasStringify);
-        for (const i in datasJson) {
-            const news = datas[i];
-            var date = new Date(news['date']).toLocaleDateString();
-            $('#news-list').append(
-                `
-                <li><a href="https://blog.jajapatatas.com/entry/${news['id']}" target="_blank">（${date}） ${news['title']}</a></li>
-                `
-            );
-        }
-        $("#news-progress").empty();
+
+        // ニュース
+        appendNews(datasJson['news']);
+        // 順位表1部
+        appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress");
+        // 日程1部
+        appendSchedule(datasJson['monthYksi'], '#yksi-monthly-schedule', "#yksi-schedule-progress");
+        // 個人賞
+        appendAward(datasJson['award'], "yksi");
+        // 順位表2部
+        appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress");
+        // 日程2部
+        appendSchedule(datasJson['monthKaksi'], '#kaksi-monthly-schedule', "#kaksi-schedule-progress");
     });
 }
 
 /**
- * 個人賞取得
+ * ニュース設定
  */
-function fetchAward(division) {
-    var url = SHEET_URL;
-    url = url + "?api=AWARD_" + division;
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
-        var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
-        if (division == "YKSI") {
-            appendAward(datas, datasJson, "yksi");
-        }
-    });
-}
-
-/**
- * 順位表取得
- * @param str division ディヴィジョン 
- */
-function fetchRank(division) {
-    var url = SHEET_URL;
-    url = url + "?api=RANK_" + division;
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
-        var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
-        if (division == "YKSI") {
-            appendStandings(datas, datasJson, "#yksi-standings", "#yksi-standings-progress");
-        } else if (division == "KAKSI") {
-            appendStandings(datas, datasJson, "#kaksi-standings", "#kaksi-standings-progress");
-        }
-    });
-}
-
-/**
- * 日程取得
- * @param {*} division 
- */
-function fetchSchedule(division) {
-    var url = SHEET_URL;
-    url = url + "?api=MONTH_" + division;
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
-        var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
-        if (division == "YKSI") {
-            appendSchedule(datas, datasJson, '#yksi-monthly-schedule', "#yksi-schedule-progress")
-        } else if (division == "KAKSI") {
-            appendSchedule(datas, datasJson, '#kaksi-monthly-schedule', "#kaksi-schedule-progress")
-        }
-    });
+function appendNews(news) {
+    for (const i in news) {
+        var row = news[i];
+        var date = new Date(row['date']).toLocaleDateString();
+        $('#news-list').append(
+            `
+            <li><a href="https://blog.jajapatatas.com/entry/${row['id']}" target="_blank">（${date}） ${row['title']}</a></li>
+            `
+        );
+    }
+    $("#news-progress").empty();
 }
 
 /**
  * 個人賞設定
  */
-function appendAward(datas, datasJson, division) {
-    var qhDatas = datas['qhArray'];
+function appendAward(datasJson, division) {
+    var qhDatas = datasJson['qh'];
     for (const i in qhDatas) {
         if (i >= 10) {
             break;
@@ -128,7 +73,7 @@ function appendAward(datas, datasJson, division) {
         `);
     }
 
-    var faDatas = datas['faArray'];
+    var faDatas = datasJson['fa'];
     for (const i in faDatas) {
         if (i >= 10) {
             break;
@@ -146,7 +91,7 @@ function appendAward(datas, datasJson, division) {
         `);
     }
 
-    var optDatas = datas['optArray'];
+    var optDatas = datasJson['opt'];
     for (const i in optDatas) {
         if (i >= 10) {
             break;
@@ -164,7 +109,7 @@ function appendAward(datas, datasJson, division) {
         `);
     }
 
-    var finDatas = datas['finArray'];
+    var finDatas = datasJson['fin'];
     for (const i in finDatas) {
         if (i >= 10) {
             break;
@@ -188,9 +133,9 @@ function appendAward(datas, datasJson, division) {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendStandings(datas, datasJson, tableId, progressId) {
+function appendStandings(datasJson, tableId, progressId) {
     for (const i in datasJson) {
-        const rank = datas[i];
+        const rank = datasJson[i];
         var ranknum = Number(rank['rank']);
         var club = rank['cname'];
         if (club.length > 16) {
@@ -222,9 +167,9 @@ function appendStandings(datas, datasJson, tableId, progressId) {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendSchedule(datas, datasJson, tableId, progressId) {
+function appendSchedule(datasJson, tableId, progressId) {
     for (const i in datasJson) {
-        const game = datas[i];
+        const game = datasJson[i];
         var gamedate = "";
         if (game['date']) {
             gamedate = new Date(game['date']).toLocaleDateString();

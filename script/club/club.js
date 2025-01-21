@@ -1,14 +1,32 @@
 // データ取得先スプレッドシートAPIURL
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzT2b0VNnz1jChrkzgDDSlPV9_WELpJH5rF6zBPzLCeFu-1NGt3ddX55WApLjOgP3nGnw/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74uBMyiS7zG2tWl6ew5MDU8Rdqr8ErfIVhMoRakEY6iB1i63tg/exec";
 
 $(function () {
     /**
      * ページ個別
      */
     // 各種データ取得・設定
-    fetchPlayer("YKSI");
-    fetchPlayer("KAKSI");
+    fetchData();
 });
+
+function fetchData() {
+    var url = SHEET_URL;
+    url = url + "?api=CLUB";
+    console.log(url);
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+    }).done(function (datas) {
+        var datasStringify = JSON.stringify(datas);
+        var datasJson = JSON.parse(datasStringify);
+
+        // 選手1部
+        appendPlayers(datasJson['playerYksi'], "#yksi-players", "#yksi-players-progress", "is-danger");
+        // 選手2部
+        appendPlayers(datasJson['playerKaksi'], "#kaksi-players", "#kaksi-players-progress", "is-primary");
+    });
+}
 
 /**
  * 選手取得
@@ -40,15 +58,15 @@ function fetchPlayer(division) {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendPlayers(datas, datasJson, tableId, progressId, color) {
+function appendPlayers(datasJson, tableId, progressId, color) {
     for (const i in datasJson) {
-        const player = datas[i];
+        const player = datasJson[i];
         var pname = "<strong>" + player['pname'] + "</strong>";
         if (player['isOtherRegion']) {
             pname = pname + " *";
         }
         var appendstr = "";
-        if (i > 0 && player['cid'] != datas[i - 1]['cid']) {
+        if (i > 0 && player['cid'] != datasJson[i - 1]['cid']) {
             appendstr = appendstr + `
                 <tr class="${color}">
                     <th class="${color} is-size-6">選手</th>

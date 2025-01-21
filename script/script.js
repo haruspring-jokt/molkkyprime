@@ -31,27 +31,22 @@ function appendHeader() {
     var suzuri = "https://suzuri.jp/haruspring_jokt/";
 
     if (location.pathname != "/") {
+        var addPath = "";
         if (location.pathname.split("/").length == 3) {
             // 2階層
-            top = "." + top;
-            logo = "." + logo;
-            schedule = "." + schedule;
-            club = "." + club;
-            entry = "." + entry;
-            regulation = "." + regulation;
-            past202324 = "." + past202324;
-            past2023 = "." + past2023;
+            addPath = ".";
         } else if (location.pathname.split("/").length == 4) {
             // 3階層
-            top = "../." + top;
-            logo = "../." + logo;
-            schedule = "../." + schedule;
-            club = "../." + club;
-            entry = "../." + entry;
-            regulation = "../." + regulation;
-            past202324 = "../." + past202324;
-            past2023 = "../." + past2023;
+            addPath = "../.";
         }
+            top = addPath + top;
+            logo = addPath + logo;
+            schedule = addPath + schedule;
+            club = addPath + club;
+            entry = addPath + entry;
+            regulation = addPath + regulation;
+            past202324 = addPath + past202324;
+            past2023 = addPath + past2023;
     }
 
     $("#mkpl-header").append(`

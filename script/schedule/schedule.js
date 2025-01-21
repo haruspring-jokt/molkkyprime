@@ -1,24 +1,17 @@
 // データ取得先スプレッドシートAPIURL
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzT2b0VNnz1jChrkzgDDSlPV9_WELpJH5rF6zBPzLCeFu-1NGt3ddX55WApLjOgP3nGnw/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74uBMyiS7zG2tWl6ew5MDU8Rdqr8ErfIVhMoRakEY6iB1i63tg/exec";
 
 $(function () {
     /**
      * ページ個別
      */
     // 各種データ取得・設定
-    fetchRank("YKSI");
-    fetchRank("KAKSI");
-    fetchScheduleAll("YKSI");
-    fetchScheduleAll("KAKSI");
+    fetchData();
 });
 
-/**
- * 順位表取得
- * @param str division ディヴィジョン 
- */
-function fetchRank(division) {
+function fetchData() {
     var url = SHEET_URL;
-    url = url + "?api=RANK_" + division;
+    url = url + "?api=SCHEDULE";
     console.log(url);
     $.ajax({
         url: url,
@@ -27,34 +20,15 @@ function fetchRank(division) {
     }).done(function (datas) {
         var datasStringify = JSON.stringify(datas);
         var datasJson = JSON.parse(datasStringify);
-        if (division == "YKSI") {
-            appendStandings(datas, datasJson, "#yksi-standings", "#yksi-standings-progress");
-        } else if (division == "KAKSI") {
-            appendStandings(datas, datasJson, "#kaksi-standings", "#kaksi-standings-progress");
-        }
-    });
-}
 
-/**
- * 日程取得（全体）
- * @param {*} division 
- */
-function fetchScheduleAll(division) {
-    var url = SHEET_URL;
-    url = url + "?api=SCHEDULE_" + division;
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
-        var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
-        if (division == "YKSI") {
-            appendSchedule(datas, datasJson, '#yksi-schedule', "#yksi-schedule-progress")
-        } else if (division == "KAKSI") {
-            appendSchedule(datas, datasJson, '#kaksi-schedule', "#kaksi-schedule-progress")
-        }
+        // 順位表1部
+        appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress");
+        // 日程1部
+        appendSchedule(datasJson['scheduleYksi'], '#yksi-schedule', "#yksi-schedule-progress");
+        // 順位表2部
+        appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress");
+        // 日程2部
+        appendSchedule(datasJson['scheduleKaksi'], '#kaksi-schedule', "#kaksi-schedule-progress");
     });
 }
 
@@ -65,9 +39,9 @@ function fetchScheduleAll(division) {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendStandings(datas, datasJson, tableId, progressId) {
+function appendStandings(datasJson, tableId, progressId) {
     for (const i in datasJson) {
-        const rank = datas[i];
+        const rank = datasJson[i];
         var ranknum = Number(rank['rank']);
         var club = rank['cname'];
         if (club.length > 16) {
@@ -99,9 +73,9 @@ function appendStandings(datas, datasJson, tableId, progressId) {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendSchedule(datas, datasJson, tableId, progressId) {
+function appendSchedule(datasJson, tableId, progressId) {
     for (const i in datasJson) {
-        const game = datas[i];
+        const game = datasJson[i];
         var gamedate = "";
         if (game['date']) {
             gamedate = new Date(game['date']).toLocaleDateString();
