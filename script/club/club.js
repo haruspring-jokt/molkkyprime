@@ -21,6 +21,8 @@ function fetchData() {
         var datasStringify = JSON.stringify(datas);
         var datasJson = JSON.parse(datasStringify);
 
+        // 公示
+        appendTransfer(datasJson['transfer'], "#transfer-table", "#transfer-progress");
         // 選手1部
         appendPlayers(datasJson['playerYksi'], "#yksi-players", "#yksi-players-progress", "is-danger");
         // 選手2部
@@ -28,27 +30,24 @@ function fetchData() {
     });
 }
 
-/**
- * 選手取得
- * @param str division ディヴィジョン 
- */
-function fetchPlayer(division) {
-    var url = SHEET_URL;
-    url = url + "?api=PLAYER_" + division;
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
-        var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
-        if (division == "YKSI") {
-            appendPlayers(datas, datasJson, "#yksi-players", "#yksi-players-progress", "is-danger");
-        } else if (division == "KAKSI") {
-            appendPlayers(datas, datasJson, "#kaksi-players", "#kaksi-players-progress", "is-primary");
+function appendTransfer(datasJson, tableId, progressId) {
+    for (const i in datasJson) {
+        const tf = datasJson[i];
+        if (tf['isEnable']) {
+            var division = (tf['division'] == "YKSI") ? "リーグ" : "チャレンジ";
+            var color = (tf['division'] == "YKSI") ? "has-text-danger" : "has-text-primary-30";
+            var tfDate = new Date(tf['date']).toLocaleDateString();
+            $(tableId).append(`
+                <tr class="mkpl-player-row-1">
+                <input type="hidden" name="transfer-id" value="${tf['id']}" /> 
+                <td class="is-size-7" align="left">${tfDate}</td>
+                <td class="is-size-7" align="left"><strong class="${color}">${division}</strong></td>
+                <td class="is-size-6" align="left">${tf['title']}</td>
+                </tr>
+                `);
         }
-    });
+    }
+    $(progressId).empty();
 }
 
 /**

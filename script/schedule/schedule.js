@@ -24,11 +24,11 @@ function fetchData() {
         // 順位表1部
         appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress");
         // 日程1部
-        appendSchedule(datasJson['scheduleYksi'], '#yksi-schedule', "#yksi-schedule-progress");
+        appendSchedule(datasJson['scheduleYksi'], '#yksi-schedule', "#yksi-schedule-progress", "YKSI");
         // 順位表2部
         appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress");
         // 日程2部
-        appendSchedule(datasJson['scheduleKaksi'], '#kaksi-schedule', "#kaksi-schedule-progress");
+        appendSchedule(datasJson['scheduleKaksi'], '#kaksi-schedule', "#kaksi-schedule-progress", "KAKSI");
     });
 }
 
@@ -52,7 +52,7 @@ function appendStandings(datasJson, tableId, progressId) {
             `
                     <tr>
                     <td class="is-size-7" align="right">${ranknum}</td>
-                    <td class="is-size-7" align="right">${club}</td>
+                    <td class="is-size-7" align="left">${club}</td>
                     <td class="is-size-7" align="right">${rank['game']}</td>
                     <td class="is-size-7" align="right">${rank['winpoint']}</td>
                     <td class="is-size-7" align="right">${rank['win']}</td>
@@ -73,7 +73,7 @@ function appendStandings(datasJson, tableId, progressId) {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendSchedule(datasJson, tableId, progressId) {
+function appendSchedule(datasJson, tableId, progressId, division) {
     for (const i in datasJson) {
         const game = datasJson[i];
         var gamedate = "";
@@ -82,11 +82,15 @@ function appendSchedule(datasJson, tableId, progressId) {
         }
         var hcn = game['hcn'];
         var acn = game['acn'];
+        var hcnTdClass = "";
+        var acnTdClass = "";
         if (!(game['hsn'] == game['asn'])) {
             if (game['hsn'] > game['asn']) {
-                hcn = "<strong>" + hcn + "</strong>";
+                hcn = '<strong>' + hcn + "</strong>";
+                hcnTdClass = (division == "YKSI") ? "has-background-danger-80" : "has-background-primary-80";
             } else {
                 acn = "<strong>" + acn + "</strong>";
+                acnTdClass = (division == "YKSI") ? "has-background-danger-80" : "has-background-primary-80";
             }
         }
         $(tableId).append(
@@ -94,9 +98,9 @@ function appendSchedule(datasJson, tableId, progressId) {
             <tr>
             <td class="is-size-7" align="right">${game['sec']}</td>
             <td class="is-size-7" align="left">${gamedate}</td>
-            <td class="is-size-7" align="center">${hcn}</td>
+            <td class="is-size-7 ${hcnTdClass}" align="center">${hcn}</td>
             <td class="is-size-7" align="center">${game['hsn']} - ${game['asn']}</td>
-            <td class="is-size-7" align="center">${acn}</td>
+            <td class="is-size-7 ${acnTdClass}" align="center">${acn}</td>
             </tr>
             `
         );

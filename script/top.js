@@ -25,13 +25,13 @@ function fetchData() {
         // 順位表1部
         appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress");
         // 日程1部
-        appendSchedule(datasJson['monthYksi'], '#yksi-monthly-schedule', "#yksi-schedule-progress");
+        appendSchedule(datasJson['monthYksi'], '#yksi-monthly-schedule', "#yksi-schedule-progress", "YKSI");
         // 個人賞
         appendAward(datasJson['award'], "yksi");
         // 順位表2部
         appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress");
         // 日程2部
-        appendSchedule(datasJson['monthKaksi'], '#kaksi-monthly-schedule', "#kaksi-schedule-progress");
+        appendSchedule(datasJson['monthKaksi'], '#kaksi-monthly-schedule', "#kaksi-schedule-progress", "KAKSI");
     });
 }
 
@@ -56,6 +56,8 @@ function appendNews(news) {
  */
 function appendAward(datasJson, division) {
     var qhDatas = datasJson['qh'];
+    var rank = 1;
+    var tie = 0;
     for (const i in qhDatas) {
         if (i >= 10) {
             break;
@@ -63,8 +65,15 @@ function appendAward(datasJson, division) {
         var row = qhDatas[i];
         var qhpro = Math.floor(row['qhpro'] * 100 * 100) / 100 + "%";
         var qhByThrow = Math.floor(row['qh']) + "/" + Math.floor(row['throw']);
+        if (Number(i) > 0 && row['qhpro'] != Math.floor(qhDatas[Number(i) - 1]['qhpro'])) {
+            rank = rank + tie;
+            tie = 1;
+        } else {
+            tie++;
+        }
         $("#" + division + "-award-qh").append(`
             <tr>
+            <td class="is-size-7" align="right">${rank}</td>
             <td class="is-size-7" align="left">${row['pname']}</td>
             <td class="is-size-7" align="left">${row['cname']}</td>
             <td class="is-size-7" align="right">${qhpro}</td>
@@ -74,6 +83,8 @@ function appendAward(datasJson, division) {
     }
 
     var faDatas = datasJson['fa'];
+    rank = 1;
+    tie = 0;
     for (const i in faDatas) {
         if (i >= 10) {
             break;
@@ -81,8 +92,15 @@ function appendAward(datasJson, division) {
         var row = faDatas[i];
         var fapro = Math.floor(row['faupro'] * 100 * 100) / 100 + "%";
         var throws = Math.floor(row['fault']) + "/" + Math.floor(row['throw']);
+        if (Number(i) > 0 && row['faupro'] != Math.floor(faDatas[Number(i) - 1]['faupro'])) {
+            rank = rank + tie;
+            tie = 1;
+        } else {
+            tie++;
+        }
         $("#" + division + "-award-fa").append(`
             <tr>
+            <td class="is-size-7" align="right">${rank}</td>
             <td class="is-size-7" align="left">${row['pname']}</td>
             <td class="is-size-7" align="left">${row['cname']}</td>
             <td class="is-size-7" align="right">${fapro}</td>
@@ -92,6 +110,8 @@ function appendAward(datasJson, division) {
     }
 
     var optDatas = datasJson['opt'];
+    rank = 1;
+    tie = 0;
     for (const i in optDatas) {
         if (i >= 10) {
             break;
@@ -99,8 +119,15 @@ function appendAward(datasJson, division) {
         var row = optDatas[i];
         var opt = Math.floor(row['opt'] * 100) / 100;
         var throws = Math.floor(row['throw']);
+        if (Number(i) > 0 && row['opt'] != Math.floor(optDatas[Number(i) - 1]['opt'])) {
+            rank = rank + tie;
+            tie = 1;
+        } else {
+            tie++;
+        }
         $("#" + division + "-award-opt").append(`
             <tr>
+            <td class="is-size-7" align="right">${rank}</td>
             <td class="is-size-7" align="left">${row['pname']}</td>
             <td class="is-size-7" align="left">${row['cname']}</td>
             <td class="is-size-7" align="right">${opt}</td>
@@ -110,14 +137,23 @@ function appendAward(datasJson, division) {
     }
 
     var finDatas = datasJson['fin'];
+    rank = 1;
+    tie = 0;
     for (const i in finDatas) {
         if (i >= 10) {
             break;
         }
         var row = finDatas[i];
         var finish = Math.floor(row['finish']);
+        if (Number(i) > 0 && finish != Math.floor(finDatas[Number(i) - 1]['finish'])) {
+            rank = rank + tie;
+            tie = 1;
+        } else {
+            tie++;
+        }
         $("#" + division + "-award-fin").append(`
             <tr>
+            <td class="is-size-7" align="right">${rank}</td>
             <td class="is-size-7" align="left">${row['pname']}</td>
             <td class="is-size-7" align="left">${row['cname']}</td>
             <td class="is-size-7" align="right">${finish}</td>
@@ -167,7 +203,7 @@ function appendStandings(datasJson, tableId, progressId) {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendSchedule(datasJson, tableId, progressId) {
+function appendSchedule(datasJson, tableId, progressId, division) {
     for (const i in datasJson) {
         const game = datasJson[i];
         var gamedate = "";
@@ -178,11 +214,15 @@ function appendSchedule(datasJson, tableId, progressId) {
         }
         var hcn = game['hcn'];
         var acn = game['acn'];
+        var hcnTdClass = "";
+        var acnTdClass = "";
         if (!(game['hsn'] == game['asn'])) {
             if (game['hsn'] > game['asn']) {
                 hcn = "<strong>" + hcn + "</strong>";
+                hcnTdClass = (division == "YKSI") ? "has-background-danger-80" : "has-background-primary-80";
             } else {
                 acn = "<strong>" + acn + "</strong>";
+                acnTdClass = (division == "YKSI") ? "has-background-danger-80" : "has-background-primary-80";
             }
         }
         $(tableId).append(
@@ -190,9 +230,9 @@ function appendSchedule(datasJson, tableId, progressId) {
             <tr>
             <td class="is-size-7" align="right">${game['sec']}</td>
             <td class="is-size-7" align="left">${gamedate}</td>
-            <td class="is-size-7" align="center">${game['hcn']}</td>
+            <td class="is-size-7 ${hcnTdClass}" align="center">${hcn}</td>
             <td class="is-size-7" align="center">${game['hsn']} - ${game['asn']}</td>
-            <td class="is-size-7" align="center">${game['acn']}</td>
+            <td class="is-size-7 ${acnTdClass}" align="center">${acn}</td>
             </tr>
             `
         );

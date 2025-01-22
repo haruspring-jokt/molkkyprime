@@ -188,6 +188,7 @@
                         <div class="table-container">
                             <table id="yksi-award-qh" class="table is-hoverable is-striped">
                                 <tr class="is-danger">
+                                    <th class="is-danger is-size-7" align="center"></th>
                                     <th class="is-danger is-size-7" align="center">選手</th>
                                     <th class="is-danger is-size-7" align="center">クラブ</th>
                                     <th class="is-danger is-size-7" align="center">QH率</th>
@@ -200,6 +201,7 @@
                         <div class="table-container">
                             <table id="yksi-award-fa" class="table is-hoverable is-striped">
                                 <tr class="is-danger">
+                                    <th class="is-danger is-size-7" align="center"></th>
                                     <th class="is-danger is-size-7" align="center">選手</th>
                                     <th class="is-danger is-size-7" align="center">クラブ</th>
                                     <th class="is-danger is-size-7" align="center">FA率</th>
@@ -212,6 +214,7 @@
                         <div class="table-container">
                             <table id="yksi-award-opt" class="table is-hoverable is-striped">
                                 <tr class="is-danger">
+                                    <th class="is-danger is-size-7" align="center"></th>
                                     <th class="is-danger is-size-7" align="center">選手</th>
                                     <th class="is-danger is-size-7" align="center">クラブ</th>
                                     <th class="is-danger is-size-7" align="center">OPT</th>
@@ -219,11 +222,17 @@
                                 </tr>
                             </table>
                         </div>
+                        <p class="is-size-7">OPTは得点力を示すための実験的指標。以下の式で計算する。</p>
+                        <p class="is-size-7"><code>OPT = 1投あたりの評価点総合計 / 総投擲数</code><br />
+                            <code>1投あたりの評価点 = {0.1 * ({ターン数} - 1) * [得点] + [得点]}</code><br />
+                            例えば8ターン目に5点を獲得した場合、評価点は<code>0.1 * (8 - 1) * 5 + 5 = 8.50</code>となる。
+                        </p>
                         <!-- finish -->
                         <h5 class="is-size-6">フィニッシュ賞</h5>
                         <div class="table-container">
                             <table id="yksi-award-fin" class="table is-hoverable is-striped">
                                 <tr class="is-danger">
+                                    <th class="is-danger is-size-7" align="center"></th>
                                     <th class="is-danger is-size-7" align="center">選手</th>
                                     <th class="is-danger is-size-7" align="center">クラブ</th>
                                     <th class="is-danger is-size-7" align="center">FIN数</th>
