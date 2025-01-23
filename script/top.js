@@ -219,10 +219,10 @@ function appendSchedule(datasJson, tableId, progressId, division) {
         if (!(game['hsn'] == game['asn'])) {
             if (game['hsn'] > game['asn']) {
                 hcn = "<strong>" + hcn + "</strong>";
-                hcnTdClass = (division == "YKSI") ? "has-background-danger-80" : "has-background-primary-80";
+                hcnTdClass = (division == "YKSI") ? "has-background-primary-80" : "has-background-success-80";
             } else {
                 acn = "<strong>" + acn + "</strong>";
-                acnTdClass = (division == "YKSI") ? "has-background-danger-80" : "has-background-primary-80";
+                acnTdClass = (division == "YKSI") ? "has-background-primary-80" : "has-background-success-80";
             }
         }
         $(tableId).append(

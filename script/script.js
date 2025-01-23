@@ -100,9 +100,61 @@ function appendHeader() {
  * フッター追加
  */
 function appendFooter() {
+    // 階層によって変化するリンクの設定
+    var top = "./";
+    var logo = "./asset/logo.png";
+    var schedule = "./schedule/";
+    var club = "./club/";
+    var news = "https://blog.jajapatatas.com/archive/category/%E3%83%A2%E3%83%AB%E3%83%83%E3%82%AF%E9%96%A2%E6%9D%B1%E3%83%97%E3%83%A9%E3%82%A4%E3%83%A0%E3%83%AA%E3%83%BC%E3%82%B0";
+    var entry = "./entry/";
+    var regulation = "./regulation/";
+    var past202324 = "./past/202324/";
+    var past2023 = "./past/2023/";
+    var twitter = "https://x.com/molkkyprime";
+    var youtube = "https://youtube.com/@molkkyclanjajapatatas/";
+    var suzuri = "https://suzuri.jp/haruspring_jokt/";
+
+    if (location.pathname != "/") {
+        var addPath = "";
+        if (location.pathname.split("/").length == 3) {
+            // 2階層
+            addPath = ".";
+        } else if (location.pathname.split("/").length == 4) {
+            // 3階層
+            addPath = "../.";
+        }
+            top = addPath + top;
+            logo = addPath + logo;
+            schedule = addPath + schedule;
+            club = addPath + club;
+            entry = addPath + entry;
+            regulation = addPath + regulation;
+            past202324 = addPath + past202324;
+            past2023 = addPath + past2023;
+    }
+
     $("#mkpl-footer").append(`
-        <div class="content has-text-centered">
-            <p>Mölkky Kanto Prime League 2023</p>
-        </div>
+        <div class="columns" id="site-map">
+                <ul class="content column">モルック関東プライムリーグ
+                    <li><a class="content is-size-6" href="${top}">トップ</a></li>
+                    <li><a class="content is-size-6" href="${schedule}">日程・結果・順位表</a></li>
+                    <li><a class="content is-size-6" href="${club}">クラブ・選手</a></li>
+                    <li><a class="content is-size-6"
+                            href="${news}"
+                            target="_blank">ニュース</a></li>
+                    <li><a class="content is-size-6" href="${entry}">エントリー</a></li>
+                    <li><a class="content is-size-6" href="${regulation}">ルール</a></li>
+                    <li><a class="content is-size-6" href="">データ *coming soon*</a></li>
+                </ul>
+                <ul class="content column">過去のシーズン
+                    <li><a class="content is-size-6" href="${past2023}">シーズン2023</a></li>
+                    <li><a class="content is-size-6" href="${past202324}">シーズン2023-2024</a></li>
+                </ul>
+                <ul class="content column">リンク
+                    <li><a class="content is-size-6" href="${youtube}">YouTube</a></li>
+                    <li><a class="content is-size-6" href="${twitter}">Twitter(X)</a></li>
+                    <li><a class="content is-size-6" href="${suzuri}">SUZURI</a></li>
+                </ul>
+            </div>
     `);
 }

@@ -7,9 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, shrink-to-fit=yes">
 
-    <!-- spectre -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-
     <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +17,7 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <!-- molkkyprime -->
+    <link rel="stylesheet" href="../my-bulma-project.css">
     <link rel="stylesheet" href="../style/style.css">
     <script src="../script/script.js"></script>
     <script src="../script/club/club.js"></script>
@@ -101,13 +99,13 @@
                 <div class="content">
                     <h4 class="is-size-5">選手一覧</h4>
                     <table id="yksi-players" class="table is-fullwidth is-narrow">
-                        <tr class="is-danger">
-                            <th class="is-danger is-size-6">選手</th>
-                            <th class="is-danger is-size-6" colspan="2">クラブ</th>
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-6">選手</th>
+                            <th class="is-primary is-size-6" colspan="2">クラブ</th>
                         </tr>
                         <!-- yksi players -->
                     </table>
-                    <div id="yksi-players-progress"><progress class="progress is-small is-danger" max="100"></progress>
+                    <div id="yksi-players-progress"><progress class="progress is-small is-primary" max="100"></progress>
                     </div>
                     <p class="is-size-7">* は助っ人選手（関東エリア外）。</p>
                 </div>
@@ -129,13 +127,13 @@
                 <div class="content">
                     <h4 class="is-size-5">選手一覧</h4>
                     <table id="kaksi-players" class="table is-fullwidth is-narrow">
-                        <tr class="is-primary">
-                            <th class="is-primary is-size-6">選手</th>
-                            <th class="is-primary is-size-6" colspan="2">クラブ</th>
+                        <tr class="is-success">
+                            <th class="is-success is-size-6">選手</th>
+                            <th class="is-success is-size-6" colspan="2">クラブ</th>
                         </tr>
                         <!-- kaksi players -->
                     </table>
-                    <div id="kaksi-players-progress"><progress class="progress is-small is-primary"
+                    <div id="kaksi-players-progress"><progress class="progress is-small is-success"
                             max="100"></progress>
                     </div>
                     <p class="is-size-7">* は助っ人選手（関東エリア外）。</p>
@@ -154,8 +152,10 @@
     </div>
 
     <!-- Footer -->
-    <footer id="mkpl-footer" class="footer">
-    </footer>
+    <div class="container footer">
+        <footer class="footer" id="mkpl-footer">
+        </footer>
+    </div>
 </body>
 
 </html>

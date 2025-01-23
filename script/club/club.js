@@ -24,9 +24,9 @@ function fetchData() {
         // 公示
         appendTransfer(datasJson['transfer'], "#transfer-table", "#transfer-progress");
         // 選手1部
-        appendPlayers(datasJson['playerYksi'], "#yksi-players", "#yksi-players-progress", "is-danger");
+        appendPlayers(datasJson['playerYksi'], "#yksi-players", "#yksi-players-progress", "is-primary");
         // 選手2部
-        appendPlayers(datasJson['playerKaksi'], "#kaksi-players", "#kaksi-players-progress", "is-primary");
+        appendPlayers(datasJson['playerKaksi'], "#kaksi-players", "#kaksi-players-progress", "is-success");
     });
 }
 
@@ -35,7 +35,7 @@ function appendTransfer(datasJson, tableId, progressId) {
         const tf = datasJson[i];
         if (tf['isEnable']) {
             var division = (tf['division'] == "YKSI") ? "リーグ" : "チャレンジ";
-            var color = (tf['division'] == "YKSI") ? "has-text-danger" : "has-text-primary-30";
+            var color = (tf['division'] == "YKSI") ? "has-text-primary" : "has-text-success-40";
             var tfDate = new Date(tf['date']).toLocaleDateString();
             $(tableId).append(`
                 <tr class="mkpl-player-row-1">

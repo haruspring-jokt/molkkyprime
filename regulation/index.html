@@ -7,9 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, shrink-to-fit=yes">
 
-    <!-- spectre -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-
     <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +17,7 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <!-- molkkyprime -->
+    <link rel="stylesheet" href="../my-bulma-project.css">
     <link rel="stylesheet" href="../style/style.css">
     <script src="../script/script.js"></script>
     <script src="../script/regulation/regulation.js"></script>
@@ -54,8 +52,54 @@
             </section>
         </div>
 
-        <!-- Regulation -->
+        <!-- index -->
         <section class="hero">
+            <div class="hero-body" id="list">
+                <p class="content"><a href="./#whatis">モルック関東プライムリーグとは</a></p>
+                <p class="content"><a href="./#regulation-document">規約</a></p>
+                <p class="content"><a href="./#prohibitions">プライムリーグにおける主な禁止事項</a></p>
+            </div>
+        </section>
+
+        <!-- Regulation -->
+        <section class="hero" id="whatis">
+            <div class="hero-body">
+                <h3 class="title is-size-4 content">モルック関東プライムリーグとは</h3>
+                <div class="card">
+                    <div class="card-image">
+                        <figure class="image is-16by9">
+                            <img class="is-rounded" src="../asset/plane_cover.jpg" alt="mkpl-yksi-2425" />
+                        </figure>
+                    </div>
+                </div>
+                <h4 class="is-size-5 content">クラブ単位の長期戦</h4>
+                <p class="content">
+                    1日や2日で完了する多くのモルック大会とは異なり、プライムリーグはおよそ半年間にわたる長期戦で優勝を争います。また最低8人以上の選手からなる「クラブ」として参加するため、選手層の厚さが試されます。
+                </p>
+                <h4 class="is-size-5 content">フットボールライクなホーム&アウェイの勝ち点制</h4>
+                <p class="content">サッカーなどで定着している勝ち点で順位を決めるシンプルな制度を採用することで、誰もが順位や優勝争いの状況を把握できるよう設計されています。</p>
+                <p class="content">ホームゲームでは「第1セット先攻権」、「日程と場所の調整優先権」、「使用するモルック棒の選択権」があり、有利に試合を進めるために利用できます。</p>
+                <h4 class="is-size-5 content">世界大会を見据えた4セット先取</h4>
+                <p class="content">
+                    プライムリーグでは1試合4セット先取という一見馴染みの薄いルールを採用していますが、実は世界大会決勝は伝統的にこの「4先」となっており、世界大会をはじめとして大規模大会を制す選手を輩出するリーグのコンセプトに基づき設定されています。
+                </p>
+                <h4 class="is-size-5 content">昇格・降格制度</h4>
+                <p class="content">新たにリーグ参入を目指すモチベーションの高い選手・クラブのために、「モルック関東プライムリーグチャレンジ」から1部リーグ進出を目指す昇格制度を用意しています。</p>
+                <p class="content">また、リーグからの降格制度も同時に用意されており、過酷ではありますが優勝争いとは別に注目の集まる試合が増えることが期待されています。</p>
+                <h4 class="is-size-5 content">個人賞や動画配信</h4>
+                <p class="content">優勝争いの他に複数の個人賞や最優秀選手（MVP）賞が用意されており、選手個人として目指す目標となります。</p>
+                <p class="content">また、プライムリーグの一部試合は動画配信されることで、リーグ内外の注目に繋がります。</p>
+                <h4 class="is-size-5 content">独自のデータ集計</h4>
+                <p class="content">プライムリーグでは1投単位で結果を集計しており、個人またはクラブ単位のスタッツを表示・分析することができます。</p>
+                <p class="content">シーズン1からの通算成績で選手を称えたり、リーグで集まったデータから新たな戦術トレンドが生まれることが期待できます。</p>
+                <h4 class="is-size-5 content">移籍・FA制度</h4>
+                <p class="content">プライムリーグではシーズン中の追加選手登録や、完全移籍・レンタル移籍制度も用意しており、クラブを＜育てる＞ための柔軟な戦略を考えることが可能です。ディヴィジョンをまたいだ移籍も選択肢のひとつです。</p>
+                <p class="content">また新たにリーグ参入したい選手個人は「FA制度」に参加することで、リーグ（1部または2部）に参加したい意思を表明することができます。実際にFA選手からクラブに登録された事例も発生しています。</p>
+            </div>
+        </section>
+
+        <!-- Regulation -->
+        <section class="hero" id="regulation-document">
             <div class="hero-body">
                 <h3 class="title is-size-4 content">規約</h3>
                 <h4 class="is-size-5 content">本編</h4>
@@ -70,8 +114,8 @@
             </div>
         </section>
 
-        <!-- Regulation -->
-        <section class="hero">
+        <!-- prohibitions -->
+        <section class="hero" id="prohibitions">
             <div class="hero-body">
                 <h3 class="title is-size-4 content">プライムリーグにおける主な禁止事項</h3>
                 <p class="content">
@@ -111,8 +155,10 @@
     </div>
 
     <!-- Footer -->
-    <footer id="mkpl-footer" class="footer">
-    </footer>
+    <div class="container footer">
+        <footer class="footer" id="mkpl-footer">
+        </footer>
+    </div>
 </body>
 
 </html>
