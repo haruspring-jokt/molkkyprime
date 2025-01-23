@@ -39,14 +39,14 @@ function appendHeader() {
             // 3階層
             addPath = "../.";
         }
-            top = addPath + top;
-            logo = addPath + logo;
-            schedule = addPath + schedule;
-            club = addPath + club;
-            entry = addPath + entry;
-            regulation = addPath + regulation;
-            past202324 = addPath + past202324;
-            past2023 = addPath + past2023;
+        top = addPath + top;
+        logo = addPath + logo;
+        schedule = addPath + schedule;
+        club = addPath + club;
+        entry = addPath + entry;
+        regulation = addPath + regulation;
+        past202324 = addPath + past202324;
+        past2023 = addPath + past2023;
     }
 
     $("#mkpl-header").append(`
@@ -72,7 +72,7 @@ function appendHeader() {
                             <div class="navbar-item has-dropdown is-hoverable">
                                 <a class="navbar-link">More</a>
                                 <div class="navbar-dropdown">
-                                <a class="navbar-item" href="${entry}">エントリー <strong>*早くて2025年7月案内開始*</strong></a>
+                                <a class="navbar-item" href="${entry}">エントリー・FA申請 <strong>*早くて2025年7月案内開始*</strong></a>
                                 <a class="navbar-item" href="${regulation}">ルール</a>
                                 <a class="navbar-item">データ <strong>*Comming Soon*</strong></a>
                                 <a class="navbar-link">過去のシーズン <strong>*Comming Soon*</strong>
@@ -113,6 +113,7 @@ function appendFooter() {
     var twitter = "https://x.com/molkkyprime";
     var youtube = "https://youtube.com/@molkkyclanjajapatatas/";
     var suzuri = "https://suzuri.jp/haruspring_jokt/";
+    var mail = "mailto:contact@molkkyprime.com";
 
     if (location.pathname != "/") {
         var addPath = "";
@@ -123,14 +124,14 @@ function appendFooter() {
             // 3階層
             addPath = "../.";
         }
-            top = addPath + top;
-            logo = addPath + logo;
-            schedule = addPath + schedule;
-            club = addPath + club;
-            entry = addPath + entry;
-            regulation = addPath + regulation;
-            past202324 = addPath + past202324;
-            past2023 = addPath + past2023;
+        top = addPath + top;
+        logo = addPath + logo;
+        schedule = addPath + schedule;
+        club = addPath + club;
+        entry = addPath + entry;
+        regulation = addPath + regulation;
+        past202324 = addPath + past202324;
+        past2023 = addPath + past2023;
     }
 
     $("#mkpl-footer").append(`
@@ -142,18 +143,19 @@ function appendFooter() {
                     <li><a class="content is-size-6"
                             href="${news}"
                             target="_blank">ニュース</a></li>
-                    <li><a class="content is-size-6" href="${entry}">エントリー</a></li>
+                    <li><a class="content is-size-6" href="${entry}">エントリー・FA申請</a></li>
                     <li><a class="content is-size-6" href="${regulation}">ルール</a></li>
                     <li><a class="content is-size-6" href="">データ *coming soon*</a></li>
                 </ul>
-                <ul class="content column">過去のシーズン
+                <ul class="content column">過去のシーズン *coming soon*
                     <li><a class="content is-size-6" href="${past2023}">シーズン2023</a></li>
                     <li><a class="content is-size-6" href="${past202324}">シーズン2023-2024</a></li>
                 </ul>
                 <ul class="content column">リンク
-                    <li><a class="content is-size-6" href="${youtube}">YouTube</a></li>
-                    <li><a class="content is-size-6" href="${twitter}">Twitter(X)</a></li>
-                    <li><a class="content is-size-6" href="${suzuri}">SUZURI</a></li>
+                    <li><a class="content is-size-6" href="${youtube}" target="_blank">YouTube</a></li>
+                    <li><a class="content is-size-6" href="${twitter}" target="_blank">Twitter(X)</a></li>
+                    <li><a class="content is-size-6" href="${suzuri}" target="_blank">SUZURI</a></li>
+                    <li><a class="content is-size-6" href="${mail}">メール</a></li>
                 </ul>
             </div>
     `);

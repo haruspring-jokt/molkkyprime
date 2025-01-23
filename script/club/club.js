@@ -58,6 +58,8 @@ function appendTransfer(datasJson, tableId, progressId) {
  * @param {*} progressId 
  */
 function appendPlayers(datasJson, tableId, progressId, color) {
+    var clubList = [];
+
     for (const i in datasJson) {
         const player = datasJson[i];
         var pname = "<strong>" + player['pname'] + "</strong>";
@@ -65,7 +67,14 @@ function appendPlayers(datasJson, tableId, progressId, color) {
             pname = pname + " *";
         }
         var appendstr = "";
+        var id = "";
+        if (i == 0) {
+            clubList.push({ 'cid': player['cid'], 'cname': player['cname'] });
+            id = player['cid']
+        }
         if (i > 0 && player['cid'] != datasJson[i - 1]['cid']) {
+            clubList.push({ 'cid': player['cid'], 'cname': player['cname'] });
+            id = player['cid']
             appendstr = appendstr + `
                 <tr class="${color}">
                     <th class="${color} is-size-6">選手</th>
@@ -74,7 +83,7 @@ function appendPlayers(datasJson, tableId, progressId, color) {
             `;
         }
         appendstr = appendstr + `
-            <tr class="mkpl-player-row-1">
+            <tr class="mkpl-player-row-1" id="${id}">
             <input type="hidden" name="${player['pid']}" value="${player['pid']}" /> 
             <td class="is-size-6" align="left">${pname}</td>
             <td class="is-size-7" align="left">${player['cname']}</td>
@@ -100,6 +109,13 @@ function appendPlayers(datasJson, tableId, progressId, color) {
         }
         appendstr = appendstr + "</td></tr>"
         $(tableId).append(appendstr);
+    }
+    console.log(clubList);
+    for (const i in clubList) {
+        var club = clubList[i];
+        $(tableId + "-index").append(`
+            <li class="is-size-6"><a href=".#${club['cid']}">${club['cname']}</a></li>    
+        `)
     }
     $(progressId).empty();
 }
