@@ -12,7 +12,6 @@ $(function () {
 function fetchData() {
     var url = SHEET_URL;
     url = url + "?api=CLUB";
-    console.log(url);
     $.ajax({
         url: url,
         type: 'GET',
@@ -27,7 +26,49 @@ function fetchData() {
         appendPlayers(datasJson['playerYksi'], "#yksi-players", "#yksi-players-progress", "is-primary");
         // 選手2部
         appendPlayers(datasJson['playerKaksi'], "#kaksi-players", "#kaksi-players-progress", "is-success");
+        // FA
+        appendFreeAgents(datasJson['fa'], "#free-agents", "#free-agents-progress", "is-light");
     });
+}
+
+function appendFreeAgents(datasJson, tableId, progressId) {
+    var appendStr = "";
+    appendStr = appendStr + `
+        <div class="table-container" id="">
+            <table class="table is-fullwidth is-narrow">
+            <tr>
+                <th class="is-light" is-size-6">選手</th>
+            </tr>
+    `;
+    for (const i in datasJson) {
+        const fa = datasJson[i];
+        var profile = "";
+        if (fa['remark']) {
+            profile = profile + fa['remark'];
+        }
+        if (fa['achivement']) {
+            profile = profile + "<br />実績: " + fa['achivement'];
+        }
+        if (fa['special']) {
+            profile = profile + "<br />得意なプレー: " + fa['special'];
+        }
+        if (fa['team']) {
+            profile = profile + "<br />所属: " + fa['team'];
+        }
+        appendStr = appendStr + `
+            <tr class="mkpl-player-row-2">
+                <td class="is-size-6" align="left"><strong>${fa['pname']}</strong></td>
+            </tr>
+            <tr>
+                <td class="is-size-7" align="left">${profile}</td>
+            </tr>
+        `;
+    }
+    appendStr = appendStr + `
+        </table></div>
+    `;
+    $(tableId).append(appendStr);
+    $(progressId).empty();
 }
 
 function appendTransfer(datasJson, tableId, progressId) {
@@ -60,61 +101,80 @@ function appendTransfer(datasJson, tableId, progressId) {
 function appendPlayers(datasJson, tableId, progressId, color) {
     var clubList = [];
 
-    for (const i in datasJson) {
-        const player = datasJson[i];
-        var pname = "<strong>" + player['pname'] + "</strong>";
-        if (player['isOtherRegion']) {
-            pname = pname + " *";
+    const groupBuCid = datasJson.reduce((acc, item) => {
+        if (!acc[item.cid]) {
+            acc[item.cid] = [];
         }
-        var appendstr = "";
-        var id = "";
-        if (i == 0) {
-            clubList.push({ 'cid': player['cid'], 'cname': player['cname'] });
-            id = player['cid']
+        acc[item.cid].push(item);
+        return acc;
+    }, {});
+
+    for (const i in groupBuCid) {
+        var group = groupBuCid[i];
+        if (group[0]['cid'] == "") {
+            break;
         }
-        if (i > 0 && player['cid'] != datasJson[i - 1]['cid']) {
-            clubList.push({ 'cid': player['cid'], 'cname': player['cname'] });
-            id = player['cid']
-            appendstr = appendstr + `
-                <tr class="${color}">
-                    <th class="${color} is-size-6">選手</th>
-                    <th class="${color} is-size-6" colspan="2">クラブ</th>
+        var appendStr = ``;
+        for (const j in group) {
+            var player = group[j];
+            if (j == 0) {
+                clubList.push({ 'cid': player['cid'], 'cname2': player['cname2'] });
+                appendStr = appendStr + `
+                    <div id="${player['cid']}"><h4>${player['cname2']}</h4></div>
+                        <figure class="content image is-360x360">
+                            <img class="" src="../asset/club/club_${player['ccode']}.png" alt="picture of ${player['cname2']}" />
+                        </figure>
+                        <div class="table-container" id="">
+                        <table class="table is-fullwidth is-narrow">
+                        <tr>
+                            <th class="${color}" is-size-6">選手</th>
+                            <th class="${color} is-size-6">クラブ</th>
+                        </tr>
+                `;
+            }
+            var pname = "<strong>" + player['pname'] + "</strong>";
+            if (player['isOtherRegion']) {
+                pname = pname + " *";
+            }
+            if (player['position'].includes('リーダー')) {
+                pname = pname + '(L)';
+            }
+            if (player['position'].includes('マネージャー')) {
+                pname = pname + '(M)';
+            }
+            appendStr = appendStr + `
+                <tr class="mkpl-player-row-1">
+                    <td class="is-size-6" align="left">${pname}</td>
+                    <td class="is-size-7" align="left">${player['cname2']}</td>
                 </tr>
+                <tr class="mkpl-player-row-2">
+                    <td class="is-size-7" align="left" colspan="2"">${player['transfer']}
             `;
+            if (player['team']) {
+                appendStr = appendStr + `
+                    <br />リーグ外所属: ${player['team']}
+                `;
+            }
+            if (player['award']) {
+                appendStr = appendStr + `
+                    <br />個人賞: ${player['award']}
+                `;
+            }
+            if (player['remark']) {
+                appendStr = appendStr + `
+                    <br />${player['remark']}
+                `;
+            }
+            appendStr = appendStr + "</td></tr>"
         }
-        appendstr = appendstr + `
-            <tr class="mkpl-player-row-1" id="${id}">
-            <input type="hidden" name="${player['pid']}" value="${player['pid']}" /> 
-            <td class="is-size-6" align="left">${pname}</td>
-            <td class="is-size-7" align="left">${player['cname']}</td>
-            <td class="is-size-7" align="left">${player['position']}</td>
-            </tr>
-            <tr class="mkpl-player-row-2">
-            <td class="is-size-7" align="left" colspan="3"">${player['transfer']}
-        `;
-        if (player['team']) {
-            appendstr = appendstr + `
-                <br />リーグ外所属: ${player['team']}
-            `;
-        }
-        if (player['award']) {
-            appendstr = appendstr + `
-                <br />個人賞: ${player['award']}
-            `;
-        }
-        if (player['remark']) {
-            appendstr = appendstr + `
-                <br />${player['remark']}
-            `;
-        }
-        appendstr = appendstr + "</td></tr>"
-        $(tableId).append(appendstr);
+        appendStr = appendStr + "</table></div>"
+        $(tableId).append(appendStr);
     }
-    console.log(clubList);
+
     for (const i in clubList) {
         var club = clubList[i];
         $(tableId + "-index").append(`
-            <li class="is-size-6"><a href=".#${club['cid']}">${club['cname']}</a></li>    
+            <li class="is-size-6"><a href=".#${club['cid']}">${club['cname2']}</a></li>    
         `)
     }
     $(progressId).empty();

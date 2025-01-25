@@ -75,9 +75,9 @@ function appendHeader() {
                                 <a class="navbar-item" href="${entry}">エントリー・FA申請 <strong>*早くて2025年7月案内開始*</strong></a>
                                 <a class="navbar-item" href="${regulation}">ルール</a>
                                 <a class="navbar-item">データ <strong>*Comming Soon*</strong></a>
-                                <a class="navbar-link">過去のシーズン <strong>*Comming Soon*</strong>
-                                    <a class="navbar-item" href="${past202324}">シーズン2023-24 <strong>*Comming Soon*</strong></a>
-                                    <a class="navbar-item" href="${past2023}">シーズン2023 <strong>*Comming Soon*</strong></a>
+                                <a class="navbar-link">過去のシーズン <strong></strong>
+                                    <a class="navbar-item" href="${past202324}">シーズン2023-24 <strong></strong></a>
+                                    <a class="navbar-item" href="${past2023}">シーズン2023 <strong></strong></a>
                                 </a>
                             </div>
                         </div>
@@ -147,7 +147,7 @@ function appendFooter() {
                     <li><a class="content is-size-6" href="${regulation}">ルール</a></li>
                     <li><a class="content is-size-6" href="">データ *coming soon*</a></li>
                 </ul>
-                <ul class="content column">過去のシーズン *coming soon*
+                <ul class="content column">過去のシーズン
                     <li><a class="content is-size-6" href="${past2023}">シーズン2023</a></li>
                     <li><a class="content is-size-6" href="${past202324}">シーズン2023-2024</a></li>
                 </ul>
