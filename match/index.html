@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+
+<head>
+    <!-- meta -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=yes">
+
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- molkkyprime -->
+    <link rel="stylesheet" href="../my-bulma-project.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <script src="../script/script.js"></script>
+    <script src="../script/match/match.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4W483V0S8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-C4W483V0S8');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8922718369591652"
+        crossorigin="anonymous"></script>
+
+    <title>試合結果｜モルック関東プライムリーグ</title>
+</head>
+
+<body>
+    <div class="container">
+        <header id="mkpl-header" class="bd-header">
+        </header>
+
+        <div class="container">
+            <!-- Title -->
+            <section class="hero is-medium mkpl-bg-cover is-dark">
+                <div class="hero-body mkpl-bg-filter">
+                    <h1 class="title is-size-2 mkpl-title">試合結果
+                        <p class="subtitle">match result</p>
+                    </h1>
+                </div>
+            </section>
+        </div>
+
+        <!-- Match -->
+        <section class="hero">
+            <div class="hero-body">
+                <h3 id="match-result-title" class="title is-size-4">試合結果</h3>
+                <p id="match-season-name" class="content is-size-6"></p>
+                <p id="match-match-name" class="content is-size-6"></p>
+
+                <div class="content" style="text-align: left;">
+                    <small class="is-size-7"><strong class="has-text-primary">HOME</strong></small>
+                    <p id="" class="content is-size-5"><strong id="match-home-cname"></strong><br />
+                        <small class="is-size-7">🎽<strong id="match-home-players"></strong></small>
+                    </p>
+                </div>
+
+                <div class="content" style="text-align: right;">
+                    <small class="is-size-7"><strong class="has-text">AWAY</strong></small>
+                    <p id="" class="content is-size-5"><strong id="match-away-cname"></strong><br />
+                        <small class="is-size-7"><strong id="match-away-players"></strong>🎽</small>
+                    </p>
+                </div>
+
+                <div class="table-container content">
+                    <table id="match-result-table" class="table is-fullwidth is-bordered is-table-center match-table">
+                        <tr>
+                            <th id="match-home-ccode" class="is-primary" align="center"><small
+                                    class="is-size-7">HOME</small><br /></th>
+                            <th></th>
+                            <th id="match-away-ccode" class="has-background-grey-lighter" align="center"><small
+                                    class="is-size-7">AWAY</small><br /></th>
+                        </tr>
+                    </table>
+                </div>
+                <p id="match-spreadsheet-url" class="is-size-7"></p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <div class="container footer">
+        <footer class="footer" id="mkpl-footer">
+        </footer>
+    </div>
+</body>
+
+</html>

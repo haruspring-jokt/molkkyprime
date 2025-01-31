@@ -46,3 +46,16 @@ body {
     height: 360px;
     width: 360px;
 }
+
+.is-table-center {
+    text-align: center !important;
+    align-content: center !important;
+}
+
+.match-table {
+    table-layout: fixed !important;
+}
+
+.match-table th:nth-child(2) {
+    width: 50px !important;
+}

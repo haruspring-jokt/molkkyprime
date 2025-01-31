@@ -99,7 +99,7 @@ function appendSchedule(datasJson, tableId, progressId, division) {
             <td class="is-size-7" align="right">${game['sec']}</td>
             <td class="is-size-7" align="left">${gamedate}</td>
             <td class="is-size-7 ${hcnTdClass}" align="center">${hcn}</td>
-            <td class="is-size-7" align="center">${game['hsn']} - ${game['asn']}</td>
+            <td class="is-size-7" align="center"><a class="has-text-link" href="../match?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
             <td class="is-size-7 ${acnTdClass}" align="center">${acn}</td>
             </tr>
             `
