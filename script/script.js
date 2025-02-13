@@ -114,7 +114,7 @@ function appendHeader() {
                             <div class="navbar-item has-dropdown is-hoverable">
                                 <a class="navbar-link">More</a>
                                 <div class="navbar-dropdown">
-                                <a class="navbar-item" href="${entry}">エントリー・FA申請 <strong>*早くて2025年7月案内開始*</strong></a>
+                                <a class="navbar-item" href="${entry}">2025-26エントリー・FA申請</a>
                                 <a class="navbar-item" href="${regulation}">ルール</a>
                                 <a class="navbar-item">データ <strong>*Comming Soon*</strong></a>
                                 <a class="navbar-link">過去のシーズン <strong></strong>
