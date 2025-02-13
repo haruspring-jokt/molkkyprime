@@ -13,6 +13,48 @@ $(function () {
 });
 
 /**
+ * クラブIDから名称に変換する
+ * @param {String} cid クラブID 
+ * @returns クラブ名称
+ */
+function convertClubFromCid(cid) {
+    switch (cid) {
+        case 'C01':
+            return "北関東ライラックス";
+        case 'C02':
+            return "SLAPS";
+        case 'C03':
+            return "jaja patatas";
+        case 'C04':
+            return "杉並エンジョイモルック";
+        case 'C05':
+            return "Fuchu-möl White Horses";
+        case 'C06':
+            return "löwkey with うんとこどっこいしょ大学";
+        case 'C07':
+            return "Kestää";
+        case 'C08':
+            return "NEXT GENERATIONS";
+        case 'C09':
+            return "田村淳の大人の小学校モルック部";
+        case 'C10':
+            return "武蔵野";
+        case 'C11':
+            return "さいたまぁず";
+        case 'C12':
+            return "にらそばとこくカレー";
+        case 'C13':
+            return "ブラッキーズ";
+        case 'C14':
+            return "コブラ団＋";
+        case 'C15':
+            return "Buddiesモルック部";
+        default:
+            return "";
+    }
+}
+
+/**
  * ヘッダー追加
  */
 function appendHeader() {
