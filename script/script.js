@@ -109,12 +109,12 @@ function appendHeader() {
                     <div class="navbar-start">
                         <a class="navbar-item" href="${schedule}">日程・結果・順位表</a>
                         <a class="navbar-item" href="${club}">クラブ・選手</a>
-                        <a class="navbar-item" target="_blank"
-                            href="${news}" target="_blank">ニュース<small class="is-size-7">（外部サイトへ）</small></a>
-                            <div class="navbar-item has-dropdown is-hoverable">
-                                <a class="navbar-link">More</a>
-                                <div class="navbar-dropdown">
-                                <a class="navbar-item" href="${entry}">2025-26エントリー・FA申請</a>
+                        <a class="navbar-item" href="${entry}">エントリー・FA申請</a>
+                        <div class="navbar-item has-dropdown is-hoverable">
+                            <a class="navbar-link">More</a>
+                            <div class="navbar-dropdown">
+                                <a class="navbar-item" target="_blank"
+                                    href="${news}" target="_blank">ニュース<small class="is-size-7">（外部サイトへ）</small></a>
                                 <a class="navbar-item" href="${regulation}">ルール</a>
                                 <a class="navbar-item">データ <strong>*Comming Soon*</strong></a>
                                 <a class="navbar-link">過去のシーズン <strong></strong>
