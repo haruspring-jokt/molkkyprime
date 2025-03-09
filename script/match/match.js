@@ -46,21 +46,27 @@ function appendMatch(match) {
 
     var season = "";
     var spread = "";
+    var scoreSheetLink = "";
     if (row['gid'].slice(0, 3) == "GCC") {
         season = "モルック関東プライムリーグチャレンジ 2024-2025";
         spread = "https://docs.google.com/spreadsheets/d/1kBpGiuiLKyC_7OtfByiIjTSfkiraFLiXcfhg0M9IDp4/htmlview";
+        scoreSheetLink = "https://drive.google.com/drive/folders/10ROR9DwH0O1fm-EYdBkryKH1MOEDBJqf?usp=sharing"
     } else if (row['gid'].slice(0, 2) == "GC") {
         season = "モルック関東プライムリーグ 2024-2025";
         spread = "https://docs.google.com/spreadsheets/d/1tziwaA_nYHBd_0If1XpTobUFhOoJJ7Q06qs7Qnqavtg/htmlview";
+        scoreSheetLink = "https://drive.google.com/drive/folders/1yNpuiqhPSXbiiEwsa66W_jHh5C5Gy3fA?usp=sharing"
     } else if (row['gid'].slice(0, 2) == "BC") {
         season = "モルック関東プライムリーグチャレンジ シーズン2 2023-2024";
         spread = "https://docs.google.com/spreadsheets/d/1NB-nrZ2Rs3xWpekjWS3P5TA18-wWWp0wLZgiuEpVr2M/htmlview";
+        scoreSheetLink = "https://drive.google.com/drive/folders/1D6Dc_D-noOcRCZZ_8Uc3qwibHSDqnbqi?usp=sharing"
     } else if (row['gid'].slice(0, 1) == "B") {
         season = "モルック関東プライムリーグ シーズン2 2023-2024";
         spread = "https://docs.google.com/spreadsheets/d/1hewXb6NwdBJC-1seLhKNoy4SvC6ZVuZMzJhOllv6uaU/htmlview";
+        scoreSheetLink = "https://drive.google.com/drive/folders/1D6Dc_D-noOcRCZZ_8Uc3qwibHSDqnbqi?usp=sharing"
     } else if (row['gid'].slice(0, 1) == "A") {
         season = "モルック関東プライムリーグ シーズン1 2023";
         spread = "https://docs.google.com/spreadsheets/d/1RWfsQh9StzwwF9hNnbIQ9e3LpPDu3tBJh--cpSwWix8/htmlview";
+        scoreSheetLink = "https://drive.google.com/drive/folders/13pcmQw3qALGLyHxM4nRjQbF_pNfAiv5c?usp=sharing"
     }
     $("#match-season-name").append(season);
 
@@ -139,6 +145,10 @@ function appendMatch(match) {
         var hp8 = convertPoint(row['hs8']);
         var ap8 = convertPoint(row['as8']);
     }
+    var homeQhPer = Math.floor(row['homeqhper'] * 100) + "%";
+    var homeFaPer = Math.floor(row['homefaper'] * 100) + "%";
+    var awayQhPer = Math.floor(row['awayqhper'] * 100) + "%";
+    var awayFaPer = Math.floor(row['awayfaper'] * 100) + "%";
 
     if (row['isdone'] == 1) {
         $('#match-result-table').append(`
@@ -150,18 +160,26 @@ function appendMatch(match) {
             <tr>${hp5}<td class="is-size-6">5</td>${ap5}</tr>
             <tr>${hp6}<td class="is-size-6">6</td>${ap6}</tr>
             <tr>${hp7}<td class="is-size-6">7</td>${ap7}</tr>
-            <tr>${hp8}<td class="is-size-6">8</td>${ap8}</tr>    
+            <tr>${hp8}<td class="is-size-6">8</td>${ap8}</tr>
+            <tr>
+                <td class="is-size-6">${row['homethrow']}-<strong class="has-text-success">${row['homeqh']}</strong>-<strong class="has-text-danger">${row['homefault']}</strong><br/>
+                （<strong class="has-text-success">${homeQhPer}</strong>-<strong class="has-text-danger">${homeFaPer}</strong>）</td>
+                <td>📊</td>
+                <td class="is-size-6">${row['awaythrow']}-<strong class="has-text-success">${row['awayqh']}</strong>-<strong class="has-text-danger">${row['awayfault']}</strong><br/>
+                （<strong class="has-text-success">${awayQhPer}</strong>-<strong class="has-text-danger">${awayFaPer}</strong>）</td>
+            </tr>
         `);
     }
 
     $('#match-spreadsheet-url').append(`
-        <a href="${spread}" target="_blank">詳細はスプレッドシートへ</a>
+        <a href="${spread}" target="_blank">詳細はスプレッドシートへ</a><br/>
+        <a href="${scoreSheetLink}" target="_blank">スコアシート画像へ（Googleドライブ）</a>
     `);
 }
 
 function convertSet(set, win) {
     if (Number(win) == 3) {
-        return `<th class="has-background-success-80">${set}</th>`;
+        return `<th class="has-background-warning-80">${set}</th>`;
     } else {
         return `<th class="">${set}</th>`;
     }
