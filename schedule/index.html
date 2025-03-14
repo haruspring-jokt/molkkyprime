@@ -87,19 +87,21 @@
                 </div>
                 <div class="content">
                     <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
-                    <table id="yksi-standings" class="table is-fullwidth is-striped">
-                        <tr class="is-primary">
-                            <th class="is-primary is-size-7" align="center">位</th>
-                            <th class="is-primary is-size-7" align="center">クラブ</th>
-                            <th class="is-primary is-size-7" align="center">試</th>
-                            <th class="is-primary is-size-7" align="center">点</th>
-                            <th class="is-primary is-size-7" align="center">勝</th>
-                            <th class="is-primary is-size-7" align="center">敗</th>
-                            <th class="is-primary is-size-7" align="center">分</th>
-                            <th class="is-primary is-size-7" align="center">率</th>
-                        </tr>
-                        <!-- yksi standings -->
-                    </table>
+                    <div class="table-container">
+                        <table id="yksi-standings" class="table is-fullwidth is-striped">
+                            <tr class="is-primary">
+                                <th class="is-primary is-size-7" align="center">位</th>
+                                <th class="is-primary is-size-7" align="center">クラブ</th>
+                                <th class="is-primary is-size-7" align="center">試</th>
+                                <th class="is-primary is-size-7" align="center">点</th>
+                                <th class="is-primary is-size-7" align="center">勝</th>
+                                <th class="is-primary is-size-7" align="center">敗</th>
+                                <th class="is-primary is-size-7" align="center">分</th>
+                                <th class="is-primary is-size-7" align="center">率</th>
+                            </tr>
+                            <!-- yksi standings -->
+                        </table>
+                    </div>
                     <div id="yksi-standings-progress"><progress class="progress is-small is-primary"
                             max="100"></progress></div>
                     <p class="is-size-7">8位のクラブが来シーズンプライムリーグ（1部）参加権を喪失、2部参加またはリーグ離脱。</p>
@@ -111,7 +113,8 @@
                         - 総得失点差が高いクラブ<br />
                         - 登録選手数が多いクラブ<br />
                         - 上記でも決まらなかった場合は同順位<br />
-                        ※シーズンの5試合以上を4人構成で出場すること。
+                        ※シーズンの5試合以上を4人構成で出場すること。<br />
+                        ※「率」：セット率。勝ちセット / 負けセット
                     </p>
                 </div>
                 <div class="content" id="yksi-matches-top">
@@ -125,11 +128,13 @@
                             <th class="is-primary is-size-7" align="center">アウェイ</th>
                         </tr>
                     </table>
-                    <div id="yksi-schedule-progress"><progress class="progress is-small is-primary" max="100"></progress>
+                    <div id="yksi-schedule-progress"><progress class="progress is-small is-primary"
+                            max="100"></progress>
                     </div>
                 </div>
                 <p class="is-size-7">第1節・2節はフリー月としてシーズン中任意の時期に実施する。</p>
-                <small><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/htmlview"
+                <small><a
+                        href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/htmlview"
                         target="_blank">詳細はスプレッドシートへ</a></small>
             </div>
         </section>
@@ -189,7 +194,8 @@
                     <div id="kaksi-schedule-progress"><progress class="progress is-small is-success"
                             max="100"></progress></div>
                 </div>
-                <small><a href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/htmlview"
+                <small><a
+                        href="https://docs.google.com/spreadsheets/d/10iyUYCG50-nfacmp1ppBYL-J_Xa08XuvciVDW_DNVMM/htmlview"
                         target="_blank">詳細はスプレッドシートへ</a></small>
             </div>
         </section>
