@@ -67,6 +67,7 @@
                 <div class="menu">
                     <ul class="menu-list">
                         <li><a href="./#yksi-standings" class="has-text-link is-size-6">プライムリーグ順位表</a></li>
+                        <li><a href="./#yksi-mainstats" class="has-text-link is-size-6">プライムリーグクラブ別主要スタッツ</a></li>
                         <li><a href="./#yksi-games" class="has-text-link is-size-6">プライムリーグ試合結果</a></li>
                         <li><a href="./#yksi-award" class="has-text-link is-size-6">プライムリーグ個人賞結果</a></li>
                         <li>
@@ -100,875 +101,1248 @@
                         </figure>
                     </div>
                 </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content">
+                <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
+                <div class="table-container" id="yksi-standings">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center">位</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">試</th>
+                            <th class="is-primary is-size-7" align="center">点</th>
+                            <th class="is-primary is-size-7" align="center">勝</th>
+                            <th class="is-primary is-size-7" align="center">敗</th>
+                            <th class="is-primary is-size-7" align="center">分</th>
+                            <th class="is-primary is-size-7" align="center">率</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7 has-background-primary-80" align="right"><strong>1</strong></td>
+                            <td class="is-size-7 has-background-primary-80" align="left"><strong>SLAPS</strong></td>
+                            <td class="is-size-7 has-background-primary-80" align="right"><strong>14</strong></td>
+                            <td class="is-size-7 has-background-primary-80" align="right"><strong>31</strong></td>
+                            <td class="is-size-7 has-background-primary-80" align="right"><strong>9</strong></td>
+                            <td class="is-size-7 has-background-primary-80" align="right"><strong>1</strong></td>
+                            <td class="is-size-7 has-background-primary-80" align="right"><strong>4</strong></td>
+                            <td class="is-size-7 has-background-primary-80" align="right"><strong>1.89</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">Mölkky clan jaja patatas</td>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7" align="right">24</td>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="right">1.16</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="left">Fuchu-möl White Horses</td>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7" align="right">22</td>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="right">1</td>
+                            <td class="is-size-7" align="right">1.20</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="left">Kestää</td>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7" align="right">22</td>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="right">1</td>
+                            <td class="is-size-7" align="right">1.09</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">5</td>
+                            <td class="is-size-7" align="left">NEXT GENERATIONS</td>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7" align="right">19</td>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7" align="right">1.05</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="left">杉並エンジョイモルック</td>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="right">0.75</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7" align="left">löwkey with うんとこどっこいしょ大学</td>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7" align="right">12</td>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="right">0.681</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7 has-background-warning-80" align="right">8</td>
+                            <td class="is-size-7 has-background-warning-80" align="left">北関東ライラックス</td>
+                            <td class="is-size-7 has-background-warning-80" align="right">14</td>
+                            <td class="is-size-7 has-background-warning-80" align="right">12</td>
+                            <td class="is-size-7 has-background-warning-80" align="right">3</td>
+                            <td class="is-size-7 has-background-warning-80" align="right">8</td>
+                            <td class="is-size-7 has-background-warning-80" align="right">3</td>
+                            <td class="is-size-7 has-background-warning-80" align="right">0.667</td>
+                        </tr>
+                        <!-- yksi standings -->
+                    </table>
+                </div>
+                <p class="is-size-7">8位のクラブが入れ替えプレーオフへ進む。</p>
+                <p class="is-size-7">
+                    ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
+                    - 勝ち点が多いクラブ<br />
+                    - セット獲得率が高いクラブ<br />
+                    - 当該クラブ同士の対戦での勝点が上回る、または獲得セット数で上回るクラブ<br />
+                    - 当該クラブ同士の対戦での得点が上回るクラブ<br />
+                    - 総得失点差が高いクラブ<br />
+                    - 登録選手数が多いクラブ<br />
+                    - 上記でも決まらなかった場合は同順位<br />
+                    - ※「率」：セット率。勝ちセット / 負けセット
+                </p>
                 <div class="content">
-                    <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
-                    <div class="table-container" id="yksi-standings">
-                        <table class="table is-fullwidth is-striped">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center">位</th>
-                                <th class="is-primary is-size-7" align="center">クラブ</th>
-                                <th class="is-primary is-size-7" align="center">試</th>
-                                <th class="is-primary is-size-7" align="center">点</th>
-                                <th class="is-primary is-size-7" align="center">勝</th>
-                                <th class="is-primary is-size-7" align="center">敗</th>
-                                <th class="is-primary is-size-7" align="center">分</th>
-                                <th class="is-primary is-size-7" align="center">率</th>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7 has-background-primary-80" align="right"><strong>1</strong></td>
-                                <td class="is-size-7 has-background-primary-80" align="left"><strong>SLAPS</strong></td>
-                                <td class="is-size-7 has-background-primary-80" align="right"><strong>14</strong></td>
-                                <td class="is-size-7 has-background-primary-80" align="right"><strong>31</strong></td>
-                                <td class="is-size-7 has-background-primary-80" align="right"><strong>9</strong></td>
-                                <td class="is-size-7 has-background-primary-80" align="right"><strong>1</strong></td>
-                                <td class="is-size-7 has-background-primary-80" align="right"><strong>4</strong></td>
-                                <td class="is-size-7 has-background-primary-80" align="right"><strong>1.89</strong></td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="left">Mölkky clan jaja patatas</td>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7" align="right">24</td>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="right">1.16</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="left">Fuchu-möl White Horses</td>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7" align="right">22</td>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7" align="right">1</td>
-                                <td class="is-size-7" align="right">1.20</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="left">Kestää</td>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7" align="right">22</td>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7" align="right">1</td>
-                                <td class="is-size-7" align="right">1.09</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">5</td>
-                                <td class="is-size-7" align="left">NEXT GENERATIONS</td>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7" align="right">19</td>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7" align="right">1.05</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7" align="left">杉並エンジョイモルック</td>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="right">0.75</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7" align="left">löwkey with うんとこどっこいしょ大学</td>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7" align="right">12</td>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="right">0.681</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7 has-background-warning-80" align="right">8</td>
-                                <td class="is-size-7 has-background-warning-80" align="left">北関東ライラックス</td>
-                                <td class="is-size-7 has-background-warning-80" align="right">14</td>
-                                <td class="is-size-7 has-background-warning-80" align="right">12</td>
-                                <td class="is-size-7 has-background-warning-80" align="right">3</td>
-                                <td class="is-size-7 has-background-warning-80" align="right">8</td>
-                                <td class="is-size-7 has-background-warning-80" align="right">3</td>
-                                <td class="is-size-7 has-background-warning-80" align="right">0.667</td>
-                            </tr>
-                            <!-- yksi standings -->
-                        </table>
-                    </div>
-                    <p class="is-size-7">8位のクラブが入れ替えプレーオフへ進む。</p>
-                    <p class="is-size-7">
-                        ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
-                        - 勝ち点が多いクラブ<br />
-                        - セット獲得率が高いクラブ<br />
-                        - 当該クラブ同士の対戦での勝点が上回る、または獲得セット数で上回るクラブ<br />
-                        - 当該クラブ同士の対戦での得点が上回るクラブ<br />
-                        - 総得失点差が高いクラブ<br />
-                        - 登録選手数が多いクラブ<br />
-                        - 上記でも決まらなかった場合は同順位
-                    </p>
+                    <!-- youtube channel iframe -->
+                    <iframe width="100%" style="aspect-ratio: 16 / 9;"
+                        src="https://www.youtube.com/embed/EAGo1j0fG8o?si=rJU3_xXl5z-CNzpi" title="YouTube video player"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                 </div>
-                <div class="content" id="yksi-games">
-                    <h4 class="is-size-5">試合一覧</h4>
-                    <div class="table-container">
-                        <table class="table is-fullwidth is-striped">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center">節</th>
-                                <th class="is-primary is-size-7" align="center">日程</th>
-                                <th class="is-primary is-size-7" align="center">ホーム</th>
-                                <th class="is-primary is-size-7" align="center">結果</th>
-                                <th class="is-primary is-size-7" align="center">アウェイ</th>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">1</td>
-                                <td class="is-size-7" align="left">2023/11/19(日)</td>
-                                <td class="is-size-7 " align="center">NKL</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B01">4-4</a></td>
-                                <td class="is-size-7 " align="center">NXG</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">1</td>
-                                <td class="is-size-7" align="left">2023/11/23(木)</td>
-                                <td class="is-size-7 " align="center">スギモル</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B02">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">1</td>
-                                <td class="is-size-7">2023/11/23(木)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B03">4-0</a></td>
-                                <td class="is-size-7" align="center">jaja</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">1</td>
-                                <td class="is-size-7">2023/11/11(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B04">4-0</a></td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7">2023/11/19(日)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">NKL</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B05">4-2</a></td>
-                                <td class="is-size-7" align="center">スギモル</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7">2023/11/18(土)</td>
-                                <td class="is-size-7" align="center">NXG</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B06">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7">2023/11/12(日)</td>
-                                <td class="is-size-7" align="center">Kes</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B07">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7">2023/11/19(日)</td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B08">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7">2023/12/16(土)</td>
-                                <td class="is-size-7" align="center">FWH</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B09">2-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">NKL</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7">2023/12/30(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B10">4-1</a></td>
-                                <td class="is-size-7" align="center">スギモル</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7">2023/12/9(土)</td>
-                                <td class="is-size-7" align="center">NXG</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B11">4-4</a></td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7">2023/12/17(日)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B12">4-1</a></td>
-                                <td class="is-size-7" align="center">Kes</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7">2023/12/17(日)</td>
-                                <td class="is-size-7" align="center">NKL</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B13">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7">2023/12/9(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">löwUUD</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B14">4-2</a></td>
-                                <td class="is-size-7" align="center">FWH</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7">2023/12/16(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">スギモル</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B15">4-0</a></td>
-                                <td class="is-size-7" align="center">jaja</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7">2023/12/3(日)</td>
-                                <td class="is-size-7" align="center">Kes</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B16">4-4</a></td>
-                                <td class="is-size-7" align="center">NXG</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">5</td>
-                                <td class="is-size-7">2024/2/17(土)</td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B17">4-4</a></td>
-                                <td class="is-size-7" align="center">NKL</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">5</td>
-                                <td class="is-size-7">2024/1/13(土)</td>
-                                <td class="is-size-7" align="center">jaja</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B18">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">5</td>
-                                <td class="is-size-7">2024/1/8(月)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B19">4-1</a></td>
-                                <td class="is-size-7" align="center">Kes</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">5</td>
-                                <td class="is-size-7">2024/1/20(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">NXG</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B20">4-0</a></td>
-                                <td class="is-size-7" align="center">スギモル</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7">2024/1/7(日)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B21">5-3</a></td>
-                                <td class="is-size-7" align="center">NKL</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7">2024/1/27(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B22">4-2</a></td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7">2024/1/13(土)</td>
-                                <td class="is-size-7" align="center">SLAPS</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B23">4-4</a></td>
-                                <td class="is-size-7" align="center">NXG</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7">2024/1/13(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">スギモル</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B24">4-1</a></td>
-                                <td class="is-size-7" align="center">FWH</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7">2024/2/18(日)</td>
-                                <td class="is-size-7" align="center">NKL</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B25">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7">2024/2/18(日)</td>
-                                <td class="is-size-7" align="center">NXG</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B26">4-4</a></td>
-                                <td class="is-size-7" align="center">jaja</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7">2024/2/23(金)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">löwUUD</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B27">4-1</a></td>
-                                <td class="is-size-7" align="center">スギモル</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7">2024/2/3(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B28">4-1</a></td>
-                                <td class="is-size-7" align="center">SLAPS</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7">2024/3/31(日)</td>
-                                <td class="is-size-7" align="center">NXG</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B29">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7">2024/2/17(土)</td>
-                                <td class="is-size-7" align="center">NKL</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B30">4-4</a></td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7">2024/2/3(土)</td>
-                                <td class="is-size-7" align="center">スギモル</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B31">2-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7">2024/2/17(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B32">5-3</a></td>
-                                <td class="is-size-7" align="center">FWH</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">9</td>
-                                <td class="is-size-7">2024/3/23(土)</td>
-                                <td class="is-size-7" align="center">jaja</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B33">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">NXG</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">9</td>
-                                <td class="is-size-7">2024/3/31(日)</td>
-                                <td class="is-size-7" align="center">FWH</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B34">2-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">スギモル</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">9</td>
-                                <td class="is-size-7">2024/4/20(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B35">4-0</a></td>
-                                <td class="is-size-7" align="center">NKL</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">9</td>
-                                <td class="is-size-7">2024/3/30(土)</td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B36">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">10</td>
-                                <td class="is-size-7">2024/3/23(土)</td>
-                                <td class="is-size-7" align="center">スギモル</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B37">4-3</a></td>
-                                <td class="is-size-7" align="center">NXG</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">10</td>
-                                <td class="is-size-7">2024/3/20(水)</td>
-                                <td class="is-size-7" align="center">NKL</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B38">0-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">10</td>
-                                <td class="is-size-7">2024/3/30(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B39">4-0</a></td>
-                                <td class="is-size-7" align="center">FWH</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">10</td>
-                                <td class="is-size-7">2024/3/20(水)</td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B40">2-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">11</td>
-                                <td class="is-size-7">2024/4/6(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">NXG</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B41">4-2</a></td>
-                                <td class="is-size-7" align="center">NKL</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">11</td>
-                                <td class="is-size-7">2024/5/26(日)</td>
-                                <td class="is-size-7" align="center">Kes</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B42">2-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">スギモル</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">11</td>
-                                <td class="is-size-7">2024/4/21(日)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B43">4-1</a></td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">11</td>
-                                <td class="is-size-7">2024/4/27(土)</td>
-                                <td class="is-size-7" align="center">SLAPS</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B44">4-4</a></td>
-                                <td class="is-size-7" align="center">FWH</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">12</td>
-                                <td class="is-size-7">2024/4/29(月)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B45">4-0</a></td>
-                                <td class="is-size-7" align="center">NXG</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">12</td>
-                                <td class="is-size-7">2024/4/27(土)</td>
-                                <td class="is-size-7" align="center">SLAPS</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B46">4-4</a></td>
-                                <td class="is-size-7" align="center">jaja</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">12</td>
-                                <td class="is-size-7">2024/4/27(土)</td>
-                                <td class="is-size-7" align="center">スギモル</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B47">0-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">löwUUD</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">12</td>
-                                <td class="is-size-7">2024/4/6(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B48">4-1</a></td>
-                                <td class="is-size-7" align="center">NKL</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">13</td>
-                                <td class="is-size-7">2024/5/25(土)</td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B49">0-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">NXG</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">13</td>
-                                <td class="is-size-7">2024/5/24(金)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B50">4-0</a></td>
-                                <td class="is-size-7" align="center">Kes</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">13</td>
-                                <td class="is-size-7">2024/5/14(火)</td>
-                                <td class="is-size-7" align="center">NKL</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B51">2-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">13</td>
-                                <td class="is-size-7">2024/5/18(土)</td>
-                                <td class="is-size-7" align="center">jaja</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B52">4-4</a></td>
-                                <td class="is-size-7" align="center">スギモル</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7">2024/5/11(土)</td>
-                                <td class="is-size-7" align="center">NXG</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B53">4-4</a></td>
-                                <td class="is-size-7" align="center">SLAPS</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7">2024/5/25(土)</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B54">4-1</a></td>
-                                <td class="is-size-7" align="center">löwUUD</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7">2024/5/25(土)</td>
-                                <td class="is-size-7" align="center">Kes</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B55">1-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">14</td>
-                                <td class="is-size-7">2024/6/9(日)</td>
-                                <td class="is-size-7" align="center">スギモル</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=B56">2-4</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">NKL</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <h4 class="is-size-5">入れ替えプレーオフ</h4>
-                    <div class="table-container">
-                        <table class="table is-fullwidth is-striped">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center">節</th>
-                                <th class="is-primary is-size-7" align="center">日程</th>
-                                <th class="is-primary is-size-7" align="center">ホーム</th>
-                                <th class="is-primary is-size-7" align="center">結果</th>
-                                <th class="is-primary is-size-7" align="center">アウェイ</th>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">PO</td>
-                                <td class="is-size-7" align="left">2024/7/27</td>
-                                <td class="is-size-7 has-background-primary-80" align="center">武蔵野</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=">4-1</a></td>
-                                <td class="is-size-7 " align="center">NKL</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">PO</td>
-                                <td class="is-size-7" align="left">2024/7/27</td>
-                                <td class="is-size-7 " align="center">NKL</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=">3-5</a></td>
-                                <td class="is-size-7 has-background-primary-80" align="center">武蔵野</td>
-                            </tr>
-                        </table>
-                        <p class="content is-size-6">プレーオフに勝利した武蔵野が、2024-25シーズンリーグ参加権を獲得。</p>
-                    </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content">
+                <!-- yksi standings -->
+                <h4 class="is-size-5">クラブ別主要スタッツ</h4>
+                <div class="table-container" id="yksi-mainstats">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">OPT</th>
+                            <th class="is-primary is-size-7" align="center">QH率</th>
+                            <th class="is-primary is-size-7" align="center">NH率</th>
+                            <th class="is-primary is-size-7" align="center">FA率</th>
+                            <th class="is-primary is-size-7" align="center">先S勝率</th>
+                            <th class="is-primary is-size-7" align="center">後S勝率</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="left">Fuchu</td>
+                            <td class="is-size-7" align="right">7.74</td>
+                            <td class="is-size-7" align="right">64.6%</td>
+                            <td class="is-size-7" align="right">18.8%</td>
+                            <td class="is-size-7" align="right">16.3%</td>
+                            <td class="is-size-7" align="right">56.4%</td>
+                            <td class="is-size-7" align="right">52.6%</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="left">北関東L</td>
+                            <td class="is-size-7" align="right">7.33</td>
+                            <td class="is-size-7" align="right">62.2%</td>
+                            <td class="is-size-7" align="right">18.6%</td>
+                            <td class="is-size-7" align="right">19.2%</td>
+                            <td class="is-size-7" align="right">53.5%</td>
+                            <td class="is-size-7" align="right">26.2%</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">8.15</td>
+                            <td class="is-size-7" align="right">71.9%</td>
+                            <td class="is-size-7" align="right">14.0%</td>
+                            <td class="is-size-7" align="right">14.1%</td>
+                            <td class="is-size-7" align="right">82.1%</td>
+                            <td class="is-size-7" align="right">26.2%</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="left">スギモル</td>
+                            <td class="is-size-7" align="right">6.85</td>
+                            <td class="is-size-7" align="right">53.2%</td>
+                            <td class="is-size-7" align="right">24.4%</td>
+                            <td class="is-size-7" align="right">22.5%</td>
+                            <td class="is-size-7" align="right">46.2%</td>
+                            <td class="is-size-7" align="right">39.5%</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="left">löwUUD</td>
+                            <td class="is-size-7" align="right">7.61</td>
+                            <td class="is-size-7" align="right">60.8%</td>
+                            <td class="is-size-7" align="right">20.8%</td>
+                            <td class="is-size-7" align="right">18.4%</td>
+                            <td class="is-size-7" align="right">50.0%</td>
+                            <td class="is-size-7" align="right">30.8%</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="left">jaja</td>
+                            <td class="is-size-7" align="right">7.43</td>
+                            <td class="is-size-7" align="right">60.1%</td>
+                            <td class="is-size-7" align="right">20.6%</td>
+                            <td class="is-size-7" align="right">19.3%</td>
+                            <td class="is-size-7" align="right">57.1%</td>
+                            <td class="is-size-7" align="right">50.0%</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="left">Kestää</td>
+                            <td class="is-size-7" align="right">7.89</td>
+                            <td class="is-size-7" align="right">64.5%</td>
+                            <td class="is-size-7" align="right">17.4%</td>
+                            <td class="is-size-7" align="right">18.1%</td>
+                            <td class="is-size-7" align="right">54.3%</td>
+                            <td class="is-size-7" align="right">50.0%</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="left">NXG</td>
+                            <td class="is-size-7" align="right">7.47</td>
+                            <td class="is-size-7" align="right">56.4%</td>
+                            <td class="is-size-7" align="right">26.8%</td>
+                            <td class="is-size-7" align="right">16.8%</td>
+                            <td class="is-size-7" align="right">61.4%</td>
+                            <td class="is-size-7" align="right">40.9%</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7 has-background-link-90" align="left">リーグ平均</td>
+                            <td class="is-size-7 has-background-link-90" align="right">7.54</td>
+                            <td class="is-size-7 has-background-link-90" align="right">61.4%</td>
+                            <td class="is-size-7 has-background-link-90" align="right">20.4%</td>
+                            <td class="is-size-7 has-background-link-90" align="right">18.2%</td>
+                            <td class="is-size-7 has-background-link-90" align="right">57.6%</td>
+                            <td class="is-size-7 has-background-link-90" align="right">42.4%</td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="content" id="yksi-award">
-                    <h4 class="is-size-5">個人賞</h4>
-                    <h5 class="content">QH賞 <small class="is-size-7">* Quality Hit（狙い通りの投擲）</small></h5>
-                    <div class="table-container">
-                        <table class="table is-fullwidth is-striped">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center"></th>
-                                <th class="is-primary is-size-7" align="center">選手</th>
-                                <th class="is-primary is-size-7" align="center">クラブ</th>
-                                <th class="is-primary is-size-7" align="center">QH率</th>
-                                <th class="is-primary is-size-7" align="center">QH/投</th>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right"><strong>1</strong></td>
-                                <td class="is-size-7" align="left"><strong>ミスターK</strong></td>
-                                <td class="is-size-7" align="left"><strong>FWH</strong></td>
-                                <td class="is-size-7" align="right"><strong>80.5%</strong></td>
-                                <td class="is-size-7" align="right"><strong>91/113</strong></td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="left">くぼ</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">73.8%</td>
-                                <td class="is-size-7" align="right">59/80</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="left">ホシノ</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">72.9%</td>
-                                <td class="is-size-7" align="right">62/80</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="left">ひんがし</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">72.4%</td>
-                                <td class="is-size-7" align="right">63/87</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">5</td>
-                                <td class="is-size-7" align="left">sho16</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">72.2%</td>
-                                <td class="is-size-7" align="right">65/90</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7" align="left">みぃーちゃん</td>
-                                <td class="is-size-7" align="left">Kestää</td>
-                                <td class="is-size-7" align="right">69.7%</td>
-                                <td class="is-size-7" align="right">53/76</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7" align="left">もち</td>
-                                <td class="is-size-7" align="left">löwUUD</td>
-                                <td class="is-size-7" align="right">69.6%</td>
-                                <td class="is-size-7" align="right">71/102</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7" align="left">タツヤ</td>
-                                <td class="is-size-7" align="left">jaja</td>
-                                <td class="is-size-7" align="right">67.5%</td>
-                                <td class="is-size-7" align="right">52/77</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">9</td>
-                                <td class="is-size-7" align="left">えつ</td>
-                                <td class="is-size-7" align="left">jaja</td>
-                                <td class="is-size-7" align="right">66.7%</td>
-                                <td class="is-size-7" align="right">64/96</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">10</td>
-                                <td class="is-size-7" align="left">イエ朗</td>
-                                <td class="is-size-7" align="left">NKL</td>
-                                <td class="is-size-7" align="right">65.0%</td>
-                                <td class="is-size-7" align="right">80/123</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <h5 class="content">フォルト回避賞</h5>
-                    <div class="table-container">
-                        <table class="table is-fullwidth is-striped">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center"></th>
-                                <th class="is-primary is-size-7" align="center">選手</th>
-                                <th class="is-primary is-size-7" align="center">クラブ</th>
-                                <th class="is-primary is-size-7" align="center">FA率</th>
-                                <th class="is-primary is-size-7" align="center">FA/投</th>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right"><strong>1</strong></td>
-                                <td class="is-size-7" align="left"><strong>くぼ</strong></td>
-                                <td class="is-size-7" align="left"><strong>SLAPS</strong></td>
-                                <td class="is-size-7" align="right"><strong>10.0%</strong></td>
-                                <td class="is-size-7" align="right"><strong>8/80</strong></td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="left">ひんがし</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">11.5%</td>
-                                <td class="is-size-7" align="right">10/87</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="left">ミスターK</td>
-                                <td class="is-size-7" align="left">FWH</td>
-                                <td class="is-size-7" align="right">12.4%</td>
-                                <td class="is-size-7" align="right">14/113</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="left">sho16</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">13.3%</td>
-                                <td class="is-size-7" align="right">12/90</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">5</td>
-                                <td class="is-size-7" align="left">もち</td>
-                                <td class="is-size-7" align="left">löwUUD</td>
-                                <td class="is-size-7" align="right">13.8%</td>
-                                <td class="is-size-7" align="right">17/123</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7" align="left">イエ朗</td>
-                                <td class="is-size-7" align="left">NKL</td>
-                                <td class="is-size-7" align="right">13.8%</td>
-                                <td class="is-size-7" align="right">17/123</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7" align="left">そるてぃ</td>
-                                <td class="is-size-7" align="left">FWH</td>
-                                <td class="is-size-7" align="right">14.3%</td>
-                                <td class="is-size-7" align="right">14/98</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7" align="left">みぃーちゃん</td>
-                                <td class="is-size-7" align="left">Kestää</td>
-                                <td class="is-size-7" align="right">14.5%</td>
-                                <td class="is-size-7" align="right">11/76</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">9</td>
-                                <td class="is-size-7" align="left">えつ</td>
-                                <td class="is-size-7" align="left">jaja</td>
-                                <td class="is-size-7" align="right">14.6%</td>
-                                <td class="is-size-7" align="right">14/96</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">10</td>
-                                <td class="is-size-7" align="left">タツヤ</td>
-                                <td class="is-size-7" align="left">jaja</td>
-                                <td class="is-size-7" align="right">15.6%</td>
-                                <td class="is-size-7" align="right">12/77</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <h5 class="content">OPT賞 <small class="is-size-7">* On Plus Throwing（得点効率指標）</small></h5>
-                    <div class="table-container">
-                        <table class="table is-fullwidth is-striped">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center"></th>
-                                <th class="is-primary is-size-7" align="center">選手</th>
-                                <th class="is-primary is-size-7" align="center">クラブ</th>
-                                <th class="is-primary is-size-7" align="center">OPT</th>
-                                <th class="is-primary is-size-7" align="center">投</th>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right"><strong>1</strong></td>
-                                <td class="is-size-7" align="left"><strong>タツヤ</strong></td>
-                                <td class="is-size-7" align="left"><strong>jaja</strong></td>
-                                <td class="is-size-7" align="right"><strong>8.96</strong></td>
-                                <td class="is-size-7" align="right"><strong>77</strong></td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="left">くぼ</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">8.76</td>
-                                <td class="is-size-7" align="right">80</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="left">もち</td>
-                                <td class="is-size-7" align="left">löwUUD</td>
-                                <td class="is-size-7" align="right">8.73</td>
-                                <td class="is-size-7" align="right">102</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="left">ひんがし</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">8.66</td>
-                                <td class="is-size-7" align="right">87</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">5</td>
-                                <td class="is-size-7" align="left">みぃーちゃん</td>
-                                <td class="is-size-7" align="left">Kestää</td>
-                                <td class="is-size-7" align="right">8.41</td>
-                                <td class="is-size-7" align="right">76</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7" align="left">イエ朗</td>
-                                <td class="is-size-7" align="left">NKL</td>
-                                <td class="is-size-7" align="right">8.09</td>
-                                <td class="is-size-7" align="right">123</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">7</td>
-                                <td class="is-size-7" align="left">ミスターK</td>
-                                <td class="is-size-7" align="left">FWH</td>
-                                <td class="is-size-7" align="right">8.06</td>
-                                <td class="is-size-7" align="right">113</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7" align="left">sho16</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">8.03</td>
-                                <td class="is-size-7" align="right">90</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">9</td>
-                                <td class="is-size-7" align="left">そるてぃ</td>
-                                <td class="is-size-7" align="left">FWH</td>
-                                <td class="is-size-7" align="right">8.01</td>
-                                <td class="is-size-7" align="right">98</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">10</td>
-                                <td class="is-size-7" align="left">ホリウチ</td>
-                                <td class="is-size-7" align="left">スギモル</td>
-                                <td class="is-size-7" align="right">7.76</td>
-                                <td class="is-size-7" align="right">176</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <p class="is-size-7">OPTは得点力を示すための実験的指標。以下の式で計算する。</p>
-                    <p class="is-size-7"><code>OPT = 1投あたりの評価点総合計 / 総投擲数</code><br />
-                        <code>1投あたりの評価点 = {0.1 * ({ターン数} - 1) * [得点] + [得点]}</code><br />
-                        例えば8ターン目に5点を獲得した場合、評価点は<code>0.1 * (8 - 1) * 5 + 5 = 8.50</code>となる。
-                    </p>
-                    <h5 class="content">フィニッシュ賞</h5>
-                    <div class="table-container">
-                        <table class="table is-fullwidth is-striped">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center"></th>
-                                <th class="is-primary is-size-7" align="center">選手</th>
-                                <th class="is-primary is-size-7" align="center">クラブ</th>
-                                <th class="is-primary is-size-7" align="center">FIN数</th>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right"><strong>1</strong></td>
-                                <td class="is-size-7" align="left"><strong>ホリウチ</strong></td>
-                                <td class="is-size-7" align="left"><strong>スギモル</strong></td>
-                                <td class="is-size-7" align="right"><strong>14</strong></td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="left">もち</td>
-                                <td class="is-size-7" align="left">löwUUD</td>
-                                <td class="is-size-7" align="right">11</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="left">TT</td>
-                                <td class="is-size-7" align="left">NXG</td>
-                                <td class="is-size-7" align="right">11</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="left">イエ朗</td>
-                                <td class="is-size-7" align="left">NKL</td>
-                                <td class="is-size-7" align="right">10</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="left">sho16</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">10</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7" align="left">ひんがし</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">9</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7" align="left">ミスターK</td>
-                                <td class="is-size-7" align="left">FWH</td>
-                                <td class="is-size-7" align="right">9</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7" align="left">えつ</td>
-                                <td class="is-size-7" align="left">jaja</td>
-                                <td class="is-size-7" align="right">8</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7" align="left">りお</td>
-                                <td class="is-size-7" align="left">SLAPS</td>
-                                <td class="is-size-7" align="right">8</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">8</td>
-                                <td class="is-size-7" align="left">ごとう</td>
-                                <td class="is-size-7" align="left">jaja</td>
-                                <td class="is-size-7" align="right">8</td>
-                            </tr>
-                        </table>
+                <p class="is-size-7">
+                    OPT：On Plus Throwing。得点効率指標<br />
+                    QH：Quality Hit。狙い通りに投擲を決めること。<br />
+                    NH：Not Quality Hit。1点以上獲得したがQHではない投擲。<br />
+                    FA：Fault。投擲結果が0点であること。<br />
+                    先（後）S勝率：先攻または後攻のセットにおける勝率。<br />
+                </p>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content" id="yksi-games">
+                <h4 class="is-size-5">試合一覧</h4>
+                <div class="table-container">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center">節</th>
+                            <th class="is-primary is-size-7" align="center">日程</th>
+                            <th class="is-primary is-size-7" align="center">ホーム</th>
+                            <th class="is-primary is-size-7" align="center">結果</th>
+                            <th class="is-primary is-size-7" align="center">アウェイ</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">1</td>
+                            <td class="is-size-7" align="left">2023/11/19(日)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=nFji64MQDrg"> [動画]</a></td>
+                            <td class="is-size-7 " align="center">NKL</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B01">4-4</a>
+                            </td>
+                            <td class="is-size-7 " align="center">NXG</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">1</td>
+                            <td class="is-size-7" align="left">2023/11/23(木)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=VXIWWRJgSPI"> [動画]</a></td>
+                            <td class="is-size-7 " align="center">スギモル</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B02">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">1</td>
+                            <td class="is-size-7">2023/11/23(木)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=7Gpml_BRvK4"> [動画]</a></td>
+                            <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B03">4-0</a>
+                            </td>
+                            <td class="is-size-7" align="center">jaja</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">1</td>
+                            <td class="is-size-7">2023/11/11(土)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=qvwIINMEtmc"> [動画]</a></td>
+                            <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B04">4-0</a>
+                            </td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7">2023/11/19(日)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">NKL</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B05">4-2</a>
+                            </td>
+                            <td class="is-size-7" align="center">スギモル</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7">2023/11/18(土)</td>
+                            <td class="is-size-7" align="center">NXG</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B06">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7">2023/11/12(日)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=qvFxr6WzFg0"> [動画]</a></td>
+                            <td class="is-size-7" align="center">Kes</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B07">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7">2023/11/19(日)</td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B08">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7">2023/12/16(土)</td>
+                            <td class="is-size-7" align="center">FWH</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B09">2-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">NKL</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7">2023/12/30(土)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B10">4-1</a>
+                            </td>
+                            <td class="is-size-7" align="center">スギモル</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7">2023/12/9(土)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=bcHLIM2XbjE"> [動画]</a></td>
+                            <td class="is-size-7" align="center">NXG</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B11">4-4</a>
+                            </td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7">2023/12/17(日)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B12">4-1</a>
+                            </td>
+                            <td class="is-size-7" align="center">Kes</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7">2023/12/17(日)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=HGj0nxOfpkY"> [動画]</a></td>
+                            <td class="is-size-7" align="center">NKL</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B13">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7">2023/12/9(土)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">löwUUD</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B14">4-2</a>
+                            </td>
+                            <td class="is-size-7" align="center">FWH</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7">2023/12/16(土)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">スギモル</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B15">4-0</a>
+                            </td>
+                            <td class="is-size-7" align="center">jaja</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7">2023/12/3(日)</td>
+                            <td class="is-size-7" align="center">Kes</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B16">4-4</a>
+                            </td>
+                            <td class="is-size-7" align="center">NXG</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">5</td>
+                            <td class="is-size-7">2024/2/17(土)</td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B17">4-4</a>
+                            </td>
+                            <td class="is-size-7" align="center">NKL</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">5</td>
+                            <td class="is-size-7">2024/1/13(土)</td>
+                            <td class="is-size-7" align="center">jaja</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B18">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">5</td>
+                            <td class="is-size-7">2024/1/8(月)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B19">4-1</a>
+                            </td>
+                            <td class="is-size-7" align="center">Kes</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">5</td>
+                            <td class="is-size-7">2024/1/20(土)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=OwgJXPaFFII"> [動画]</a></td>
+                            <td class="is-size-7 has-background-primary-80" align="center">NXG</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B20">4-0</a>
+                            </td>
+                            <td class="is-size-7" align="center">スギモル</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7">2024/1/7(日)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B21">5-3</a>
+                            </td>
+                            <td class="is-size-7" align="center">NKL</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7">2024/1/27(土)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=Y3FUCqZsQSQ"> [動画]</a></td>
+                            <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B22">4-2</a>
+                            </td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7">2024/1/13(土)</td>
+                            <td class="is-size-7" align="center">SLAPS</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B23">4-4</a>
+                            </td>
+                            <td class="is-size-7" align="center">NXG</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7">2024/1/13(土)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">スギモル</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B24">4-1</a>
+                            </td>
+                            <td class="is-size-7" align="center">FWH</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7">2024/2/18(日)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=JEbKQG3fiOM"> [動画]</a></td>
+                            <td class="is-size-7" align="center">NKL</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B25">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7">2024/2/18(日)</td>
+                            <td class="is-size-7" align="center">NXG</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B26">4-4</a>
+                            </td>
+                            <td class="is-size-7" align="center">jaja</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7">2024/2/23(金)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">löwUUD</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B27">4-1</a>
+                            </td>
+                            <td class="is-size-7" align="center">スギモル</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7">2024/2/3(土)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B28">4-1</a>
+                            </td>
+                            <td class="is-size-7" align="center">SLAPS</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7">2024/3/31(日)</td>
+                            <td class="is-size-7" align="center">NXG</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B29">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7">2024/2/17(土)</td>
+                            <td class="is-size-7" align="center">NKL</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B30">4-4</a>
+                            </td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7">2024/2/3(土)</td>
+                            <td class="is-size-7" align="center">スギモル</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B31">2-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7">2024/2/17(土)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=4AR4Zr4ARiE"> [動画]</a></td>
+                            <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B32">5-3</a>
+                            </td>
+                            <td class="is-size-7" align="center">FWH</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">9</td>
+                            <td class="is-size-7">2024/3/23(土)</td>
+                            <td class="is-size-7" align="center">jaja</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B33">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">NXG</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">9</td>
+                            <td class="is-size-7">2024/3/31(日)</td>
+                            <td class="is-size-7" align="center">FWH</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B34">2-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">スギモル</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">9</td>
+                            <td class="is-size-7">2024/4/20(土)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B35">4-0</a>
+                            </td>
+                            <td class="is-size-7" align="center">NKL</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">9</td>
+                            <td class="is-size-7">2024/3/30(土)</td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B36">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">10</td>
+                            <td class="is-size-7">2024/3/23(土)</td>
+                            <td class="is-size-7" align="center">スギモル</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B37">4-3</a>
+                            </td>
+                            <td class="is-size-7" align="center">NXG</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">10</td>
+                            <td class="is-size-7">2024/3/20(水)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=74hIhZpd-2E"> [動画]</a></td>
+                            <td class="is-size-7" align="center">NKL</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B38">0-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">10</td>
+                            <td class="is-size-7">2024/3/30(土)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B39">4-0</a>
+                            </td>
+                            <td class="is-size-7" align="center">FWH</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">10</td>
+                            <td class="is-size-7">2024/3/20(水)</td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B40">2-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">11</td>
+                            <td class="is-size-7">2024/4/6(土)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">NXG</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B41">4-2</a>
+                            </td>
+                            <td class="is-size-7" align="center">NKL</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">11</td>
+                            <td class="is-size-7">2024/5/26(日)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=L4HRrbrq3Zo"> [動画]</a></td>
+                            <td class="is-size-7" align="center">Kes</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B42">2-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">スギモル</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">11</td>
+                            <td class="is-size-7">2024/4/21(日)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B43">4-1</a>
+                            </td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">11</td>
+                            <td class="is-size-7">2024/4/27(土)</td>
+                            <td class="is-size-7" align="center">SLAPS</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B44">4-4</a>
+                            </td>
+                            <td class="is-size-7" align="center">FWH</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">12</td>
+                            <td class="is-size-7">2024/4/29(月)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B45">4-0</a>
+                            </td>
+                            <td class="is-size-7" align="center">NXG</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">12</td>
+                            <td class="is-size-7">2024/4/27(土)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=qneaEPQAb5Y"> [動画]</a></td>
+                            <td class="is-size-7" align="center">SLAPS</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B46">4-4</a>
+                            </td>
+                            <td class="is-size-7" align="center">jaja</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">12</td>
+                            <td class="is-size-7">2024/4/27(土)</td>
+                            <td class="is-size-7" align="center">スギモル</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B47">0-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">löwUUD</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">12</td>
+                            <td class="is-size-7">2024/4/6(土)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">Kes</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B48">4-1</a>
+                            </td>
+                            <td class="is-size-7" align="center">NKL</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">13</td>
+                            <td class="is-size-7">2024/5/25(土)</td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B49">0-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">NXG</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">13</td>
+                            <td class="is-size-7">2024/5/24(金)<a target="_blank" class="has-text-link" href="https://youtube.com/live/52mJSnaxbYM"> [動画]</a></td>
+                            <td class="is-size-7 has-background-primary-80" align="center">SLAPS</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B50">4-0</a>
+                            </td>
+                            <td class="is-size-7" align="center">Kes</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">13</td>
+                            <td class="is-size-7">2024/5/14(火)</td>
+                            <td class="is-size-7" align="center">NKL</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B51">2-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">13</td>
+                            <td class="is-size-7">2024/5/18(土)</td>
+                            <td class="is-size-7" align="center">jaja</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B52">4-4</a>
+                            </td>
+                            <td class="is-size-7" align="center">スギモル</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7">2024/5/11(土)</td>
+                            <td class="is-size-7" align="center">NXG</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B53">4-4</a>
+                            </td>
+                            <td class="is-size-7" align="center">SLAPS</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7">2024/5/25(土)</td>
+                            <td class="is-size-7 has-background-primary-80" align="center">FWH</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B54">4-1</a>
+                            </td>
+                            <td class="is-size-7" align="center">löwUUD</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7">2024/5/25(土)</td>
+                            <td class="is-size-7" align="center">Kes</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B55">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">jaja</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">14</td>
+                            <td class="is-size-7">2024/6/9(日)<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=8VWNQrIA7Ts"> [動画]</a></td>
+                            <td class="is-size-7" align="center">スギモル</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=B56">2-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">NKL</td>
+                        </tr>
+                    </table>
+                </div>
+                <h4 class="is-size-5">入れ替えプレーオフ</h4>
+                <div class="table-container">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center">節</th>
+                            <th class="is-primary is-size-7" align="center">日程</th>
+                            <th class="is-primary is-size-7" align="center">ホーム</th>
+                            <th class="is-primary is-size-7" align="center">結果</th>
+                            <th class="is-primary is-size-7" align="center">アウェイ</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">PO</td>
+                            <td class="is-size-7" align="left">2024/7/27<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=xYLj-y4php8"> [動画]</a></td>
+                            <td class="is-size-7 has-background-primary-80" align="center">武蔵野</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=">4-1</a>
+                            </td>
+                            <td class="is-size-7 " align="center">NKL</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">PO</td>
+                            <td class="is-size-7" align="left">2024/7/27<a target="_blank" class="has-text-link" href="https://www.youtube.com/watch?v=xYLj-y4php8"> [動画]</a></td>
+                            <td class="is-size-7 " align="center">NKL</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=">3-5</a>
+                            </td>
+                            <td class="is-size-7 has-background-primary-80" align="center">武蔵野</td>
+                        </tr>
+                    </table>
+                    <p class="content is-size-6">プレーオフに勝利した武蔵野が、2024-25シーズンリーグ参加権を獲得。</p>
+                    <div class="content">
+                        <!-- youtube channel iframe -->
+                        <iframe width="100%" style="aspect-ratio: 16 / 9;"
+                            src="https://www.youtube.com/embed/xYLj-y4php8?si=8FExEzXC-C3ujPSH"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     </div>
                 </div>
             </div>
         </section>
+        <section class="section">
+            <div class="content" id="yksi-award">
+                <h4 class="is-size-5">個人賞</h4>
+                <h5 class="content">QH賞 <small class="is-size-7">* Quality Hit（狙い通りの投擲）</small></h5>
+                <div class="table-container">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center"></th>
+                            <th class="is-primary is-size-7" align="center">選手</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">QH率</th>
+                            <th class="is-primary is-size-7" align="center">QH/投</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right"><strong>1</strong></td>
+                            <td class="is-size-7" align="left"><strong>ミスターK</strong></td>
+                            <td class="is-size-7" align="left"><strong>FWH</strong></td>
+                            <td class="is-size-7" align="right"><strong>80.5%</strong></td>
+                            <td class="is-size-7" align="right"><strong>91/113</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">くぼ</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">73.8%</td>
+                            <td class="is-size-7" align="right">59/80</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="left">ホシノ</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">72.9%</td>
+                            <td class="is-size-7" align="right">62/80</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="left">ひんがし</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">72.4%</td>
+                            <td class="is-size-7" align="right">63/87</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">5</td>
+                            <td class="is-size-7" align="left">sho16</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">72.2%</td>
+                            <td class="is-size-7" align="right">65/90</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="left">みぃーちゃん</td>
+                            <td class="is-size-7" align="left">Kestää</td>
+                            <td class="is-size-7" align="right">69.7%</td>
+                            <td class="is-size-7" align="right">53/76</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7" align="left">もち</td>
+                            <td class="is-size-7" align="left">löwUUD</td>
+                            <td class="is-size-7" align="right">69.6%</td>
+                            <td class="is-size-7" align="right">71/102</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7" align="left">タツヤ</td>
+                            <td class="is-size-7" align="left">jaja</td>
+                            <td class="is-size-7" align="right">67.5%</td>
+                            <td class="is-size-7" align="right">52/77</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">9</td>
+                            <td class="is-size-7" align="left">えつ</td>
+                            <td class="is-size-7" align="left">jaja</td>
+                            <td class="is-size-7" align="right">66.7%</td>
+                            <td class="is-size-7" align="right">64/96</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">10</td>
+                            <td class="is-size-7" align="left">イエ朗</td>
+                            <td class="is-size-7" align="left">NKL</td>
+                            <td class="is-size-7" align="right">65.0%</td>
+                            <td class="is-size-7" align="right">80/123</td>
+                        </tr>
+                    </table>
+                </div>
+                <h5 class="content">フォルト回避賞</h5>
+                <div class="table-container">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center"></th>
+                            <th class="is-primary is-size-7" align="center">選手</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">FA率</th>
+                            <th class="is-primary is-size-7" align="center">FA/投</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right"><strong>1</strong></td>
+                            <td class="is-size-7" align="left"><strong>くぼ</strong></td>
+                            <td class="is-size-7" align="left"><strong>SLAPS</strong></td>
+                            <td class="is-size-7" align="right"><strong>10.0%</strong></td>
+                            <td class="is-size-7" align="right"><strong>8/80</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">ひんがし</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">11.5%</td>
+                            <td class="is-size-7" align="right">10/87</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="left">ミスターK</td>
+                            <td class="is-size-7" align="left">FWH</td>
+                            <td class="is-size-7" align="right">12.4%</td>
+                            <td class="is-size-7" align="right">14/113</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="left">sho16</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">13.3%</td>
+                            <td class="is-size-7" align="right">12/90</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">5</td>
+                            <td class="is-size-7" align="left">もち</td>
+                            <td class="is-size-7" align="left">löwUUD</td>
+                            <td class="is-size-7" align="right">13.8%</td>
+                            <td class="is-size-7" align="right">17/123</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="left">イエ朗</td>
+                            <td class="is-size-7" align="left">NKL</td>
+                            <td class="is-size-7" align="right">13.8%</td>
+                            <td class="is-size-7" align="right">17/123</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7" align="left">そるてぃ</td>
+                            <td class="is-size-7" align="left">FWH</td>
+                            <td class="is-size-7" align="right">14.3%</td>
+                            <td class="is-size-7" align="right">14/98</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7" align="left">みぃーちゃん</td>
+                            <td class="is-size-7" align="left">Kestää</td>
+                            <td class="is-size-7" align="right">14.5%</td>
+                            <td class="is-size-7" align="right">11/76</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">9</td>
+                            <td class="is-size-7" align="left">えつ</td>
+                            <td class="is-size-7" align="left">jaja</td>
+                            <td class="is-size-7" align="right">14.6%</td>
+                            <td class="is-size-7" align="right">14/96</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">10</td>
+                            <td class="is-size-7" align="left">タツヤ</td>
+                            <td class="is-size-7" align="left">jaja</td>
+                            <td class="is-size-7" align="right">15.6%</td>
+                            <td class="is-size-7" align="right">12/77</td>
+                        </tr>
+                    </table>
+                </div>
+                <h5 class="content">OPT賞 <small class="is-size-7">* On Plus Throwing（得点効率指標）</small></h5>
+                <div class="table-container">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center"></th>
+                            <th class="is-primary is-size-7" align="center">選手</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">OPT</th>
+                            <th class="is-primary is-size-7" align="center">投</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right"><strong>1</strong></td>
+                            <td class="is-size-7" align="left"><strong>タツヤ</strong></td>
+                            <td class="is-size-7" align="left"><strong>jaja</strong></td>
+                            <td class="is-size-7" align="right"><strong>8.96</strong></td>
+                            <td class="is-size-7" align="right"><strong>77</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">くぼ</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">8.76</td>
+                            <td class="is-size-7" align="right">80</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="left">もち</td>
+                            <td class="is-size-7" align="left">löwUUD</td>
+                            <td class="is-size-7" align="right">8.73</td>
+                            <td class="is-size-7" align="right">102</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="left">ひんがし</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">8.66</td>
+                            <td class="is-size-7" align="right">87</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">5</td>
+                            <td class="is-size-7" align="left">みぃーちゃん</td>
+                            <td class="is-size-7" align="left">Kestää</td>
+                            <td class="is-size-7" align="right">8.41</td>
+                            <td class="is-size-7" align="right">76</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="left">イエ朗</td>
+                            <td class="is-size-7" align="left">NKL</td>
+                            <td class="is-size-7" align="right">8.09</td>
+                            <td class="is-size-7" align="right">123</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">7</td>
+                            <td class="is-size-7" align="left">ミスターK</td>
+                            <td class="is-size-7" align="left">FWH</td>
+                            <td class="is-size-7" align="right">8.06</td>
+                            <td class="is-size-7" align="right">113</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7" align="left">sho16</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">8.03</td>
+                            <td class="is-size-7" align="right">90</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">9</td>
+                            <td class="is-size-7" align="left">そるてぃ</td>
+                            <td class="is-size-7" align="left">FWH</td>
+                            <td class="is-size-7" align="right">8.01</td>
+                            <td class="is-size-7" align="right">98</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">10</td>
+                            <td class="is-size-7" align="left">ホリウチ</td>
+                            <td class="is-size-7" align="left">スギモル</td>
+                            <td class="is-size-7" align="right">7.76</td>
+                            <td class="is-size-7" align="right">176</td>
+                        </tr>
+                    </table>
+                </div>
+                <p class="is-size-7">OPTは得点力を示すための実験的指標。以下の式で計算する。</p>
+                <p class="is-size-7"><code>OPT = 1投あたりの評価点総合計 / 総投擲数</code><br />
+                    <code>1投あたりの評価点 = {0.1 * ({ターン数} - 1) * [得点] + [得点]}</code><br />
+                    例えば8ターン目に5点を獲得した場合、評価点は<code>0.1 * (8 - 1) * 5 + 5 = 8.50</code>となる。
+                </p>
+                <h5 class="content">フィニッシュ賞</h5>
+                <div class="table-container">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center"></th>
+                            <th class="is-primary is-size-7" align="center">選手</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">FIN数</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right"><strong>1</strong></td>
+                            <td class="is-size-7" align="left"><strong>ホリウチ</strong></td>
+                            <td class="is-size-7" align="left"><strong>スギモル</strong></td>
+                            <td class="is-size-7" align="right"><strong>14</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">もち</td>
+                            <td class="is-size-7" align="left">löwUUD</td>
+                            <td class="is-size-7" align="right">11</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">TT</td>
+                            <td class="is-size-7" align="left">NXG</td>
+                            <td class="is-size-7" align="right">11</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="left">イエ朗</td>
+                            <td class="is-size-7" align="left">NKL</td>
+                            <td class="is-size-7" align="right">10</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="left">sho16</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">10</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="left">ひんがし</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">9</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="left">ミスターK</td>
+                            <td class="is-size-7" align="left">FWH</td>
+                            <td class="is-size-7" align="right">9</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7" align="left">えつ</td>
+                            <td class="is-size-7" align="left">jaja</td>
+                            <td class="is-size-7" align="right">8</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7" align="left">りお</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">8</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">8</td>
+                            <td class="is-size-7" align="left">ごとう</td>
+                            <td class="is-size-7" align="left">jaja</td>
+                            <td class="is-size-7" align="right">8</td>
+                        </tr>
+                    </table>
+                </div>
+                <h5 class="content">シーズン最優秀選手賞（MVP） ※選手間投票</h5>
+                <div class="table-container">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center"></th>
+                            <th class="is-primary is-size-7" align="center">選手</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">得票数</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right"><strong>1</strong></td>
+                            <td class="is-size-7" align="left"><strong>くぼ</strong></td>
+                            <td class="is-size-7" align="left"><strong>SLAPS</strong></td>
+                            <td class="is-size-7" align="right"><strong>12</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">ミスターK</td>
+                            <td class="is-size-7" align="left">FWH</td>
+                            <td class="is-size-7" align="right">5</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">タツヤ</td>
+                            <td class="is-size-7" align="left">jaja</td>
+                            <td class="is-size-7" align="right">5</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">sho16</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">5</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">5</td>
+                            <td class="is-size-7" align="left">りお</td>
+                            <td class="is-size-7" align="left">SLAPS</td>
+                            <td class="is-size-7" align="right">4</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="left">ホリウチ</td>
+                            <td class="is-size-7" align="left">スギモル</td>
+                            <td class="is-size-7" align="right">2</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="left">TT</td>
+                            <td class="is-size-7" align="left">NXG</td>
+                            <td class="is-size-7" align="right">2</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="left">タケさん</td>
+                            <td class="is-size-7" align="left">スギモル</td>
+                            <td class="is-size-7" align="right">2</td>
+                        </tr>
+                    </table>
+                    <p class="is-size-7">
+                        1票獲得：ごとう、えつ（jaja）、モリタマ、ひろぽ（NXG）、もち（löwUUD）、だーやま（NKL）、つうこ（FWH）、クラタ、Saki、カイ（SLAPS）、マサキ、にしむー、Yu
+                        Miyauchi（Kes）
+                    </p>
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-16by9">
+                                <img class="is-rounded" src="./asset/season2324_mvp1.png" alt="season2324_mvp1" />
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-16by9">
+                                <img class="is-rounded" src="./asset/season2324_mvp2.png" alt="season2324_mvp2" />
+                            </figure>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-16by9">
+                                <img class="is-rounded" src="./asset/season2324_mvp3.png" alt="season2324_mvp3" />
+                            </figure>
+                        </div>
+                    </div>
+                    <h5 class="content">動画映え賞</h5>
+                    <p class="is-size-6">
+                        それぞれの配信動画で決定する「Mölkkisti Of the Match」から、最も”映え”るスローを決める賞。
+                    </p>
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center">選手</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">該当試合</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="left"><strong>もち</strong></td>
+                            <td class="is-size-7" align="left"><strong>löwUUD</strong></td>
+                            <td class="is-size-7" align="left"><strong>第1節 vs NXG</strong></td>
+                        </tr>
+                    </table>
+                    <p class="content"><a href="https://x.com/molkkyprime/status/1821898617160159660/"
+                            target="_blank"><small class="has-text-link">動画映え賞に輝いた一投はこちら（Twitter）</small></a></p>
+                    <div class="content">
+                        <!-- youtube channel iframe -->
+                        <iframe width="100%" style="aspect-ratio: 16 / 9;"
+                            src="https://www.youtube.com/embed/IZ0Qx9lmN4Y?si=3EkkOOFPNQS6BF0R"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div class="content">
+                        <!-- youtube channel iframe -->
+                        <iframe width="100%" style="aspect-ratio: 16 / 9;"
+                            src="https://www.youtube.com/embed/vQdHUdq316Q?si=2fNJp5UfZuzuTBOS"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <div class="content">
+                        <!-- youtube channel iframe -->
+                        <iframe width="100%" style="aspect-ratio: 16 / 9;"
+                            src="https://www.youtube.com/embed/cZsZA5Z0abc?si=hAN0HpdpOnFMCcCE"
+                            title="YouTube video player" frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+
 
         <!-- kaksi -->
         <section class="hero">
@@ -982,118 +1356,134 @@
                         </figure>
                     </div>
                 </div>
-                <div class="content">
-                    <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
-                    <div class="table-container" id="yksi-standings">
-                        <table class="table is-fullwidth is-striped">
-                            <tr class="is-primary">
-                                <th class="is-success is-size-7" align="center">位</th>
-                                <th class="is-success is-size-7" align="center">クラブ</th>
-                                <th class="is-success is-size-7" align="center">試</th>
-                                <th class="is-success is-size-7" align="center">点</th>
-                                <th class="is-success is-size-7" align="center">勝</th>
-                                <th class="is-success is-size-7" align="center">敗</th>
-                                <th class="is-success is-size-7" align="center">分</th>
-                                <th class="is-success is-size-7" align="center">率</th>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7 has-background-success-80" align="right"><strong>1</strong></td>
-                                <td class="is-size-7 has-background-success-80" align="left"><strong>武蔵野</strong></td>
-                                <td class="is-size-7 has-background-success-80" align="right"><strong>4</strong></td>
-                                <td class="is-size-7 has-background-success-80" align="right"><strong>9</strong></td>
-                                <td class="is-size-7 has-background-success-80" align="right"><strong>3</strong></td>
-                                <td class="is-size-7 has-background-success-80" align="right"><strong>1</strong></td>
-                                <td class="is-size-7 has-background-success-80" align="right"><strong>0</strong></td>
-                                <td class="is-size-7 has-background-success-80" align="right">1.<strong>45</strong></td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="left">さいたまぁず</td>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="right">6</td>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="right">0</td>
-                                <td class="is-size-7" align="right">1.08</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="left">田村淳の大人の小学校 モルック部</td>
-                                <td class="is-size-7" align="right">4</td>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="right">1</td>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="right">0</td>
-                                <td class="is-size-7" align="right">0.57</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <p class="is-size-7">1位のクラブが入れ替えプレーオフへ進む。</p>
-                    <p class="is-size-7">
-                        ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
-                        - 勝ち点が多いクラブ<br />
-                        - セット獲得率が高いクラブ<br />
-                        - 当該クラブ同士の対戦での勝点が上回る、または獲得セット数で上回るクラブ<br />
-                        - 当該クラブ同士の対戦での得点が上回るクラブ<br />
-                        - 総得失点差が高いクラブ<br />
-                        - 上記でも決まらなかった場合は同順位
-                    </p>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content">
+                <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
+                <div class="table-container" id="yksi-standings">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-primary">
+                            <th class="is-success is-size-7" align="center">位</th>
+                            <th class="is-success is-size-7" align="center">クラブ</th>
+                            <th class="is-success is-size-7" align="center">試</th>
+                            <th class="is-success is-size-7" align="center">点</th>
+                            <th class="is-success is-size-7" align="center">勝</th>
+                            <th class="is-success is-size-7" align="center">敗</th>
+                            <th class="is-success is-size-7" align="center">分</th>
+                            <th class="is-success is-size-7" align="center">率</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7 has-background-success-80" align="right"><strong>1</strong></td>
+                            <td class="is-size-7 has-background-success-80" align="left"><strong>武蔵野</strong></td>
+                            <td class="is-size-7 has-background-success-80" align="right"><strong>4</strong></td>
+                            <td class="is-size-7 has-background-success-80" align="right"><strong>9</strong></td>
+                            <td class="is-size-7 has-background-success-80" align="right"><strong>3</strong></td>
+                            <td class="is-size-7 has-background-success-80" align="right"><strong>1</strong></td>
+                            <td class="is-size-7 has-background-success-80" align="right"><strong>0</strong></td>
+                            <td class="is-size-7 has-background-success-80" align="right">1.<strong>45</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">さいたまぁず</td>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="right">6</td>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="right">0</td>
+                            <td class="is-size-7" align="right">1.08</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="left">田村淳の大人の小学校 モルック部</td>
+                            <td class="is-size-7" align="right">4</td>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="right">1</td>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="right">0</td>
+                            <td class="is-size-7" align="right">0.57</td>
+                        </tr>
+                    </table>
                 </div>
-                <div class="content" id="yksi-games">
-                    <h4 class="is-size-5">試合一覧</h4>
-                    <div class="table-container">
-                        <table class="table is-fullwidth is-striped">
-                            <tr class="is-success">
-                                <th class="is-success is-size-7" align="center">節</th>
-                                <th class="is-success is-size-7" align="center">日程</th>
-                                <th class="is-success is-size-7" align="center">ホーム</th>
-                                <th class="is-success is-size-7" align="center">結果</th>
-                                <th class="is-success is-size-7" align="center">アウェイ</th>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">1</td>
-                                <td class="is-size-7" align="left">2024/4/20(土)</td>
-                                <td class="is-size-7 " align="center">たむ小</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=BC01">1-4</a></td>
-                                <td class="is-size-7 has-background-success-80" align="center">武蔵野</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">1</td>
-                                <td class="is-size-7" align="left">2024/3/31(日)</td>
-                                <td class="is-size-7 " align="center">武蔵野</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=BC02">3-5</a></td>
-                                <td class="is-size-7 has-background-success-80" align="center">たまぁず</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="left">2024/5/25(土)</td>
-                                <td class="is-size-7 has-background-success-80" align="center">たまぁず</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=BC03">4-1</a></td>
-                                <td class="is-size-7" align="center">たむ小</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">2</td>
-                                <td class="is-size-7" align="left">2024/5/25(土)</td>
-                                <td class="is-size-7 has-background-success-80" align="center">武蔵野</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=BC04">4-2</a></td>
-                                <td class="is-size-7" align="center">たむ小</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">3</td>
-                                <td class="is-size-7" align="left">2024/5/25(土)</td>
-                                <td class="is-size-7 " align="center">たまぁず</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=BC05">3-5</a></td>
-                                <td class="is-size-7 has-background-success-80" align="center">武蔵野</td>
-                            </tr>
-                            <tr>
-                                <td class="is-size-7" align="right">1</td>
-                                <td class="is-size-7" align="left">2024/2/11(日)</td>
-                                <td class="is-size-7 has-background-success-80" align="center">たむ小</td>
-                                <td class="is-size-7" align="center"><a class="has-text-link" href="../../match?gid=BC06">4-2</a></td>
-                                <td class="is-size-7" align="center">たまぁず</td>
-                            </tr>
-                        </table>
-                    </div>
+                <p class="is-size-7">1位のクラブが入れ替えプレーオフへ進む。</p>
+                <p class="is-size-7">
+                    ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
+                    - 勝ち点が多いクラブ<br />
+                    - セット獲得率が高いクラブ<br />
+                    - 当該クラブ同士の対戦での勝点が上回る、または獲得セット数で上回るクラブ<br />
+                    - 当該クラブ同士の対戦での得点が上回るクラブ<br />
+                    - 総得失点差が高いクラブ<br />
+                    - 上記でも決まらなかった場合は同順位
+                </p>
+            </div>
+        </section>
+        <section class="section">
+            <div class="content" id="yksi-games">
+                <h4 class="is-size-5">試合一覧</h4>
+                <div class="table-container">
+                    <table class="table is-fullwidth is-striped">
+                        <tr class="is-success">
+                            <th class="is-success is-size-7" align="center">節</th>
+                            <th class="is-success is-size-7" align="center">日程</th>
+                            <th class="is-success is-size-7" align="center">ホーム</th>
+                            <th class="is-success is-size-7" align="center">結果</th>
+                            <th class="is-success is-size-7" align="center">アウェイ</th>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">1</td>
+                            <td class="is-size-7" align="left">2024/4/20(土)</td>
+                            <td class="is-size-7 " align="center">たむ小</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=BC01">1-4</a>
+                            </td>
+                            <td class="is-size-7 has-background-success-80" align="center">武蔵野</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">1</td>
+                            <td class="is-size-7" align="left">2024/3/31(日)</td>
+                            <td class="is-size-7 " align="center">武蔵野</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=BC02">3-5</a>
+                            </td>
+                            <td class="is-size-7 has-background-success-80" align="center">たまぁず</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">2024/5/25(土)</td>
+                            <td class="is-size-7 has-background-success-80" align="center">たまぁず</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=BC03">4-1</a>
+                            </td>
+                            <td class="is-size-7" align="center">たむ小</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">2</td>
+                            <td class="is-size-7" align="left">2024/5/25(土)</td>
+                            <td class="is-size-7 has-background-success-80" align="center">武蔵野</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=BC04">4-2</a>
+                            </td>
+                            <td class="is-size-7" align="center">たむ小</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">3</td>
+                            <td class="is-size-7" align="left">2024/5/25(土)</td>
+                            <td class="is-size-7 " align="center">たまぁず</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=BC05">3-5</a>
+                            </td>
+                            <td class="is-size-7 has-background-success-80" align="center">武蔵野</td>
+                        </tr>
+                        <tr>
+                            <td class="is-size-7" align="right">1</td>
+                            <td class="is-size-7" align="left">2024/2/11(日)</td>
+                            <td class="is-size-7 has-background-success-80" align="center">たむ小</td>
+                            <td class="is-size-7" align="center"><a class="has-text-link"
+                                    href="../../match?gid=BC06">4-2</a>
+                            </td>
+                            <td class="is-size-7" align="center">たまぁず</td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </section>
