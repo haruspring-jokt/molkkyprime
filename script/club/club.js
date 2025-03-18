@@ -1,15 +1,40 @@
 // データ取得先スプレッドシートAPIURL
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74uBMyiS7zG2tWl6ew5MDU8Rdqr8ErfIVhMoRakEY6iB1i63tg/exec";
 
-$(function () {
+(function ($) {
     /**
-     * ページ個別
+     * ページで使用するデータ
+     * - clubs: クラブ一覧
+     * - players: プレイヤー一覧
+     * - transfers: 公示一覧
+     * - fas: FA一覧
      */
-    // 各種データ取得・設定
-    fetchData();
-});
+    var pageData;
 
-function fetchData() {
+    $(function () {
+        /**
+         * ページ個別
+         */
+        // 画面初期表示
+        localStorage.clear();
+        initDisplay();
+
+        // クラブ選択時
+        $('select[name="club-data"]').change(function () {
+            // 後で消す 確認用
+            var selected = $(this).val();
+            // クラブデータの入れ替え再設定
+            var param = {
+                'cid': selected
+            }
+            var localData = localStorage.getItem('pageDataStringify');
+            refreshClubData(JSON.parse(localData), param);
+        });
+    });
+
+}(window.jQuery));
+
+function initDisplay() {
     var url = SHEET_URL;
     url = url + "?api=CLUB";
     $.ajax({
@@ -18,28 +43,160 @@ function fetchData() {
         dataType: 'json',
     }).done(function (datas) {
         var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
+        localStorage.setItem('pageDataStringify', datasStringify);
+        var pageData = JSON.parse(datasStringify);
 
-        // 公示
-        appendTransfer(datasJson['transfer'], "#transfer-table", "#transfer-progress");
-        // 選手1部
-        appendPlayers(datasJson['playerYksi'], "#yksi-players", "#yksi-players-progress", "is-primary");
-        // 選手2部
-        appendPlayers(datasJson['playerKaksi'], "#kaksi-players", "#kaksi-players-progress", "is-success");
-        // FA
-        appendFreeAgents(datasJson['fa'], "#free-agents", "#free-agents-progress", "is-light");
+        // セレクトボックスにクラブ一覧を設定する
+        createClubSelectBox(pageData['clubs']);
+
+        // 先頭のクラブをクラブデータに設定する
+        createClubData(pageData['clubs'], pageData['players'], pageData['clubs'][0]['cid']);
+
+        // 公示の設定
+        appendTransfer(pageData['transfers'], "#transfer-table", "#transfer-progress");
+
+        // FAの設定
+        appendFreeAgents(pageData['fas'], "#free-agents", "#free-agents-progress", "is-light");
+
+        $('#club-progress').html("");
     });
+}
+
+function refreshClubData(pageData, param) {
+    var cid = param['cid'];
+    createClubData(pageData['clubs'], pageData['players'], cid);
+}
+
+/**
+ * クラブ選択ボックスの初期化
+ * @param {} clubs 
+ */
+function createClubSelectBox(clubs) {
+    $('select[name="club-data"]').html("");
+    for (const i in clubs) {
+        const club = clubs[i];
+        var division = club['division'] === 'YKSI' ? '【ユクシ】' : '【チャレンジ】';
+        $('select[name="club-data"]').append(`
+                <option value="${club['cid']}" label="${division + club['clubHpName']}"></option>
+            `);
+    }
+    $('select[name="club-data"]').selectedIndex = 0;
+}
+
+function createClubData(clubs, players, cid) {
+    // クラブをフィルターする
+    var club = clubs.filter(function (j) {
+        return j.cid == cid;
+    })[0];
+
+    var isYksi = club['division'] == 'YKSI'
+    var division = isYksi ? "モルック関東プライムリーグユクシ" : "モルック関東プライムリーグチャレンジ";
+    var colerCode = club['colorCode'].substr(-6);
+    var currentRank = isYksi ? club['yksiCurrentRank'] : club['kaksiCurrentRank'];
+    var qhPer = isYksi ? Math.floor(club['qhPer'] * 100 * 10) / 10 + "%" : "";
+    var opt = isYksi ? Math.floor(club['opt'] * 100) / 100 + "" : "";
+    var attackwin = isYksi ? Math.floor(club['attackSetWinPer'] * 100 * 1) / 1 + "%" : "";
+    var defencewin = isYksi ? Math.floor(club['diffenceSetWinPer'] * 100 * 1) / 1 + "%" : "";
+
+    $('#club-name').html(club['clubHpName']);
+    $('#club-division').html(division);
+    $('#club-image').html(`
+        <img class="" src="../asset/club/club_${club['code']}.png" alt="picture of ${club['code']}" />`);
+    $('#club-hometown').html(club['prefecture']);
+    $('#club-pastrank').html(club['pastRank']);
+    $('#club-color').html(`
+        <a href="https://www.colordic.org/colorsample/${colerCode}" target="_blank">#${colerCode}</a>`);
+    $('#club-twitter').html(`
+        <a href="https://www.x.com/${club['twitter']}" target="_blank">@${club['twitter']}</a>`);
+    $('#club-currentrank').html(`
+        ${currentRank} 位（
+        <strong class="has-text-success">${club['win']}W</strong>-<strong class="has-text-danger">${club['lose']}L</strong>-${club['draw']}D
+        ）`);
+    $('#club-playernum').html(club['playerNum'] + " 人");
+    $('#club-4pgames').html(club['4playersGames'] + " 試合");
+    $('#club-nopart').html(club['NotParticipatingPlayer']);
+    $('#club-qhpar').html(qhPer);
+    $('#club-opt').html(opt);
+    $('#club-attackwin').html(attackwin);
+    $('#club-defencewin').html(defencewin);
+
+    // 選手のフィルター
+    var ps = players.filter(function (p) {
+        return p.cid == cid;
+    })
+    $('#player-table').html(`
+            <tr class="is-primary">
+                <th class="is-primary is-size-7" align="center">選手</th>
+                <th class="is-primary is-size-7" align="center">GM</th>
+                <th class="is-primary is-size-7" align="center">SE</th>
+                <th class="is-primary is-size-7" align="center">MOR</th>
+                <th class="is-primary is-size-7" align="center">Q-N-F</th>
+                <th class="is-primary is-size-7" align="center">FIN</th>
+                <th class="is-primary is-size-7" align="center">OPT</th>
+                <th class="is-primary is-size-7" align="center">ABL</th>
+            </tr>
+        `);
+    for (const i in ps) {
+        var player = ps[i];
+        var game = isYksi ? player['game'] : "";
+        var set = isYksi ? player['set'] : "";
+        var mainOrder = isYksi ? player['mainOrder'] : "";
+        var qhpro = (isYksi && player['qhPro'] != '-') ? Math.floor(player['qhPro'] * 1 * 100) / 1 + "%" : "";
+        var nhpro = (isYksi && player['qhPro'] != '-') ? Math.floor(player['nhPro'] * 1 * 100) / 1 + "%" : "";
+        var fapro = (isYksi && player['qhPro'] != '-') ? Math.floor(player['fauPro'] * 1 * 100) / 1 + "%" : "";
+        var qhf = isYksi ? `
+                <strong class="has-text-success">${qhpro}</strong>
+                -${nhpro}-
+                <strong class="has-text-danger">${fapro}</strong>
+            ` : "";
+        var fin = isYksi ? player['fin'] : "";
+        var popt = isYksi ? Math.floor(player['opt'] * 100) / 100 + "" : "";
+        var averageBlakePoint = (isYksi && player['averageBlakePoint'] != "-")
+            ? Math.floor(player['averageBlakePoint'] * 100) / 100 + "" : "";
+        $('#player-table').append(`
+            <tr>s
+                <td class="is-size-7" align="left">${player['playerName']}</td>
+                <td class="is-size-7" align="right">${game}</td>
+                <td class="is-size-7" align="right">${set}</td>
+                <td class="is-size-7" align="left">${mainOrder}</td>
+                <td class="is-size-7" align="left">${qhf}</td>
+                <td class="is-size-7" align="right">${fin}</td>
+                <td class="is-size-7" align="right">${popt}</td>
+                <td class="is-size-7" align="right">${averageBlakePoint}</td>
+            </tr>
+        `);
+    }
+}
+
+function appendTransfer(datasJson, tableId, progressId) {
+    for (const i in datasJson) {
+        const tf = datasJson[i];
+        if (tf['isEnable']) {
+            var division = (tf['division'] == "YKSI") ? "リーグ" : "チャレンジ";
+            var color = (tf['division'] == "YKSI") ? "has-text-primary" : "has-text-success-40";
+            var tfDate = new Date(tf['date']).toLocaleDateString();
+            $(tableId).append(`
+                    <tr class="mkpl-player-row-1">
+                    <input type="hidden" name="transfer-id" value="${tf['id']}" /> 
+                    <td class="is-size-7" align="left">${tfDate}</td>
+                    <td class="is-size-7" align="left"><strong class="${color}">${division}</strong></td>
+                    <td class="is-size-6" align="left">${tf['title']}</td>
+                    </tr>
+                    `);
+        }
+    }
+    $(progressId).empty();
 }
 
 function appendFreeAgents(datasJson, tableId, progressId) {
     var appendStr = "";
     appendStr = appendStr + `
-        <div class="table-container" id="">
-            <table class="table is-fullwidth is-narrow">
-            <tr>
-                <th class="is-light" is-size-6">選手</th>
-            </tr>
-    `;
+            <div class="table-container" id="">
+                <table class="table is-fullwidth is-narrow">
+                <tr>
+                    <th class="is-light" is-size-6">選手</th>
+                </tr>
+        `;
     for (const i in datasJson) {
         const fa = datasJson[i];
         var profile = "";
@@ -56,126 +213,17 @@ function appendFreeAgents(datasJson, tableId, progressId) {
             profile = profile + "<br />所属: " + fa['team'];
         }
         appendStr = appendStr + `
-            <tr class="mkpl-player-row-2">
-                <td class="is-size-6" align="left"><strong>${fa['pname']}</strong></td>
-            </tr>
-            <tr>
-                <td class="is-size-7" align="left">${profile}</td>
-            </tr>
-        `;
+                <tr class="mkpl-player-row-2">
+                    <td class="is-size-6" align="left"><strong>${fa['pname']}</strong></td>
+                </tr>
+                <tr>
+                    <td class="is-size-7" align="left">${profile}</td>
+                </tr>
+            `;
     }
     appendStr = appendStr + `
-        </table></div>
-    `;
+            </table></div>
+        `;
     $(tableId).append(appendStr);
-    $(progressId).empty();
-}
-
-function appendTransfer(datasJson, tableId, progressId) {
-    for (const i in datasJson) {
-        const tf = datasJson[i];
-        if (tf['isEnable']) {
-            var division = (tf['division'] == "YKSI") ? "リーグ" : "チャレンジ";
-            var color = (tf['division'] == "YKSI") ? "has-text-primary" : "has-text-success-40";
-            var tfDate = new Date(tf['date']).toLocaleDateString();
-            $(tableId).append(`
-                <tr class="mkpl-player-row-1">
-                <input type="hidden" name="transfer-id" value="${tf['id']}" /> 
-                <td class="is-size-7" align="left">${tfDate}</td>
-                <td class="is-size-7" align="left"><strong class="${color}">${division}</strong></td>
-                <td class="is-size-6" align="left">${tf['title']}</td>
-                </tr>
-                `);
-        }
-    }
-    $(progressId).empty();
-}
-
-/**
- * 選手設定
- * @param {*} datas 
- * @param {*} datasJson 
- * @param {*} tableId 
- * @param {*} progressId 
- */
-function appendPlayers(datasJson, tableId, progressId, color) {
-    var clubList = [];
-
-    const groupBuCid = datasJson.reduce((acc, item) => {
-        if (!acc[item.cid]) {
-            acc[item.cid] = [];
-        }
-        acc[item.cid].push(item);
-        return acc;
-    }, {});
-
-    for (const i in groupBuCid) {
-        var group = groupBuCid[i];
-        if (group[0]['cid'] == "") {
-            break;
-        }
-        var appendStr = ``;
-        for (const j in group) {
-            var player = group[j];
-            if (j == 0) {
-                clubList.push({ 'cid': player['cid'], 'cname2': player['cname2'] });
-                appendStr = appendStr + `
-                    <div id="${player['cid']}"><h4>${player['cname2']}</h4></div>
-                        <figure class="content image is-360x360">
-                            <img class="" src="../asset/club/club_${player['ccode']}.png" alt="picture of ${player['cname2']}" />
-                        </figure>
-                        <div class="table-container" id="">
-                        <table class="table is-fullwidth is-narrow">
-                        <tr>
-                            <th class="${color}" is-size-6">選手</th>
-                            <th class="${color} is-size-6">クラブ</th>
-                        </tr>
-                `;
-            }
-            var pname = "<strong>" + player['pname'] + "</strong>";
-            if (player['isOtherRegion']) {
-                pname = pname + " *";
-            }
-            if (player['position'].includes('リーダー')) {
-                pname = pname + '(L)';
-            }
-            if (player['position'].includes('マネージャー')) {
-                pname = pname + '(M)';
-            }
-            appendStr = appendStr + `
-                <tr class="mkpl-player-row-1">
-                    <td class="is-size-6" align="left">${pname}</td>
-                    <td class="is-size-7" align="left">${player['cname2']}</td>
-                </tr>
-                <tr class="mkpl-player-row-2">
-                    <td class="is-size-7" align="left" colspan="2"">${player['transfer']}
-            `;
-            if (player['team']) {
-                appendStr = appendStr + `
-                    <br />リーグ外所属: ${player['team']}
-                `;
-            }
-            if (player['award']) {
-                appendStr = appendStr + `
-                    <br />個人賞: ${player['award']}
-                `;
-            }
-            if (player['remark']) {
-                appendStr = appendStr + `
-                    <br />${player['remark']}
-                `;
-            }
-            appendStr = appendStr + "</td></tr>"
-        }
-        appendStr = appendStr + "</table></div>"
-        $(tableId).append(appendStr);
-    }
-
-    for (const i in clubList) {
-        var club = clubList[i];
-        $(tableId + "-index").append(`
-            <li class="is-size-6"><a href=".#${club['cid']}">${club['cname2']}</a></li>    
-        `)
-    }
     $(progressId).empty();
 }

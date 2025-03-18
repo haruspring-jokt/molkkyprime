@@ -65,9 +65,8 @@
             <div class="hero-body" id="list">
                 <div class="menu">
                     <ul class="menu-list">
+                        <li><a href="./#club-data" class="has-text-link is-size-6">クラブデータ</a></li>
                         <li><a href="./#transfer" class="has-text-link is-size-6">公示</a></li>
-                        <li><a href="./#yksi-players-hero" class="has-text-link is-size-6">プライムリーグ選手一覧</a></li>
-                        <li><a href="./#kaksi-players-hero" class="has-text-link is-size-6">プライムリーグチャレンジ選手一覧</a></li>
                         <li><a href="./#fa-hero" class="has-text-link is-size-6">FA選手一覧</a></li>
                         <li><a href="https://docs.google.com/spreadsheets/d/1G2_bgX4fAg9_xi_epk0g0OJwicN02_ymRtfKd5TJk5k/htmlview#gid=0"
                                 class="has-text-link is-size-7" target="_blank">詳細はスプレッドシートへ</a></li>
@@ -76,10 +75,113 @@
             </div>
         </section>
 
+        <section class="section" id="club-data">
+            <h3 class="title is-size-3">クラブデータ</h3>
+            <div id="club-progress"><progress class="progress is-small is-light" max="100"></progress></div>
+            <div class="content dropdown">
+                <div class="dropdown-trigger">
+                    <select name="club-data" class="dropdown-content">
+                        <option value="" label="クラブを選択▼" selected>クラブを選択▼</option>
+                    </select>
+                </div>
+            </div>
+            <!-- club infomatin div -->
+            <h4 class="title is-size-4" id="club-name"></h4>
+            <p class="subtitle is-size-6" id="club-division"></p>
+            <figure class="content image is-360x360" id="club-image">
+            </figure>
+
+            <!-- club infomation table -->
+            <div class="table-container" id="club-infomation">
+                <table class="table is-fullwidth is-bordered is-striped">
+                    <tr>
+                        <th class="is-size-7 has-background-primary">ホームタウン</th>
+                        <td class="is-size-7" id="club-hometown"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">通算成績</th>
+                        <td class="is-size-7" id="club-pastrank"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">クラブカラー</th>
+                        <td class="is-size-7" id="club-color"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">Twitter</th>
+                        <td class="is-size-7" id="club-twitter"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">暫定順位・成績</th>
+                        <td class="is-size-7" id="club-currentrank"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">登録選手数</th>
+                        <td class="is-size-7" id="club-playernum"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">4人出場試合数 *</th>
+                        <td class="is-size-7" id="club-4pgames"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">未出場選手 **</th>
+                        <td class="is-size-7" id="club-nopart"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">QH率</th>
+                        <td class="is-size-7" id="club-qhpar"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">OPT</th>
+                        <td class="is-size-7" id="club-opt"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">先攻セット勝率</th>
+                        <td class="is-size-7" id="club-attackwin"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">後攻セット勝率</th>
+                        <td class="is-size-7" id="club-defencewin"></td>
+                    </tr>
+                </table>
+                <p class="is-size-7 content">
+                    * 4人構成で試合を行った回数。2024-25シーズンは5試合以上が条件。<br />
+                    ** 最低出場要件を満たしていない選手一覧。2024-25シーズンは4セット以上が条件。
+                </p>
+                <p class="is-size-7 content">
+                    <a href="https://docs.google.com/spreadsheets/d/1tziwaA_nYHBd_0If1XpTobUFhOoJJ7Q06qs7Qnqavtg/htmlview"
+                        target="_blank">詳細はスプレッドシートへ</a>
+                </p>
+            </div>
+
+            <!-- player of club info -->
+            <h4 class="title is-size-4 content">所属選手</h4>
+
+            <div class="table-container" id="player-of-club">
+                <table class="table is-fullwidth is-striped" id="player-table">
+                </table>
+                <p class="is-size-7 content">
+                    項目のみかた<br />
+                    GM：出場試合数<br />
+                    SE：出場セット数<br />
+                    MOR：最も投擲数が多い番手<br />
+                    Q-N-F：QH（狙い通り）、NH（狙っていないがフォルトでない）、FA（フォルト）の割合<br />
+                    FIN：ラストスロー成功数<br />
+                    OPT：On Plus Throwing。<code>1投あたりの評価点総合計 / 総投擲数</code><br />
+                    <code>1投あたりの評価点 = {0.1 * ({ターン数} - 1) * [得点] + [得点]}</code><br />
+                    例えば8ターン目に5点を獲得した場合、評価点は<code>0.1 * (8 - 1) * 5 + 5 = 8.50</code>となる。<br />
+                    ABL：平均ブレーク点数
+                </p>
+                <p class="is-size-7 content">
+                    <a href="https://docs.google.com/spreadsheets/d/1tziwaA_nYHBd_0If1XpTobUFhOoJJ7Q06qs7Qnqavtg/htmlview"
+                        target="_blank">詳細はスプレッドシートへ</a>
+                </p>
+            </div>
+        </section>
+
         <!-- transfer -->
-        <section class="hero">
+        <section class="hero" id="transfer">
             <div class="hero-body">
-                <h3 id="transfer" class="title is-size-4">公示</h3>
+                <h3 class="title is-size-4">公示</h3>
                 <div class="subtitle is-size-7">Transfer</div>
                 <div class="content">
                     <table id="transfer-table" class="table is-fullwidth">
@@ -96,64 +198,9 @@
             </div>
         </section>
 
-        <!-- yksi -->
-        <section class="hero">
-            <div class="hero-body" id="yksi-players-hero">
-                <h3 class="title is-size-4">プライムリーグ（1部リーグ） シーズン2024-25</h3>
-                <div class="subtitle is-size-7">Mölkky Kanto Prime League (Division 1) Season 2024-25</div>
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-16by9">
-                            <img class="is-rounded" src="../asset/yksi_cover.png" alt="mkpl-yksi-2425" />
-                        </figure>
-                    </div>
-                </div>
-                <div class="content">
-                    <h4 class="is-size-5">選手一覧</h4>
-                    <ul class="" id="yksi-players-index">
-                    </ul>
-                    <!-- yksi players -->
-                    <div id="yksi-players">
-
-                    </div>
-                    <div id="yksi-players-progress"><progress class="progress is-small is-primary" max="100"></progress>
-                    </div>
-                    <p class="is-size-7">* は助っ人選手（関東エリア外）。</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- kaksi -->
-        <section class="hero">
-            <div class="hero-body" id="kaksi-players-hero">
-                <h3 class="title is-size-4">プライムリーグチャレンジ（2部リーグ） シーズン2024-25</h3>
-                <div class="subtitle is-size-7">Mölkky Kanto Prime League Challenge (Division 2) Season 2024-25</div>
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-16by9">
-                            <img class="is-rounded" src="../asset/kaksi_cover.png" alt="mkpl-kaksi-2425" />
-                        </figure>
-                    </div>
-                </div>
-                <div class="content">
-                    <h4 class="is-size-5">選手一覧</h4>
-                    <ul class="" id="kaksi-players-index">
-                    </ul>
-                    <!-- kaksi players -->
-                    <div id="kaksi-players">
-
-                    </div>
-                    <div id="kaksi-players-progress"><progress class="progress is-small is-success"
-                            max="100"></progress>
-                    </div>
-                    <p class="is-size-7">* は助っ人選手（関東エリア外）。</p>
-                </div>
-            </div>
-        </section>
-
         <!-- fa -->
-        <section class="hero">
-            <div class="hero-body" id="fa-hero">
+        <section class="hero" id="fa-hero">
+            <div class="hero-body">
                 <h3 class="title is-size-4">FA選手一覧</h3>
                 <div class="subtitle is-size-7">Free Agent</div>
                 <div class="content">
