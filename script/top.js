@@ -63,7 +63,7 @@ function appendAward(datasJson, division) {
             break;
         }
         var row = qhDatas[i];
-        var qhpro = Math.floor(row['qhpro'] * 100 * 100) / 100 + "%";
+        var qhpro = (Math.round(row['qhpro'] * 100 * 100) / 100).toFixed(2) + "%";
         var qhByThrow = Math.floor(row['qh']) + "/" + Math.floor(row['throw']);
         if (Number(i) > 0 && row['qhpro'] != Math.floor(qhDatas[Number(i) - 1]['qhpro'])) {
             rank = rank + tie;
@@ -90,7 +90,7 @@ function appendAward(datasJson, division) {
             break;
         }
         var row = faDatas[i];
-        var fapro = Math.floor(row['faupro'] * 100 * 100) / 100 + "%";
+        var fapro = (Math.round(row['faupro'] * 100 * 100) / 100).toFixed(2) + "%";
         var throws = Math.floor(row['fault']) + "/" + Math.floor(row['throw']);
         if (Number(i) > 0 && row['faupro'] != Math.floor(faDatas[Number(i) - 1]['faupro'])) {
             rank = rank + tie;
@@ -117,7 +117,7 @@ function appendAward(datasJson, division) {
             break;
         }
         var row = optDatas[i];
-        var opt = Math.floor(row['opt'] * 100) / 100;
+        var opt = (Math.floor(row['opt'] * 100) / 100).toFixed(2);
         var throws = Math.floor(row['throw']);
         if (Number(i) > 0 && row['opt'] != Math.floor(optDatas[Number(i) - 1]['opt'])) {
             rank = rank + tie;
@@ -178,20 +178,18 @@ function appendStandings(datasJson, tableId, progressId) {
             // クラブ名が長い場合省略する
             club = '<abbr title="' + rank['club'] + '">' + club.slice(0, 15) + '...' + '</abbr>';
         }
-        $(tableId).append(
-            `
-                    <tr>
-                    <td class="is-size-7" align="right">${ranknum}</td>
-                    <td class="is-size-7">${club}</td>
-                    <td class="is-size-7" align="right">${rank['game']}</td>
-                    <td class="is-size-7" align="right">${rank['winpoint']}</td>
-                    <td class="is-size-7" align="right">${rank['win']}</td>
-                    <td class="is-size-7" align="right">${rank['lose']}</td>
-                    <td class="is-size-7" align="right">${rank['draw']}</td>
-                    <td class="is-size-7" align="right">${Math.floor(rank['setper'] * 100) / 100}</td>
-                    </tr>
-                    `
-        );
+        $(tableId).append(`
+            <tr>
+            <td class="is-size-7" align="right">${ranknum}</td>
+            <td class="is-size-7">${club}</td>
+            <td class="is-size-7" align="right">${rank['game']}</td>
+            <td class="is-size-7" align="right">${rank['winpoint']}</td>
+            <td class="is-size-7" align="right">${rank['win']}</td>
+            <td class="is-size-7" align="right">${rank['lose']}</td>
+            <td class="is-size-7" align="right">${rank['draw']}</td>
+            <td class="is-size-7" align="right">${(Math.floor(rank['setper'] * 100) / 100).toFixed(2)}</td>
+            </tr>
+        `);
     }
     $(progressId).empty();
 }

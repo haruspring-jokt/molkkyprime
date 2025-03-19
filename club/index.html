@@ -92,24 +92,10 @@
             </figure>
 
             <!-- club infomation table -->
+            <h4 class="title is-size-4">今シーズン</h4>
+            <p class="subtitle is-size-6">Current Season</p>
             <div class="table-container" id="club-infomation">
                 <table class="table is-fullwidth is-bordered is-striped">
-                    <tr>
-                        <th class="is-size-7 has-background-primary">ホームタウン</th>
-                        <td class="is-size-7" id="club-hometown"></td>
-                    </tr>
-                    <tr>
-                        <th class="is-size-7 has-background-primary">通算成績</th>
-                        <td class="is-size-7" id="club-pastrank"></td>
-                    </tr>
-                    <tr>
-                        <th class="is-size-7 has-background-primary">クラブカラー</th>
-                        <td class="is-size-7" id="club-color"></td>
-                    </tr>
-                    <tr>
-                        <th class="is-size-7 has-background-primary">Twitter</th>
-                        <td class="is-size-7" id="club-twitter"></td>
-                    </tr>
                     <tr>
                         <th class="is-size-7 has-background-primary">暫定順位・成績</th>
                         <td class="is-size-7" id="club-currentrank"></td>
@@ -129,6 +115,10 @@
                     <tr>
                         <th class="is-size-7 has-background-primary">QH率</th>
                         <td class="is-size-7" id="club-qhpar"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">フォルト率</th>
+                        <td class="is-size-7" id="club-fapar"></td>
                     </tr>
                     <tr>
                         <th class="is-size-7 has-background-primary">OPT</th>
@@ -153,9 +143,48 @@
                 </p>
             </div>
 
+            <!-- total club data -->
+            <h4 class="title is-size-4">通算</h4>
+            <p class="subtitle is-size-6">Total</p>
+            <div class="table-container" id="club-infomation">
+                <table class="table is-fullwidth is-bordered is-striped">
+                    <tr>
+                        <th class="is-size-7 has-background-primary">ホームタウン</th>
+                        <td class="is-size-7" id="club-hometown"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">通算成績</th>
+                        <td class="is-size-7" id="club-pastrank"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">クラブカラー</th>
+                        <td class="is-size-7" id="club-color"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">Twitter</th>
+                        <td class="is-size-7" id="club-twitter"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">通算勝敗</th>
+                        <td class="is-size-7" id="club-total-win"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">ホーム通算</th>
+                        <td class="is-size-7" id="club-total-home-win"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">アウェイ通算</th>
+                        <td class="is-size-7" id="club-total-away-win"></td>
+                    </tr>
+                </table>
+                <p class="is-size-7 content">
+                    通算勝敗はプライムユクシ（1部）の試合のみ対象。
+                </p>
+            </div>
+
             <!-- player of club info -->
             <h4 class="title is-size-4 content">所属選手</h4>
-
+            <p class="subtitle is-size-6">Player</p>
             <div class="table-container" id="player-of-club">
                 <table class="table is-fullwidth is-striped" id="player-table">
                 </table>

@@ -41,8 +41,8 @@ function appendMatch(match) {
         `);
     }
 
-    var hcnfull = convertClub(row['hcid']);
-    var acnfull = convertClub(row['acid']);
+    var hcnfull = convertClubFromCid(row['hcid']);
+    var acnfull = convertClubFromCid(row['acid']);
 
     var season = "";
     var spread = "";
@@ -94,36 +94,37 @@ function appendMatch(match) {
     var ap4 = convertPoint(row['as4']);
 
     var setnum = Number(row['hsn']) + Number(row['asn']);
-
+    let emptyTd = "<td></td>";
+    
     if (setnum == 4) {
-        var hp5 = "<td></td>";
-        var ap5 = "<td></td>";
-        var hp6 = "<td></td>";
-        var ap6 = "<td></td>";
-        var hp7 = "<td></td>";
-        var ap7 = "<td></td>";
-        var hp8 = "<td></td>";
-        var ap8 = "<td></td>";
+        var hp5 = emptyTd;
+        var ap5 = emptyTd;
+        var hp6 = emptyTd;
+        var ap6 = emptyTd;
+        var hp7 = emptyTd;
+        var ap7 = emptyTd;
+        var hp8 = emptyTd;
+        var ap8 = emptyTd;
     }
     if (setnum == 5) {
         var hp5 = convertPoint(row['hs5']);
         var ap5 = convertPoint(row['as5']);
-        var hp6 = "<td></td>";
-        var ap6 = "<td></td>";
-        var hp7 = "<td></td>";
-        var ap7 = "<td></td>";
-        var hp8 = "<td></td>";
-        var ap8 = "<td></td>";
+        var hp6 = emptyTd;
+        var ap6 = emptyTd;
+        var hp7 = emptyTd;
+        var ap7 = emptyTd;
+        var hp8 = emptyTd;
+        var ap8 = emptyTd;
     }
     if (setnum == 6) {
         var hp5 = convertPoint(row['hs5']);
         var ap5 = convertPoint(row['as5']);
         var hp6 = convertPoint(row['hs6']);
         var ap6 = convertPoint(row['as6']);
-        var hp7 = "<td></td>";
-        var ap7 = "<td></td>";
-        var hp8 = "<td></td>";
-        var ap8 = "<td></td>";
+        var hp7 = emptyTd;
+        var ap7 = emptyTd;
+        var hp8 = emptyTd;
+        var ap8 = emptyTd;
     }
     if (setnum == 7) {
         var hp5 = convertPoint(row['hs5']);
@@ -132,8 +133,8 @@ function appendMatch(match) {
         var ap6 = convertPoint(row['as6']);
         var hp7 = convertPoint(row['hs7']);
         var ap7 = convertPoint(row['as7']);
-        var hp8 = "<td></td>";
-        var ap8 = "<td></td>";
+        var hp8 = emptyTd;
+        var ap8 = emptyTd;
     }
     if (setnum == 8) {
         var hp5 = convertPoint(row['hs5']);
@@ -145,10 +146,10 @@ function appendMatch(match) {
         var hp8 = convertPoint(row['hs8']);
         var ap8 = convertPoint(row['as8']);
     }
-    var homeQhPer = Math.floor(row['homeqhper'] * 100) + "%";
-    var homeFaPer = Math.floor(row['homefaper'] * 100) + "%";
-    var awayQhPer = Math.floor(row['awayqhper'] * 100) + "%";
-    var awayFaPer = Math.floor(row['awayfaper'] * 100) + "%";
+    var homeQhPer = Math.round(row['homeqhper'] * 100) + "%";
+    var homeFaPer = Math.round(row['homefaper'] * 100) + "%";
+    var awayQhPer = Math.round(row['awayqhper'] * 100) + "%";
+    var awayFaPer = Math.round(row['awayfaper'] * 100) + "%";
 
     if (row['isdone'] == 1) {
         $('#match-result-table').append(`
@@ -194,42 +195,5 @@ function convertPoint(point) {
         return `<td class=""></td>`;
     } else {
         return `<td class="">${point}</td>`;
-    }
-}
-
-function convertClub(cid) {
-    switch (cid) {
-        case 'C01':
-            return "北関東ライラックス";
-        case 'C02':
-            return "SLAPS";
-        case 'C03':
-            return "jaja patatas";
-        case 'C04':
-            return "杉並エンジョイモルック";
-        case 'C05':
-            return "Fuchu-möl White Horses";
-        case 'C06':
-            return "löwkey with うんとこどっこいしょ大学";
-        case 'C07':
-            return "Kestää";
-        case 'C08':
-            return "NEXT GENERATIONS";
-        case 'C09':
-            return "田村淳の大人の小学校モルック部";
-        case 'C10':
-            return "武蔵野";
-        case 'C11':
-            return "さいたまぁず";
-        case 'C12':
-            return "にらそばとこくカレー";
-        case 'C13':
-            return "ブラッキーズ";
-        case 'C14':
-            return "コブラ団＋";
-        case 'C15':
-            return "Buddiesモルック部";
-        default:
-            return "";
     }
 }

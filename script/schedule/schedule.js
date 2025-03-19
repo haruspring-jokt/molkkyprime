@@ -48,20 +48,18 @@ function appendStandings(datasJson, tableId, progressId) {
             // クラブ名が長い場合省略する
             club = '<abbr title="' + rank['club'] + '">' + club.slice(0, 15) + '...' + '</abbr>';
         }
-        $(tableId).append(
-            `
-                    <tr>
-                    <td class="is-size-7" align="right">${ranknum}</td>
-                    <td class="is-size-7" align="left">${club}</td>
-                    <td class="is-size-7" align="right">${rank['game']}</td>
-                    <td class="is-size-7" align="right">${rank['winpoint']}</td>
-                    <td class="is-size-7" align="right">${rank['win']}</td>
-                    <td class="is-size-7" align="right">${rank['lose']}</td>
-                    <td class="is-size-7" align="right">${rank['draw']}</td>
-                    <td class="is-size-7" align="right">${Math.floor(rank['setper'] * 100) / 100}</td>
-                    </tr>
-                    `
-        );
+        $(tableId).append(`
+            <tr>
+            <td class="is-size-7" align="right">${ranknum}</td>
+            <td class="is-size-7" align="left">${club}</td>
+            <td class="is-size-7" align="right">${rank['game']}</td>
+            <td class="is-size-7" align="right">${rank['winpoint']}</td>
+            <td class="is-size-7" align="right">${rank['win']}</td>
+            <td class="is-size-7" align="right">${rank['lose']}</td>
+            <td class="is-size-7" align="right">${rank['draw']}</td>
+            <td class="is-size-7" align="right">${(Math.floor(rank['setper'] * 100) / 100).toFixed(2)}</td>
+            </tr>
+        `);
     }
     $(progressId).empty();
 }

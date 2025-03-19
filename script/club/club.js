@@ -9,8 +9,6 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74
      * - transfers: 公示一覧
      * - fas: FA一覧
      */
-    var pageData;
-
     $(function () {
         /**
          * ページ個別
@@ -90,35 +88,52 @@ function createClubData(clubs, players, cid) {
     })[0];
 
     var isYksi = club['division'] == 'YKSI'
-    var division = isYksi ? "モルック関東プライムリーグユクシ" : "モルック関東プライムリーグチャレンジ";
-    var colerCode = club['colorCode'].substr(-6);
-    var currentRank = isYksi ? club['yksiCurrentRank'] : club['kaksiCurrentRank'];
-    var qhPer = isYksi ? Math.floor(club['qhPer'] * 100 * 10) / 10 + "%" : "";
-    var opt = isYksi ? Math.floor(club['opt'] * 100) / 100 + "" : "";
-    var attackwin = isYksi ? Math.floor(club['attackSetWinPer'] * 100 * 1) / 1 + "%" : "";
-    var defencewin = isYksi ? Math.floor(club['diffenceSetWinPer'] * 100 * 1) / 1 + "%" : "";
 
+    var division = isYksi ? "モルック関東プライムリーグユクシ" : "モルック関東プライムリーグチャレンジ";
+
+    var currentRank = isYksi ? club['yksiCurrentRank'] : club['kaksiCurrentRank'];
+    var qhPer = isYksi ? (Math.round(club['qhPer'] * 100 * 10) / 10).toFixed(1) + "%" : "";
+    var faPer = isYksi ? (Math.round(club['faPer'] * 100 * 10) / 10).toFixed(1) + "%" : "";
+    var opt = isYksi ? (Math.round(club['opt'] * 100) / 100).toFixed(2) + "" : "";
+    var attackwin = isYksi ? Math.round(club['attackSetWinPer'] * 100 * 1) / 1 + "%" : "";
+    var defencewin = isYksi ? Math.round(club['diffenceSetWinPer'] * 100 * 1) / 1 + "%" : "";
+
+    var colerCode = club['colorCode'].substr(-6);
+    var hasTotalWin = (club['totalWin'] + club['totalLose'] + club['totalDraw']) > 0;
+    var totalWin = hasTotalWin ? `${club['totalWin']}勝 ${club['totalLose']}敗 ${club['totalDraw']}分` : "";
+    var totalHomeWin = hasTotalWin ? `${club['totalHomeWin']}勝 ${club['totalHomeLose']}敗 ${club['totalHomeDraw']}分` : "";
+    var totalAwayWin = hasTotalWin ? `${club['totalAwayWin']}勝 ${club['totalAwayLose']}敗 ${club['totalAwayDraw']}分` : "";
+
+    // タイトル
     $('#club-name').html(club['clubHpName']);
     $('#club-division').html(division);
     $('#club-image').html(`
         <img class="" src="../asset/club/club_${club['code']}.png" alt="picture of ${club['code']}" />`);
+
+    // 今シーズン
+    $('#club-currentrank').html(`
+            ${currentRank} 位（
+            <strong class="has-text-success">${club['win']}W</strong>-<strong class="has-text-danger">${club['lose']}L</strong>-${club['draw']}D
+            ）`);
+    $('#club-playernum').html(club['playerNum'] + " 人");
+    $('#club-4pgames').html(club['4playersGames'] + " 試合");
+    $('#club-nopart').html(club['NotParticipatingPlayer']);
+    $('#club-qhpar').html(qhPer);
+    $('#club-fapar').html(faPer);
+    $('#club-opt').html(opt);
+    $('#club-attackwin').html(attackwin);
+    $('#club-defencewin').html(defencewin);
+
+    // 通算
     $('#club-hometown').html(club['prefecture']);
     $('#club-pastrank').html(club['pastRank']);
     $('#club-color').html(`
         <a href="https://www.colordic.org/colorsample/${colerCode}" target="_blank">#${colerCode}</a>`);
     $('#club-twitter').html(`
-        <a href="https://www.x.com/${club['twitter']}" target="_blank">@${club['twitter']}</a>`);
-    $('#club-currentrank').html(`
-        ${currentRank} 位（
-        <strong class="has-text-success">${club['win']}W</strong>-<strong class="has-text-danger">${club['lose']}L</strong>-${club['draw']}D
-        ）`);
-    $('#club-playernum').html(club['playerNum'] + " 人");
-    $('#club-4pgames').html(club['4playersGames'] + " 試合");
-    $('#club-nopart').html(club['NotParticipatingPlayer']);
-    $('#club-qhpar').html(qhPer);
-    $('#club-opt').html(opt);
-    $('#club-attackwin').html(attackwin);
-    $('#club-defencewin').html(defencewin);
+            <a href="https://www.x.com/${club['twitter']}" target="_blank">@${club['twitter']}</a>`);
+    $('#club-total-win').html(totalWin);
+    $('#club-total-home-win').html(totalHomeWin);
+    $('#club-total-away-win').html(totalAwayWin);
 
     // 選手のフィルター
     var ps = players.filter(function (p) {
@@ -141,18 +156,17 @@ function createClubData(clubs, players, cid) {
         var game = isYksi ? player['game'] : "";
         var set = isYksi ? player['set'] : "";
         var mainOrder = isYksi ? player['mainOrder'] : "";
-        var qhpro = (isYksi && player['qhPro'] != '-') ? Math.floor(player['qhPro'] * 1 * 100) / 1 + "%" : "";
-        var nhpro = (isYksi && player['qhPro'] != '-') ? Math.floor(player['nhPro'] * 1 * 100) / 1 + "%" : "";
-        var fapro = (isYksi && player['qhPro'] != '-') ? Math.floor(player['fauPro'] * 1 * 100) / 1 + "%" : "";
+        var qhpro = (isYksi && player['qhPro'] != '-') ? Math.round(player['qhPro'] * 1 * 100) / 1 + "" : "";
+        var nhpro = (isYksi && player['qhPro'] != '-') ? Math.round(player['nhPro'] * 1 * 100) / 1 + "" : "";
+        var fapro = (isYksi && player['qhPro'] != '-') ? Math.round(player['fauPro'] * 1 * 100) / 1 + "" : "";
         var qhf = isYksi ? `
-                <strong class="has-text-success">${qhpro}</strong>
-                -${nhpro}-
+                <strong class="has-text-success">${qhpro}</strong>/${nhpro}/
                 <strong class="has-text-danger">${fapro}</strong>
             ` : "";
         var fin = isYksi ? player['fin'] : "";
-        var popt = isYksi ? Math.floor(player['opt'] * 100) / 100 + "" : "";
+        var popt = isYksi ? (Math.round(player['opt'] * 100) / 100).toFixed(2) : "";
         var averageBlakePoint = (isYksi && player['averageBlakePoint'] != "-")
-            ? Math.floor(player['averageBlakePoint'] * 100) / 100 + "" : "";
+            ? (Math.round(player['averageBlakePoint'] * 10) / 10).toFixed(1) + "" : "";
         $('#player-table').append(`
             <tr>s
                 <td class="is-size-7" align="left">${player['playerName']}</td>
