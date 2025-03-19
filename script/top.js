@@ -75,7 +75,7 @@ function appendAward(datasJson, division) {
             <tr>
             <td class="is-size-7" align="right">${rank}</td>
             <td class="is-size-7" align="left">${row['pname']}</td>
-            <td class="is-size-7" align="left">${row['cname']}</td>
+            <td class="is-size-7" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
             <td class="is-size-7" align="right">${qhpro}</td>
             <td class="is-size-7" align="right">${qhByThrow}</td>
             </tr>
@@ -102,7 +102,7 @@ function appendAward(datasJson, division) {
             <tr>
             <td class="is-size-7" align="right">${rank}</td>
             <td class="is-size-7" align="left">${row['pname']}</td>
-            <td class="is-size-7" align="left">${row['cname']}</td>
+            <td class="is-size-7" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
             <td class="is-size-7" align="right">${fapro}</td>
             <td class="is-size-7" align="right">${throws}</td>
             </tr>
@@ -129,7 +129,7 @@ function appendAward(datasJson, division) {
             <tr>
             <td class="is-size-7" align="right">${rank}</td>
             <td class="is-size-7" align="left">${row['pname']}</td>
-            <td class="is-size-7" align="left">${row['cname']}</td>
+            <td class="is-size-7" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
             <td class="is-size-7" align="right">${opt}</td>
             <td class="is-size-7" align="right">${throws}</td>
             </tr>
@@ -155,7 +155,7 @@ function appendAward(datasJson, division) {
             <tr>
             <td class="is-size-7" align="right">${rank}</td>
             <td class="is-size-7" align="left">${row['pname']}</td>
-            <td class="is-size-7" align="left">${row['cname']}</td>
+            <td class="is-size-7" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
             <td class="is-size-7" align="right">${finish}</td>
             </tr>
         `);
@@ -181,7 +181,7 @@ function appendStandings(datasJson, tableId, progressId) {
         $(tableId).append(`
             <tr>
             <td class="is-size-7" align="right">${ranknum}</td>
-            <td class="is-size-7">${club}</td>
+            <td class="is-size-7"><a href="./club?cid=${rank['cid']}" target="_blank">${club}</a></td>
             <td class="is-size-7" align="right">${rank['game']}</td>
             <td class="is-size-7" align="right">${rank['winpoint']}</td>
             <td class="is-size-7" align="right">${rank['win']}</td>
@@ -204,14 +204,15 @@ function appendStandings(datasJson, tableId, progressId) {
 function appendSchedule(datasJson, tableId, progressId, division) {
     for (const i in datasJson) {
         const game = datasJson[i];
+        // console.log(game);
         var gamedate = "";
         if (game['date']) {
             gamedate = new Date(game['date']).toLocaleDateString();
         } else {
             gamedate = "日程調整中";
         }
-        var hcn = game['hcn'];
-        var acn = game['acn'];
+        var hcn = `<a href="./club?cid=${game['hcid']}" target="_blank">${game['hcn']}</a>`;
+        var acn = `<a href="./club?cid=${game['acid']}" target="_blank">${game['acn']}</a>`;
         var hcnTdClass = "";
         var acnTdClass = "";
         if (!(game['hsn'] == game['asn'])) {

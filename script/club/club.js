@@ -1,5 +1,6 @@
 // データ取得先スプレッドシートAPIURL
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74uBMyiS7zG2tWl6ew5MDU8Rdqr8ErfIVhMoRakEY6iB1i63tg/exec";
+const EMPTY_CID = "CZZ";
 
 (function ($) {
     /**
@@ -13,9 +14,13 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74
         /**
          * ページ個別
          */
+        // リクエストパラメータにクラブIDがある場合
+        let url = new URL(window.location.href);
+        let params = url.searchParams;
         // 画面初期表示
         localStorage.clear();
-        initDisplay();
+        console.log(params.get('cid'));
+        initDisplay(params.get('cid'));
 
         // クラブ選択時
         $('select[name="club-data"]').change(function () {
@@ -32,7 +37,11 @@ const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74
 
 }(window.jQuery));
 
-function initDisplay() {
+/**
+ * 画面初期表示
+ * @param {string} cid クラブID
+ */
+function initDisplay(cid) {
     var url = SHEET_URL;
     url = url + "?api=CLUB";
     $.ajax({
@@ -44,11 +53,13 @@ function initDisplay() {
         localStorage.setItem('pageDataStringify', datasStringify);
         var pageData = JSON.parse(datasStringify);
 
+        var clubId = (convertClubFromCid(cid) != "") ? cid : EMPTY_CID;
+
         // セレクトボックスにクラブ一覧を設定する
-        createClubSelectBox(pageData['clubs']);
+        var defaultCid = createClubSelectBox(pageData['clubs'], clubId);
 
         // 先頭のクラブをクラブデータに設定する
-        createClubData(pageData['clubs'], pageData['players'], pageData['clubs'][0]['cid']);
+        createClubData(pageData['clubs'], pageData['players'], defaultCid);
 
         // 公示の設定
         appendTransfer(pageData['transfers'], "#transfer-table", "#transfer-progress");
@@ -67,18 +78,24 @@ function refreshClubData(pageData, param) {
 
 /**
  * クラブ選択ボックスの初期化
- * @param {} clubs 
+ * @param {json} clubs クラブ一覧JSON
+ * @returns 初期値に設定したクラブID
  */
-function createClubSelectBox(clubs) {
+function createClubSelectBox(clubs, cid) {
     $('select[name="club-data"]').html("");
+    var defaultCid = clubs[0]['cid'];
     for (const i in clubs) {
         const club = clubs[i];
         var division = club['division'] === 'YKSI' ? '【ユクシ】' : '【チャレンジ】';
+        var isDefaultClub = club['cid'] == cid ? 'selected' : '';
         $('select[name="club-data"]').append(`
-                <option value="${club['cid']}" label="${division + club['clubHpName']}"></option>
-            `);
+            <option value="${club['cid']}" label="${division + club['clubHpName']}" ${isDefaultClub}></option>
+        `);
+        if (club['cid'] == cid) {
+            defaultCid = club['cid'];
+        }
     }
-    $('select[name="club-data"]').selectedIndex = 0;
+    return defaultCid;
 }
 
 function createClubData(clubs, players, cid) {
