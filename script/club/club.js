@@ -1,6 +1,8 @@
 // データ取得先スプレッドシートAPIURL
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74uBMyiS7zG2tWl6ew5MDU8Rdqr8ErfIVhMoRakEY6iB1i63tg/exec";
 const EMPTY_CID = "CZZ";
+const TH_TAG_FROM = `<th class="is-primary is-size-7" align="center">`;
+const TH_TAG_TO = `</th>`;
 
 (function ($) {
     /**
@@ -19,7 +21,6 @@ const EMPTY_CID = "CZZ";
         let params = url.searchParams;
         // 画面初期表示
         localStorage.clear();
-        console.log(params.get('cid'));
         initDisplay(params.get('cid'));
 
         // クラブ選択時
@@ -53,27 +54,30 @@ function initDisplay(cid) {
         localStorage.setItem('pageDataStringify', datasStringify);
         var pageData = JSON.parse(datasStringify);
 
-        var clubId = (convertClubFromCid(cid) != "") ? cid : EMPTY_CID;
-
         // セレクトボックスにクラブ一覧を設定する
+        var clubId = (convertClubFromCid(cid) != "") ? cid : EMPTY_CID;
         var defaultCid = createClubSelectBox(pageData['clubs'], clubId);
 
-        // 先頭のクラブをクラブデータに設定する
-        createClubData(pageData['clubs'], pageData['players'], defaultCid);
-
-        // 公示の設定
+        // データ設定
+        createClubData(
+            pageData['clubs'], pageData['players'], pageData['scheduleYksi'], pageData['scheduleKaksi'], defaultCid);
         appendTransfer(pageData['transfers'], "#transfer-table", "#transfer-progress");
-
-        // FAの設定
         appendFreeAgents(pageData['fas'], "#free-agents", "#free-agents-progress", "is-light");
 
+        // プログレスバーの初期化
         $('#club-progress').html("");
     });
 }
 
+/**
+ * クラブ情報エリアの再設定
+ * @param {json} pageData ページ全体データ 
+ * @param {*} param リクエストパラメータ
+ */
 function refreshClubData(pageData, param) {
     var cid = param['cid'];
-    createClubData(pageData['clubs'], pageData['players'], cid);
+    createClubData(
+        pageData['clubs'], pageData['players'], pageData['scheduleYksi'], pageData['scheduleKaksi'], cid);
 }
 
 /**
@@ -98,36 +102,55 @@ function createClubSelectBox(clubs, cid) {
     return defaultCid;
 }
 
-function createClubData(clubs, players, cid) {
+/**
+ * クラブ情報エリアの設定
+ * @param {json} clubs クラブ情報 
+ * @param {json} players 選手情報
+ * @param {json} scheduleYksi ユクシ試合情報
+ * @param {json} scheduleKaksi チャレンジ試合情報
+ * @param {string} cid クラブID
+ */
+function createClubData(clubs, players, scheduleYksi, scheduleKaksi, cid) {
     // クラブをフィルターする
     var club = clubs.filter(function (j) {
         return j.cid == cid;
     })[0];
 
+    // ディビジョン判別フラグ
     var isYksi = club['division'] == 'YKSI'
+    var isKaksi = club['division'] == 'KAKSI'
 
-    var division = isYksi ? "モルック関東プライムリーグユクシ" : "モルック関東プライムリーグチャレンジ";
+    // クラブ情報の設定
+    appendClub(club, cid, isYksi, isKaksi);
+    // 試合一覧の設定
+    appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi);
+    // 選手一覧の設定
+    appendPlayers(players, cid, isYksi);
+}
 
+/**
+ * クラブ情報の設定
+ * @param {json} club クラブ情報
+ * @param {string} cid ページで選択中のクラブID
+ * @param {boolean} isYksi クラブがユクシ所属である
+ * @param {boolean} isKaksi クラブがチャレンジ所属である
+ */
+function appendClub(club, cid, isYksi, isKaksi) {
+
+    // クラブ名・アイコン
+    var divisionName = isYksi ? "モルック関東プライムリーグユクシ" : "モルック関東プライムリーグチャレンジ";
+    $('#club-name').html(club['clubHpName']);
+    $('#club-division').html(divisionName);
+    $('#club-image').html(`
+        <img class="" src="../asset/club/club_${club['code']}.png" alt="picture of ${club['code']}" />`);
+
+    // 今シーズンデータの設定
     var currentRank = isYksi ? club['yksiCurrentRank'] : club['kaksiCurrentRank'];
     var qhPer = isYksi ? (Math.round(club['qhPer'] * 100 * 10) / 10).toFixed(1) + "%" : "";
     var faPer = isYksi ? (Math.round(club['faPer'] * 100 * 10) / 10).toFixed(1) + "%" : "";
     var opt = isYksi ? (Math.round(club['opt'] * 100) / 100).toFixed(2) + "" : "";
     var attackwin = isYksi ? Math.round(club['attackSetWinPer'] * 100 * 1) / 1 + "%" : "";
     var defencewin = isYksi ? Math.round(club['diffenceSetWinPer'] * 100 * 1) / 1 + "%" : "";
-
-    var colerCode = club['colorCode'].substr(-6);
-    var hasTotalWin = (club['totalWin'] + club['totalLose'] + club['totalDraw']) > 0;
-    var totalWin = hasTotalWin ? `${club['totalWin']}勝 ${club['totalLose']}敗 ${club['totalDraw']}分` : "";
-    var totalHomeWin = hasTotalWin ? `${club['totalHomeWin']}勝 ${club['totalHomeLose']}敗 ${club['totalHomeDraw']}分` : "";
-    var totalAwayWin = hasTotalWin ? `${club['totalAwayWin']}勝 ${club['totalAwayLose']}敗 ${club['totalAwayDraw']}分` : "";
-
-    // タイトル
-    $('#club-name').html(club['clubHpName']);
-    $('#club-division').html(division);
-    $('#club-image').html(`
-        <img class="" src="../asset/club/club_${club['code']}.png" alt="picture of ${club['code']}" />`);
-
-    // 今シーズン
     $('#club-currentrank').html(`
             ${currentRank} 位（
             <strong class="has-text-success">${club['win']}W</strong>-<strong class="has-text-danger">${club['lose']}L</strong>-${club['draw']}D
@@ -141,7 +164,12 @@ function createClubData(clubs, players, cid) {
     $('#club-attackwin').html(attackwin);
     $('#club-defencewin').html(defencewin);
 
-    // 通算
+    // 通算データの設定
+    var colerCode = club['colorCode'].substr(-6);
+    var hasTotalWin = (club['totalWin'] + club['totalLose'] + club['totalDraw']) > 0;
+    var totalWin = hasTotalWin ? `${club['totalWin']}勝 ${club['totalLose']}敗 ${club['totalDraw']}分` : "";
+    var totalHomeWin = hasTotalWin ? `${club['totalHomeWin']}勝 ${club['totalHomeLose']}敗 ${club['totalHomeDraw']}分` : "";
+    var totalAwayWin = hasTotalWin ? `${club['totalAwayWin']}勝 ${club['totalAwayLose']}敗 ${club['totalAwayDraw']}分` : "";
     $('#club-hometown').html(club['prefecture']);
     $('#club-pastrank').html(club['pastRank']);
     $('#club-color').html(`
@@ -151,23 +179,83 @@ function createClubData(clubs, players, cid) {
     $('#club-total-win').html(totalWin);
     $('#club-total-home-win').html(totalHomeWin);
     $('#club-total-away-win').html(totalAwayWin);
+}
 
-    // 選手のフィルター
+/**
+ * 試合一覧の設定
+ * @param {json} scheduleYksi ユクシ試合一覧
+ * @param {json} scheduleKaksi チャレンジ試合一覧
+ * @param {string} cid ページで選択中のクラブID 
+ * @param {boolean} isYksi ユクシ所属中である
+ * @param {boolean} isKaksi チャレンジ所属中である
+ */
+function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
+    // 自クラブの試合のみにフィルタする
+    var schedules = isYksi ? scheduleYksi : isKaksi ? scheduleKaksi : [];
+    if (schedules.length > 0) {
+        schedules = schedules.filter(function (j) {
+            return j.hcid == cid || j.acid == cid;
+        });
+    }
+    // ヘッダー
+    $("#club-games").html(`
+        <tr class="is-primary">
+            ${TH_TAG_FROM}節${TH_TAG_TO}
+            ${TH_TAG_FROM}日程${TH_TAG_TO}
+            ${TH_TAG_FROM}ホーム${TH_TAG_TO}
+            ${TH_TAG_FROM}結果${TH_TAG_TO}
+            ${TH_TAG_FROM}アウェイ${TH_TAG_TO}
+        </tr>
+    `);
+    // レコード
+    for (const i in schedules) {
+        const game = schedules[i];
+
+        var gamedate = (game['date']) ? new Date(game['date']).toLocaleDateString() : "";
+        var video = (game['videourl'] != "")
+            ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
+        var hcn = getClubNameTd(game['hcid'], game['hcn'], cid);
+        var result = `<a class="" href="../match?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a>`;
+        var resultClass = getResultClass(game, cid);
+        var acn = getClubNameTd(game['acid'], game['acn'], cid);
+        var hcnTdClass = "";
+        var acnTdClass = "";
+        $("#club-games").append(`
+            <tr>
+                <td class="is-size-7" align="right">${game['sec']}</td>
+                <td class="is-size-7" align="left">${gamedate}${video}</td>
+                <td class="is-size-7 ${hcnTdClass}" align="center">${hcn}</td>
+                <td class="is-size-7 ${resultClass}" align="center">${result}</td>
+                <td class="is-size-7 ${acnTdClass}" align="center">${acn}</td>
+            </tr>
+        `);
+    }
+}
+
+/**
+ * 
+ * @param {json} players 選手一覧
+ * @param {string} cid 選択中のクラブID
+ * @param {boolean} isYksi ユクシ所属である
+ */
+function appendPlayers(players, cid, isYksi) {
+    // 自クラブの選手のみにフィルター
     var ps = players.filter(function (p) {
         return p.cid == cid;
     })
+    // ヘッダーの設定
     $('#player-table').html(`
-            <tr class="is-primary">
-                <th class="is-primary is-size-7" align="center">選手</th>
-                <th class="is-primary is-size-7" align="center">GM</th>
-                <th class="is-primary is-size-7" align="center">SE</th>
-                <th class="is-primary is-size-7" align="center">MOR</th>
-                <th class="is-primary is-size-7" align="center">Q-N-F</th>
-                <th class="is-primary is-size-7" align="center">FIN</th>
-                <th class="is-primary is-size-7" align="center">OPT</th>
-                <th class="is-primary is-size-7" align="center">ABL</th>
-            </tr>
-        `);
+        <tr class="is-primary">
+            ${TH_TAG_FROM}選手${TH_TAG_TO}
+            ${TH_TAG_FROM}GM${TH_TAG_TO}
+            ${TH_TAG_FROM}SE${TH_TAG_TO}
+            ${TH_TAG_FROM}MOR${TH_TAG_TO}
+            ${TH_TAG_FROM}Q-N-F${TH_TAG_TO}
+            ${TH_TAG_FROM}FIN${TH_TAG_TO}
+            ${TH_TAG_FROM}OPT${TH_TAG_TO}
+            ${TH_TAG_FROM}ABL${TH_TAG_TO}
+        </tr>
+    `);
     for (const i in ps) {
         var player = ps[i];
         var game = isYksi ? player['game'] : "";
@@ -199,6 +287,50 @@ function createClubData(clubs, players, cid) {
     }
 }
 
+/**
+ * 試合結果CSSクラスの取得
+ */
+function getResultClass(game, cid) {
+    if (!game['isdone']) {
+        return "";
+    }
+    var isHome = (game['hcid'] == cid);
+    if (game['hsn'] == game['asn']) {
+        return "has-background-warning-80";
+    }
+    if (isHome && game['hsn'] > game['asn'] + 1) {
+        return "has-background-success-80";
+    }
+    if (!isHome && game['hsn'] + 1 < game['asn']) {
+        return "has-background-success-80";
+    }
+    if (game['hsn'] == game['asn'] || game['hsn'] - game['asn'] < 2 || game['asn'] - game['hsn'] < 2) {
+        return "has-background-danger-80";
+    }
+    return "";
+}
+
+/**
+ * クラブリンクの取得
+ * @param {string} cid リンク設定対象クラブID
+ * @param {string} cname クラブ名
+ * @param {string} selectedCid 選択中クラブID
+ * @returns 
+ */
+function getClubNameTd(cid, cname, selectedCid) {
+    if (cid == selectedCid) {
+        return cname;
+    } else {
+        return `<a href="../club?cid=${cid}" target="_blank">${cname}</a>`;
+    }
+}
+
+/**
+ * 公示・移籍情報の設定
+ * @param {json} datasJson 公示情報
+ * @param {string} tableId 対象テーブルHTMLタグID
+ * @param {string} progressId 対象プログレスバーHTMLタグID
+ */
 function appendTransfer(datasJson, tableId, progressId) {
     for (const i in datasJson) {
         const tf = datasJson[i];
@@ -219,6 +351,12 @@ function appendTransfer(datasJson, tableId, progressId) {
     $(progressId).empty();
 }
 
+/**
+ * FA情報の設定
+ * @param {json} datasJson FA一覧
+ * @param {string} tableId 対象テーブルHTMLタグID
+ * @param {string} progressId 対象プログレスバーHTMLタグID
+ */
 function appendFreeAgents(datasJson, tableId, progressId) {
     var appendStr = "";
     appendStr = appendStr + `

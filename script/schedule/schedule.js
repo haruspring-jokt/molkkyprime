@@ -75,10 +75,9 @@ function appendSchedule(datasJson, tableId, progressId, division) {
     for (const i in datasJson) {
         const game = datasJson[i];
         console.log(game);
-        var gamedate = "";
-        if (game['date']) {
-            gamedate = new Date(game['date']).toLocaleDateString();
-        }
+        var gamedate = (game['date']) ? new Date(game['date']).toLocaleDateString() : "";
+        var video = (game['videourl'] != "")
+                ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
         var hcn = `<a href="../club?cid=${game['hcid']}" target="_blank">${game['hcn']}</a>`;
         var acn = `<a href="../club?cid=${game['acid']}" target="_blank">${game['acn']}</a>`;
         var hcnTdClass = "";
@@ -96,7 +95,7 @@ function appendSchedule(datasJson, tableId, progressId, division) {
             `
             <tr>
             <td class="is-size-7" align="right">${game['sec']}</td>
-            <td class="is-size-7" align="left">${gamedate}</td>
+            <td class="is-size-7" align="left">${gamedate}${video}</td>
             <td class="is-size-7 ${hcnTdClass}" align="center">${hcn}</td>
             <td class="is-size-7" align="center"><a class="has-text-link" href="../match?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
             <td class="is-size-7 ${acnTdClass}" align="center">${acn}</td>
