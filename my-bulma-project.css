@@ -3082,7 +3082,8 @@ pre code {
 
 table td,
 table th {
-  vertical-align: top;
+  /* vertical-align: top; */
+  vertical-align: middle;
 }
 table td:not([align]),
 table th:not([align]) {
@@ -3956,7 +3957,8 @@ a.box:active {
   --bulma-content-pre-padding: 1.25em 1.5em;
   --bulma-content-table-cell-border: 1px solid var(--bulma-border);
   --bulma-content-table-cell-border-width: 0 0 1px;
-  --bulma-content-table-cell-padding: 0.5em 0.75em;
+  /* --bulma-content-table-cell-padding: 0.5em 0.75em; */
+  --bulma-content-table-cell-padding: 0.25em 0.25em;
   --bulma-content-table-cell-heading-color: var(--bulma-text-strong);
   --bulma-content-table-head-cell-border-width: 0 0 2px;
   --bulma-content-table-head-cell-color: var(--bulma-text-strong);
@@ -4098,7 +4100,8 @@ a.box:active {
   border: var(--bulma-content-table-cell-border);
   border-width: var(--bulma-content-table-cell-border-width);
   padding: var(--bulma-content-table-cell-padding);
-  vertical-align: top;
+  /* vertical-align: top; */
+  vertical-align: middle;
 }
 .content table th {
   color: var(--bulma-content-table-cell-heading-color);
@@ -4813,7 +4816,8 @@ div.icon-text {
   --bulma-table-cell-border-color: var(--bulma-border);
   --bulma-table-cell-border-style: solid;
   --bulma-table-cell-border-width: 0 0 1px;
-  --bulma-table-cell-padding: 0.5em 0.75em;
+  /* --bulma-table-cell-padding: 0.5em 0.75em; */
+  --bulma-table-cell-padding: 0.25em;
   --bulma-table-cell-heading-color: var(--bulma-text-strong);
   --bulma-table-cell-text-align: left;
   --bulma-table-head-cell-border-width: 0 0 2px;
@@ -4842,7 +4846,8 @@ div.icon-text {
   border-width: var(--bulma-table-cell-border-width);
   color: var(--bulma-table-color);
   padding: var(--bulma-table-cell-padding);
-  vertical-align: top;
+  /* vertical-align: top; */
+  vertical-align: middle;
 }
 .table td.is-white,
 .table th.is-white {

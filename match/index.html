@@ -68,6 +68,8 @@
                 <p id="match-season-name" class="content is-size-6"></p>
                 <p id="match-match-name" class="content is-size-6"></p>
 
+                <div id="match-progress"><progress class="progress is-small is-light" max="100"></progress></div>
+
                 <div class="content" style="text-align: left;">
                     <small class="is-size-7"><strong class="has-text-primary">HOME</strong></small>
                     <p id="" class="content is-size-5"><strong id="match-home-cname"></strong><br />
@@ -83,7 +85,7 @@
                 </div>
 
                 <div class="table-container content">
-                    <table id="match-result-table" class="table is-fullwidth is-bordered is-table-center match-table">
+                    <table id="match-result-table" class="table is-fullwidth is-bordered is-narrow is-table-center match-table">
                         <tr>
                             <th id="match-home-ccode" class="is-primary" align="center"><small
                                     class="is-size-7">HOME</small><br /></th>
@@ -97,6 +99,14 @@
             </div>
         </section>
 
+        <section class="section">
+            <div class="card content" id="card-result">
+            </div>
+            <div class="card content" id="card-before">
+            </div>
+            <div class="card content" id="card-after">
+            </div>
+        </section>
     </div>
 
     <!-- Footer -->

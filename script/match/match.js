@@ -41,8 +41,8 @@ function appendMatch(match) {
         `);
     }
 
-    var hcnfull = convertClubFromCid(row['hcid']);
-    var acnfull = convertClubFromCid(row['acid']);
+    var hcnfull = `<a href="../club?cid=${row['hcid']}" target=_blank>${convertClubFromCid(row['hcid'])}</a>`;
+    var acnfull = `<a href="../club?cid=${row['acid']}" target=_blank>${convertClubFromCid(row['acid'])}</a>`;
 
     var season = "";
     var spread = "";
@@ -84,14 +84,14 @@ function appendMatch(match) {
     var hset = convertSet(row['hsn'], row['hr']);
     var aset = convertSet(row['asn'], row['ar']);
 
-    var hp1 = convertPoint(row['hs1']);
-    var hp2 = convertPoint(row['hs2']);
-    var hp3 = convertPoint(row['hs3']);
-    var hp4 = convertPoint(row['hs4']);
-    var ap1 = convertPoint(row['as1']);
-    var ap2 = convertPoint(row['as2']);
-    var ap3 = convertPoint(row['as3']);
-    var ap4 = convertPoint(row['as4']);
+    var hp1 = convertPoint(row['hs1'], row['s1fin'], true);
+    var hp2 = convertPoint(row['hs2'], row['s2fin'], true);
+    var hp3 = convertPoint(row['hs3'], row['s3fin'], true);
+    var hp4 = convertPoint(row['hs4'], row['s4fin'], true);
+    var ap1 = convertPoint(row['as1'], row['s1fin'], false);
+    var ap2 = convertPoint(row['as2'], row['s2fin'], false);
+    var ap3 = convertPoint(row['as3'], row['s3fin'], false);
+    var ap4 = convertPoint(row['as4'], row['s4fin'], false);
 
     var setnum = Number(row['hsn']) + Number(row['asn']);
     let emptyTd = "<td></td>";
@@ -107,8 +107,8 @@ function appendMatch(match) {
         var ap8 = emptyTd;
     }
     if (setnum == 5) {
-        var hp5 = convertPoint(row['hs5']);
-        var ap5 = convertPoint(row['as5']);
+        var hp5 = convertPoint(row['hs5'], row['s5fin'], true);
+        var ap5 = convertPoint(row['as5'], row['s5fin'], false);
         var hp6 = emptyTd;
         var ap6 = emptyTd;
         var hp7 = emptyTd;
@@ -117,34 +117,34 @@ function appendMatch(match) {
         var ap8 = emptyTd;
     }
     if (setnum == 6) {
-        var hp5 = convertPoint(row['hs5']);
-        var ap5 = convertPoint(row['as5']);
-        var hp6 = convertPoint(row['hs6']);
-        var ap6 = convertPoint(row['as6']);
+        var hp5 = convertPoint(row['hs5'], row['s5fin'], true);
+        var ap5 = convertPoint(row['as5'], row['s5fin'], false);
+        var hp6 = convertPoint(row['hs6'], row['s6fin'], true);
+        var ap6 = convertPoint(row['as6'], row['s6fin'], false);
         var hp7 = emptyTd;
         var ap7 = emptyTd;
         var hp8 = emptyTd;
         var ap8 = emptyTd;
     }
     if (setnum == 7) {
-        var hp5 = convertPoint(row['hs5']);
-        var ap5 = convertPoint(row['as5']);
-        var hp6 = convertPoint(row['hs6']);
-        var ap6 = convertPoint(row['as6']);
-        var hp7 = convertPoint(row['hs7']);
-        var ap7 = convertPoint(row['as7']);
+        var hp5 = convertPoint(row['hs5'], row['s5fin'], true);
+        var ap5 = convertPoint(row['as5'], row['s5fin'], false);
+        var hp6 = convertPoint(row['hs6'], row['s6fin'], true);
+        var ap6 = convertPoint(row['as6'], row['s6fin'], false);
+        var hp7 = convertPoint(row['hs7'], row['s7fin'], true);
+        var ap7 = convertPoint(row['as7'], row['s7fin'], false);
         var hp8 = emptyTd;
         var ap8 = emptyTd;
     }
     if (setnum == 8) {
-        var hp5 = convertPoint(row['hs5']);
-        var ap5 = convertPoint(row['as5']);
-        var hp6 = convertPoint(row['hs6']);
-        var ap6 = convertPoint(row['as6']);
-        var hp7 = convertPoint(row['hs7']);
-        var ap7 = convertPoint(row['as7']);
-        var hp8 = convertPoint(row['hs8']);
-        var ap8 = convertPoint(row['as8']);
+        var hp5 = convertPoint(row['hs5'], row['s5fin'], true);
+        var ap5 = convertPoint(row['as5'], row['s5fin'], false);
+        var hp6 = convertPoint(row['hs6'], row['s6fin'], true);
+        var ap6 = convertPoint(row['as6'], row['s6fin'], false);
+        var hp7 = convertPoint(row['hs7'], row['s7fin'], true);
+        var ap7 = convertPoint(row['as7'], row['s7fin'], false);
+        var hp8 = convertPoint(row['hs8'], row['s8fin'], true);
+        var ap8 = convertPoint(row['as8'], row['s8fin'], false);
     }
     var homeQhPer = Math.round(row['homeqhper'] * 100) + "%";
     var homeFaPer = Math.round(row['homefaper'] * 100) + "%";
@@ -163,11 +163,11 @@ function appendMatch(match) {
             <tr>${hp7}<td class="is-size-6">7</td>${ap7}</tr>
             <tr>${hp8}<td class="is-size-6">8</td>${ap8}</tr>
             <tr>
-                <td class="is-size-6">${row['homethrow']}-<strong class="has-text-success">${row['homeqh']}</strong>-<strong class="has-text-danger">${row['homefault']}</strong><br/>
-                （<strong class="has-text-success">${homeQhPer}</strong>-<strong class="has-text-danger">${homeFaPer}</strong>）</td>
+                <td class="is-size-6" align="right">${row['homethrow']}-<strong class="has-text-success">${row['homeqh']}</strong>-<strong class="has-text-danger">${row['homefault']}</strong><br/>
+                (<strong class="has-text-success">${homeQhPer}</strong>-<strong class="has-text-danger">${homeFaPer}</strong>)</td>
                 <td>📊</td>
-                <td class="is-size-6">${row['awaythrow']}-<strong class="has-text-success">${row['awayqh']}</strong>-<strong class="has-text-danger">${row['awayfault']}</strong><br/>
-                （<strong class="has-text-success">${awayQhPer}</strong>-<strong class="has-text-danger">${awayFaPer}</strong>）</td>
+                <td class="is-size-6" align="left">${row['awaythrow']}-<strong class="has-text-success">${row['awayqh']}</strong>-<strong class="has-text-danger">${row['awayfault']}</strong><br/>
+                (<strong class="has-text-success">${awayQhPer}</strong>-<strong class="has-text-danger">${awayFaPer}</strong>)</td>
             </tr>
         `);
     }
@@ -176,6 +176,42 @@ function appendMatch(match) {
         <a href="${spread}" target="_blank">詳細はスプレッドシートへ</a><br/>
         <a href="${scoreSheetLink}" target="_blank">スコアシート画像へ（Googleドライブ）</a>
     `);
+
+    // image
+    if (row['resultimg'] != "") {
+        $("#card-result").html(`
+            <div class="card-image">
+                <figure class="image">
+                    <img class="is-rounded" src="${row['resultimg']}" alt="${row['gid']}_result" />
+                </figure>
+            </div>
+        `);
+    }
+
+    // image
+    if (row['beforeimg'] != "") {
+        $("#card-before").html(`
+            <div class="card-image">
+                <figure class="image">
+                    <img class="is-rounded" src="${row['beforeimg']}" alt="${row['gid']}_before" />
+                </figure>
+            </div>
+        `);
+    }
+
+    // image
+    if (row['afterimg'] != "") {
+        $("#card-after").html(`
+            <div class="card-image">
+                <figure class="image">
+                    <img class="is-rounded" src="${row['afterimg']}" alt="${row['gid']}_after" />
+                </figure>
+            </div>
+        `);
+    }
+
+    // プログレスバーの初期化
+    $('#match-progress').html("");
 }
 
 function convertSet(set, win) {
@@ -186,14 +222,18 @@ function convertSet(set, win) {
     }
 }
 
-function convertPoint(point) {
-    if (Number(point) == 50) {
-        return `<td class="has-background-success-80">50</td>`;
+function convertPoint(point, fin, isHome) {
+    var align = isHome ? "right" : "left";
+    var finisher = fin != "" ? `<small>（${fin}）</small>` : "";
+    if (Number(point) == 50 && isHome) {
+        return `<td class="has-background-success-80 is-size-7" align="${align}">${finisher}50</td>`;
+    } else if (Number(point) == 50 && !isHome) {
+        return `<td class="has-background-success-80 is-size-7" align="${align}">50${finisher}</td>`;
     } else if (Number(point) == 0) {
-        return `<td class="has-background-danger-80">0</td>`;
+        return `<td class="has-background-danger-80 is-size-7" align="${align}">0</td>`;
     } else if (point == "") {
-        return `<td class=""></td>`;
+        return `<td class="is-size-7" align="${align}"></td>`;
     } else {
-        return `<td class="">${point}</td>`;
+        return `<td class="is-size-7" align="${align}">${point}</td>`;
     }
 }

@@ -339,13 +339,13 @@ function appendTransfer(datasJson, tableId, progressId) {
             var color = (tf['division'] == "YKSI") ? "has-text-primary" : "has-text-success-40";
             var tfDate = new Date(tf['date']).toLocaleDateString();
             $(tableId).append(`
-                    <tr class="mkpl-player-row-1">
+                <tr class="mkpl-player-row-1">
                     <input type="hidden" name="transfer-id" value="${tf['id']}" /> 
                     <td class="is-size-7" align="left">${tfDate}</td>
                     <td class="is-size-7" align="left"><strong class="${color}">${division}</strong></td>
-                    <td class="is-size-6" align="left">${tf['title']}</td>
-                    </tr>
-                    `);
+                    <td class="is-size-7" align="left">${tf['title']}</td>
+                </tr>
+            `);
         }
     }
     $(progressId).empty();
@@ -363,7 +363,7 @@ function appendFreeAgents(datasJson, tableId, progressId) {
             <div class="table-container" id="">
                 <table class="table is-fullwidth is-narrow">
                 <tr>
-                    <th class="is-light" is-size-6">選手</th>
+                    <th class="is-light" is-size-7">選手</th>
                 </tr>
         `;
     for (const i in datasJson) {
