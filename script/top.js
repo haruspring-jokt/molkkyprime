@@ -117,11 +117,11 @@ function appendConstLinks() {
     // OPT説明
     $('#top-opt-detail').html(MolkkyPrimeConstants.optDetail);
 
-    MolkkyPrimeConstants.yksiClubSnsUrls.forEach(function(row) {
+    MolkkyPrimeConstants.yksiClubSnsUrls.forEach(function (row) {
         $('#top-yksi-club-links').append(`
             <li class="is-size-6"><a href="${row['url']}" target="_blank">${row['name']}</a></li>
         `);
-    })
+    });
 
 }
 
@@ -129,15 +129,12 @@ function appendConstLinks() {
  * ニュース設定
  */
 function appendNews(news) {
-    for (const i in news) {
-        var row = news[i];
+    news.forEach(function (row) {
         var date = new Date(row['date']).toLocaleDateString();
-        $('#news-list').append(
-            `
+        $('#news-list').append(`
             <li><a href="https://blog.jajapatatas.com/entry/${row['id']}" target="_blank">（${date}） ${row['title']}</a></li>
-            `
-        );
-    }
+        `);
+    });
     $("#news-progress").empty();
 }
 
@@ -148,14 +145,10 @@ function appendAward(datasJson, division) {
     var qhDatas = datasJson['qh'];
     var rank = 1;
     var tie = 0;
-    for (const i in qhDatas) {
-        if (i >= 10) {
-            break;
-        }
-        var row = qhDatas[i];
+    qhDatas.some(function (row, i) {
         var qhpro = (Math.round(row['qhpro'] * 100 * 100) / 100).toFixed(2) + "%";
         var qhByThrow = Math.floor(row['qh']) + "/" + Math.floor(row['throw']);
-        if (Number(i) > 0 && row['qhpro'] != Math.floor(qhDatas[Number(i) - 1]['qhpro'])) {
+        if (i > 0 && row['qhpro'] != Math.floor(qhDatas[i - 1]['qhpro'])) {
             rank = rank + tie;
             tie = 1;
         } else {
@@ -170,19 +163,17 @@ function appendAward(datasJson, division) {
             <td class="${SMALL_TEXT_SIZE}" align="right">${qhByThrow}</td>
             </tr>
         `);
-    }
+        return i >= 9;
+    });
 
     var faDatas = datasJson['fa'];
     rank = 1;
     tie = 0;
-    for (const i in faDatas) {
-        if (i >= 10) {
-            break;
-        }
+    faDatas.some(function (row, i) {
         var row = faDatas[i];
         var fapro = (Math.round(row['faupro'] * 100 * 100) / 100).toFixed(2) + "%";
         var throws = Math.floor(row['fault']) + "/" + Math.floor(row['throw']);
-        if (Number(i) > 0 && row['faupro'] != Math.floor(faDatas[Number(i) - 1]['faupro'])) {
+        if (i > 0 && row['faupro'] != Math.floor(faDatas[i - 1]['faupro'])) {
             rank = rank + tie;
             tie = 1;
         } else {
@@ -197,19 +188,17 @@ function appendAward(datasJson, division) {
             <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
             </tr>
         `);
-    }
+        return i >= 9;
+    });
 
     var optDatas = datasJson['opt'];
     rank = 1;
     tie = 0;
-    for (const i in optDatas) {
-        if (i >= 10) {
-            break;
-        }
+    optDatas.some(function (row, i) {
         var row = optDatas[i];
         var opt = (Math.round(row['opt'] * 100) / 100).toFixed(2);
         var throws = Math.floor(row['throw']);
-        if (Number(i) > 0 && row['opt'] != Math.floor(optDatas[Number(i) - 1]['opt'])) {
+        if (i > 0 && row['opt'] != Math.floor(optDatas[i - 1]['opt'])) {
             rank = rank + tie;
             tie = 1;
         } else {
@@ -224,23 +213,22 @@ function appendAward(datasJson, division) {
             <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
             </tr>
         `);
-    }
+        return i >= 9;
+    });
 
     var finDatas = datasJson['fin'];
     rank = 1;
     tie = 0;
-    for (const i in finDatas) {
-        if (i >= 10) {
-            break;
-        }
+    finDatas.some(function (row, i) {
         var row = finDatas[i];
         var finish = Math.floor(row['finish']);
-        if (Number(i) > 0 && finish != Math.floor(finDatas[Number(i) - 1]['finish'])) {
+        if (i > 0 && finish != Math.floor(finDatas[i - 1]['finish'])) {
             rank = rank + tie;
             tie = 1;
         } else {
             tie++;
         }
+        if (rank > 10) return;
         $("#" + division + "-award-fin").append(`
             <tr>
             <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
@@ -249,7 +237,7 @@ function appendAward(datasJson, division) {
             <td class="${SMALL_TEXT_SIZE}" align="right">${finish}</td>
             </tr>
         `);
-    }
+    });
 }
 
 /**
@@ -260,8 +248,7 @@ function appendAward(datasJson, division) {
  * @param {*} progressId 
  */
 function appendStandings(datasJson, tableId, progressId) {
-    for (const i in datasJson) {
-        const rank = datasJson[i];
+    datasJson.some(function (rank, i) {
         var ranknum = Number(rank['rank']);
         var club = rank['cname'];
         if (club.length > 16) {
@@ -280,7 +267,7 @@ function appendStandings(datasJson, tableId, progressId) {
             <td class="${SMALL_TEXT_SIZE}" align="right">${(Math.round(rank['setper'] * 100) / 100).toFixed(2)}</td>
             </tr>
         `);
-    }
+    });
     $(progressId).empty();
 }
 
@@ -292,8 +279,7 @@ function appendStandings(datasJson, tableId, progressId) {
  * @param {*} progressId 
  */
 function appendSchedule(datasJson, tableId, progressId, division) {
-    for (const i in datasJson) {
-        const game = datasJson[i];
+    datasJson.some(function (game, i) {
         var gamedate = "";
         if (game['date']) {
             gamedate = new Date(game['date']).toLocaleDateString();
@@ -326,6 +312,6 @@ function appendSchedule(datasJson, tableId, progressId, division) {
             </tr>
             `
         );
-    }
+    });
     $(progressId).empty();
 }

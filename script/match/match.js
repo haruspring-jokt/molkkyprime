@@ -43,9 +43,7 @@ function appendMatch(match) {
     var hcnfull = `<a href="../club?cid=${row['hcid']}" target=_blank>${convertClubFromCid(row['hcid'])}</a>`;
     var acnfull = `<a href="../club?cid=${row['acid']}" target=_blank>${convertClubFromCid(row['acid'])}</a>`;
 
-    var season = "";
-    var spread = "";
-    var scoreSheetLink = "";
+    var season, spread, scoreSheetLink = "";
     if (row['gid'].slice(0, 3) == "GCC") {
         season = MolkkyPrimeConstants.season202425SecondDivName;
         spread = MolkkyPrimeConstants.season202425SecondDivSheetUrl;
@@ -94,56 +92,17 @@ function appendMatch(match) {
 
     var setnum = Number(row['hsn']) + Number(row['asn']);
     let emptyTd = "<td></td>";
+    let points = {};
 
-    if (setnum == 4) {
-        var hp5 = emptyTd;
-        var ap5 = emptyTd;
-        var hp6 = emptyTd;
-        var ap6 = emptyTd;
-        var hp7 = emptyTd;
-        var ap7 = emptyTd;
-        var hp8 = emptyTd;
-        var ap8 = emptyTd;
-    }
-    if (setnum == 5) {
-        var hp5 = convertPoint(row['hs5'], row['s5fin'], true);
-        var ap5 = convertPoint(row['as5'], row['s5fin'], false);
-        var hp6 = emptyTd;
-        var ap6 = emptyTd;
-        var hp7 = emptyTd;
-        var ap7 = emptyTd;
-        var hp8 = emptyTd;
-        var ap8 = emptyTd;
-    }
-    if (setnum == 6) {
-        var hp5 = convertPoint(row['hs5'], row['s5fin'], true);
-        var ap5 = convertPoint(row['as5'], row['s5fin'], false);
-        var hp6 = convertPoint(row['hs6'], row['s6fin'], true);
-        var ap6 = convertPoint(row['as6'], row['s6fin'], false);
-        var hp7 = emptyTd;
-        var ap7 = emptyTd;
-        var hp8 = emptyTd;
-        var ap8 = emptyTd;
-    }
-    if (setnum == 7) {
-        var hp5 = convertPoint(row['hs5'], row['s5fin'], true);
-        var ap5 = convertPoint(row['as5'], row['s5fin'], false);
-        var hp6 = convertPoint(row['hs6'], row['s6fin'], true);
-        var ap6 = convertPoint(row['as6'], row['s6fin'], false);
-        var hp7 = convertPoint(row['hs7'], row['s7fin'], true);
-        var ap7 = convertPoint(row['as7'], row['s7fin'], false);
-        var hp8 = emptyTd;
-        var ap8 = emptyTd;
-    }
-    if (setnum == 8) {
-        var hp5 = convertPoint(row['hs5'], row['s5fin'], true);
-        var ap5 = convertPoint(row['as5'], row['s5fin'], false);
-        var hp6 = convertPoint(row['hs6'], row['s6fin'], true);
-        var ap6 = convertPoint(row['as6'], row['s6fin'], false);
-        var hp7 = convertPoint(row['hs7'], row['s7fin'], true);
-        var ap7 = convertPoint(row['as7'], row['s7fin'], false);
-        var hp8 = convertPoint(row['hs8'], row['s8fin'], true);
-        var ap8 = convertPoint(row['as8'], row['s8fin'], false);
+    // 初期化（すべて emptyTd）
+    for (let i = 1; i <= 8; i++) {
+        if (i <= setnum) {
+            points[`hp${i}`] = convertPoint(row[`hs${i}`], row[`s${i}fin`], true);
+            points[`ap${i}`] = convertPoint(row[`as${i}`], row[`s${i}fin`], false);
+        } else {
+            points[`hp${i}`] = emptyTd;
+            points[`ap${i}`] = emptyTd;
+        }
     }
     var homeQhPer = Math.round(row['homeqhper'] * 100) + "%";
     var homeFaPer = Math.round(row['homefaper'] * 100) + "%";
@@ -153,14 +112,14 @@ function appendMatch(match) {
     if (row['isdone'] == 1) {
         $('#match-result-table').append(`
             <tr>${hset}<th class="${MID_TEXT_SIZE}">S</th>${aset}</tr>
-            <tr>${hp1}<td class="${MID_TEXT_SIZE}">1</td>${ap1}</tr>
-            <tr>${hp2}<td class="${MID_TEXT_SIZE}">2</td>${ap2}</tr>
-            <tr>${hp3}<td class="${MID_TEXT_SIZE}">3</td>${ap3}</tr>
-            <tr>${hp4}<td class="${MID_TEXT_SIZE}">4</td>${ap4}</tr>
-            <tr>${hp5}<td class="${MID_TEXT_SIZE}">5</td>${ap5}</tr>
-            <tr>${hp6}<td class="${MID_TEXT_SIZE}">6</td>${ap6}</tr>
-            <tr>${hp7}<td class="${MID_TEXT_SIZE}">7</td>${ap7}</tr>
-            <tr>${hp8}<td class="${MID_TEXT_SIZE}">8</td>${ap8}</tr>
+            <tr>${points['hp1']}<td class="${MID_TEXT_SIZE}">1</td>${points['ap1']}</tr>
+            <tr>${points['hp2']}<td class="${MID_TEXT_SIZE}">2</td>${points['ap2']}</tr>
+            <tr>${points['hp3']}<td class="${MID_TEXT_SIZE}">3</td>${points['ap3']}</tr>
+            <tr>${points['hp4']}<td class="${MID_TEXT_SIZE}">4</td>${points['ap4']}</tr>
+            <tr>${points['hp5']}<td class="${MID_TEXT_SIZE}">5</td>${points['ap5']}</tr>
+            <tr>${points['hp6']}<td class="${MID_TEXT_SIZE}">6</td>${points['ap6']}</tr>
+            <tr>${points['hp7']}<td class="${MID_TEXT_SIZE}">7</td>${points['ap7']}</tr>
+            <tr>${points['hp8']}<td class="${MID_TEXT_SIZE}">8</td>${points['ap8']}</tr>
             <tr>
                 <td class="${MID_TEXT_SIZE}" align="right">${row['homethrow']}-<strong class="has-text-success">${row['homeqh']}</strong>-<strong class="has-text-danger">${row['homefault']}</strong><br/>
                 (<strong class="has-text-success">${homeQhPer}</strong>-<strong class="has-text-danger">${homeFaPer}</strong>)</td>

@@ -12,22 +12,20 @@ $(function () {
 });
 
 function appendConstLinks() {
+    var addImg = function(url, alt) {
+        return `<figure class="image is-16by9">
+            <img class="is-rounded" src="${url}" alt="${alt}" />
+        </figure>`;
+    };
+    const detailMsg = "詳細はスプレッドシートへ";
     // 画像
-    $('#yksi-card-image').html(`
-        <figure class="image is-16by9">
-            <img class="is-rounded" src="../asset/${MolkkyPrimeConstants.currentYksiCoverUrl}" alt="mkpl-yksi-cover" />
-        </figure>
-    `);
-    $('#kaksi-card-image').html(`
-        <figure class="image is-16by9">
-            <img class="is-rounded" src="../asset/${MolkkyPrimeConstants.currentKaksiCoverUrl}" alt="mkpl-kaksi-cover" />
-        </figure>
-    `);
+    $('#yksi-card-image').html(addImg(`../asset/${MolkkyPrimeConstants.currentYksiCoverUrl}`), "mkpl-yksi-cover");
+    $('#kaksi-card-image').html(addImg(`../asset/${MolkkyPrimeConstants.currentKaksiCoverUrl}`), "mkpl-kaksi-cover");
     // 順位表
     $('#list').append(`
         <p class="content is-size-7"><a
         href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
-        target="_blank">詳細はスプレッドシートへ</a></p>
+        target="_blank">${detailMsg}</a></p>
     `);
     // リーグ名
     $('#league-name-yksi').text(MolkkyPrimeConstants.curerntSeasonFirstDivName);
@@ -39,14 +37,13 @@ function appendConstLinks() {
     $('#top-yksi-schedule-link').html(`
         <p class="content is-size-7"><a
             href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
-            target="_blank">詳細はスプレッドシートへ</a></p>
+            target="_blank">${detailMsg}</a></p>
     `);
     $('#top-kaksi-schedule-link').html(`
         <p class="content is-size-7"><a
             href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
-            target="_blank">詳細はスプレッドシートへ</a></p>
+            target="_blank">${detailMsg}</a></p>
     `);
-
 }
 
 function fetchData() {
@@ -79,13 +76,12 @@ function fetchData() {
  * @param {*} progressId 
  */
 function appendStandings(datasJson, tableId, progressId) {
-    for (const i in datasJson) {
-        const rank = datasJson[i];
+    datasJson.some(function (rank, i) {
         var ranknum = Number(rank['rank']);
         var club = rank['cname'];
-        if (club.length > 16) {
+        if (club.length > 20) {
             // クラブ名が長い場合省略する
-            club = '<abbr title="' + rank['club'] + '">' + club.slice(0, 15) + '...' + '</abbr>';
+            club = '<abbr title="' + rank['club'] + '">' + club.slice(0, 19) + '...' + '</abbr>';
         }
         $(tableId).append(`
             <tr>
@@ -99,7 +95,7 @@ function appendStandings(datasJson, tableId, progressId) {
             <td class="${SMALL_TEXT_SIZE}" align="right">${(Math.round(rank['setper'] * 100) / 100).toFixed(2)}</td>
             </tr>
         `);
-    }
+    });
     $(progressId).empty();
 }
 
@@ -111,8 +107,7 @@ function appendStandings(datasJson, tableId, progressId) {
  * @param {*} progressId 
  */
 function appendSchedule(datasJson, tableId, progressId, division) {
-    for (const i in datasJson) {
-        const game = datasJson[i];
+    datasJson.some(function (game, i) {
         var gamedate = (game['date']) ? new Date(game['date']).toLocaleDateString() : "";
         var video = (game['videourl'] != "")
                 ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
@@ -140,7 +135,7 @@ function appendSchedule(datasJson, tableId, progressId, division) {
             </tr>
             `
         );
-    }
+    });
     $(progressId).empty();
 }
 

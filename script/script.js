@@ -94,11 +94,11 @@ class MolkkyPrimeConstants {
     static get season2023FirstDivSheetUrl() {
         return "https://docs.google.com/spreadsheets/d/1RWfsQh9StzwwF9hNnbIQ9e3LpPDu3tBJh--cpSwWix8/htmlview";
     }
-    
+
     // =================================================
     // シーズンスコアフォルダ管理
     // =================================================
-    
+
     static get season202426FirstDivScoreUrl() {
         return "";
     }
@@ -198,14 +198,14 @@ class MolkkyPrimeConstants {
     }
     static get yksiClubSnsUrls() {
         return [
-            {"url": "https://x.com/SLAPS_molkky", "name": "SLAPS Twitter"},
-            {"url": "https://x.com/mcjp_official", "name": "jaja patatas Twitter"},
-            {"url": "https://x.com/sugi_molkky", "name": "杉並エンジョイモルック Twitter"},
-            {"url": "https://x.com/fuchu_mol", "name": "Fuchu-möl White Horses Twitter"},
-            {"url": "https://x.com/lowkey_molkky", "name": "löwkey with うんとこどっこいしょ大学 Twitter"},
-            {"url": "https://x.com/Kestaa1013", "name": "Kestää Twitter"},
-            {"url": "https://x.com/NXG_molkky", "name": "NEXT GENERATIONS Twitter"},
-            {"url": "https://x.com/molkky634", "name": "武蔵野 Twitter"}
+            { "url": "https://x.com/SLAPS_molkky", "name": "SLAPS Twitter" },
+            { "url": "https://x.com/mcjp_official", "name": "jaja patatas Twitter" },
+            { "url": "https://x.com/sugi_molkky", "name": "杉並エンジョイモルック Twitter" },
+            { "url": "https://x.com/fuchu_mol", "name": "Fuchu-möl White Horses Twitter" },
+            { "url": "https://x.com/lowkey_molkky", "name": "löwkey with うんとこどっこいしょ大学 Twitter" },
+            { "url": "https://x.com/Kestaa1013", "name": "Kestää Twitter" },
+            { "url": "https://x.com/NXG_molkky", "name": "NEXT GENERATIONS Twitter" },
+            { "url": "https://x.com/molkky634", "name": "武蔵野 Twitter" }
         ];
     }
     static get currentYksiCoverUrl() {
@@ -213,6 +213,18 @@ class MolkkyPrimeConstants {
     }
     static get currentKaksiCoverUrl() {
         return "kaksi_cover.png";
+    }
+    static get youtube() {
+        return "https://youtube.com/@molkkyclanjajapatatas/";
+    }
+    static get twitter() {
+        return "https://x.com/molkkyprime";
+    }
+    static get suzuri() {
+        return "https://suzuri.jp/haruspring_jokt/";
+    }
+    static get mailContact() {
+        return "mailto:contact@molkkyprime.com";
     }
 
 
@@ -238,40 +250,24 @@ $(function () {
  * @returns クラブ名称
  */
 function convertClubFromCid(cid) {
-    switch (cid) {
-        case 'C01':
-            return "北関東ライラックス";
-        case 'C02':
-            return "SLAPS";
-        case 'C03':
-            return "jaja patatas";
-        case 'C04':
-            return "杉並エンジョイモルック";
-        case 'C05':
-            return "Fuchu-möl White Horses";
-        case 'C06':
-            return "löwkey with うんとこどっこいしょ大学";
-        case 'C07':
-            return "Kestää";
-        case 'C08':
-            return "NEXT GENERATIONS";
-        case 'C09':
-            return "田村淳の大人の小学校モルック部";
-        case 'C10':
-            return "武蔵野";
-        case 'C11':
-            return "さいたまぁず";
-        case 'C12':
-            return "にらそばとこくカレー";
-        case 'C13':
-            return "ブラッキーズ";
-        case 'C14':
-            return "コブラ団＋";
-        case 'C15':
-            return "Buddiesモルック部";
-        default:
-            return "";
-    }
+    const clubMap = new Map([
+        ['C01', "北関東ライラックス"],
+        ['C02', "SLAPS"],
+        ['C03', "jaja patatas"],
+        ['C04', "杉並エンジョイモルック"],
+        ['C05', "Fuchu-möl White Horses"],
+        ['C06', "löwkey with うんとこどっこいしょ大学"],
+        ['C07', "Kestää"],
+        ['C08', "NEXT GENERATIONS"],
+        ['C09', "田村淳の大人の小学校モルック部"],
+        ['C10', "武蔵野"],
+        ['C11', "さいたまぁず"],
+        ['C12', "にらそばとこくカレー"],
+        ['C13', "ブラッキーズ"],
+        ['C14', "コブラ団＋"],
+        ['C15', "Buddiesモルック部"]
+    ]);
+    return clubMap.get(cid) || "";
 }
 
 /**
@@ -288,9 +284,9 @@ function appendHeader() {
     var regulation = "./regulation/";
     var past202324 = "./past/202324/";
     var past2023 = "./past/2023/";
-    var twitter = "https://x.com/molkkyprime";
-    var youtube = "https://youtube.com/@molkkyclanjajapatatas/";
-    var suzuri = "https://suzuri.jp/haruspring_jokt/";
+    var twitter = MolkkyPrimeConstants.twitter;
+    var youtube = MolkkyPrimeConstants.youtube;
+    var suzuri = MolkkyPrimeConstants.suzuri;
 
     if (location.pathname != "/") {
         var addPath = "";
@@ -372,10 +368,10 @@ function appendFooter() {
     var regulation = "./regulation/";
     var past202324 = "./past/202324/";
     var past2023 = "./past/2023/";
-    var twitter = "https://x.com/molkkyprime";
-    var youtube = "https://youtube.com/@molkkyclanjajapatatas/";
-    var suzuri = "https://suzuri.jp/haruspring_jokt/";
-    var mail = "mailto:contact@molkkyprime.com";
+    var twitter = MolkkyPrimeConstants.twitter;
+    var youtube = MolkkyPrimeConstants.youtube;
+    var suzuri = MolkkyPrimeConstants.suzuri;
+    var mail = MolkkyPrimeConstants.mailContact;
 
     if (location.pathname != "/") {
         var addPath = "";

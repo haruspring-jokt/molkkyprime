@@ -105,8 +105,7 @@ function refreshClubData(pageData, param) {
 function createClubSelectBox(clubs, cid) {
     $('select[name="club-data"]').html("");
     var defaultCid = clubs[0]['cid'];
-    for (const i in clubs) {
-        const club = clubs[i];
+    clubs.some(function (club, i) {
         var division = club['division'] === MolkkyPrimeConstants.firstDivName ? '【ユクシ】' : '【チャレンジ】';
         var isDefaultClub = club['cid'] == cid ? 'selected' : '';
         $('select[name="club-data"]').append(`
@@ -115,7 +114,7 @@ function createClubSelectBox(clubs, cid) {
         if (club['cid'] == cid) {
             defaultCid = club['cid'];
         }
-    }
+    });
     return defaultCid;
 }
 
@@ -225,9 +224,7 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
         </tr>
     `);
     // レコード
-    for (const i in schedules) {
-        const game = schedules[i];
-
+    schedules.some(function (game, i) {
         var gamedate = (game['date']) ? new Date(game['date']).toLocaleDateString() : "";
         var video = (game['videourl'] != "")
             ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
@@ -246,7 +243,7 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
                 <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
             </tr>
         `);
-    }
+    });
 }
 
 /**
@@ -273,8 +270,7 @@ function appendPlayers(players, cid, isYksi) {
             ${TH_TAG_FROM}ABL${TH_TAG_TO}
         </tr>
     `);
-    for (const i in ps) {
-        var player = ps[i];
+    ps.some(function (player, i) {
         var game = isYksi ? player['game'] : "";
         var set = isYksi ? player['set'] : "";
         var mainOrder = isYksi ? player['mainOrder'] : "";
@@ -301,7 +297,7 @@ function appendPlayers(players, cid, isYksi) {
                 <td class="${SMALL_TEXT_SIZE}" align="right">${averageBlakePoint}</td>
             </tr>
         `);
-    }
+    });
 }
 
 /**
@@ -315,10 +311,7 @@ function getResultClass(game, cid) {
     if (game['hsn'] == game['asn']) {
         return "has-background-warning-80";
     }
-    if (isHome && game['hsn'] > game['asn'] + 1) {
-        return "has-background-success-80";
-    }
-    if (!isHome && game['hsn'] + 1 < game['asn']) {
+    if ((isHome && game['hsn'] > game['asn'] + 1) || (!isHome && game['hsn'] + 1 < game['asn'])) {
         return "has-background-success-80";
     }
     if (game['hsn'] == game['asn'] || game['hsn'] - game['asn'] < 2 || game['asn'] - game['hsn'] < 2) {
@@ -349,8 +342,7 @@ function getClubNameTd(cid, cname, selectedCid) {
  * @param {string} progressId 対象プログレスバーHTMLタグID
  */
 function appendTransfer(datasJson, tableId, progressId) {
-    for (const i in datasJson) {
-        const tf = datasJson[i];
+    datasJson.some(function (tf, i) {
         if (tf['isEnable']) {
             var division = (tf['division'] == "YKSI") ? MolkkyPrimeConstants.firstDivShortName : MolkkyPrimeConstants.secondDivShortName;
             var color = (tf['division'] == "YKSI") ? "has-text-primary" : "has-text-success-40";
@@ -364,7 +356,7 @@ function appendTransfer(datasJson, tableId, progressId) {
                 </tr>
             `);
         }
-    }
+    });
     $(progressId).empty();
 }
 
@@ -383,8 +375,7 @@ function appendFreeAgents(datasJson, tableId, progressId) {
                     <th class="is-light" ${SMALL_TEXT_SIZE}">選手</th>
                 </tr>
         `;
-    for (const i in datasJson) {
-        const fa = datasJson[i];
+    datasJson.some(function (fa, i) {
         var profile = "";
         if (fa['remark']) {
             profile = profile + fa['remark'];
@@ -406,7 +397,7 @@ function appendFreeAgents(datasJson, tableId, progressId) {
                     <td class="${SMALL_TEXT_SIZE}" align="left">${profile}</td>
                 </tr>
             `;
-    }
+    });
     appendStr = appendStr + `
             </table></div>
         `;
