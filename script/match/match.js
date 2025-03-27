@@ -1,4 +1,5 @@
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74uBMyiS7zG2tWl6ew5MDU8Rdqr8ErfIVhMoRakEY6iB1i63tg/exec";
+const SMALL_TEXT_SIZE = "is-size-7";
+const MID_TEXT_SIZE = "is-size-6";
 
 $(function () {
     /**
@@ -7,14 +8,12 @@ $(function () {
     // 試合結果取得
     let url = new URL(window.location.href);
     let params = url.searchParams;
-    console.log(params.get('gid'));
     fetchMatch(params.get('gid'));
 });
 
 function fetchMatch(gid) {
-    var url = SHEET_URL;
+    var url = MolkkyPrimeConstants.sheetUrl;
     url = url + "?api=MATCH&gid=" + gid;
-    console.log(url);
     $.ajax({
         url: url,
         type: 'GET',
@@ -48,25 +47,25 @@ function appendMatch(match) {
     var spread = "";
     var scoreSheetLink = "";
     if (row['gid'].slice(0, 3) == "GCC") {
-        season = "モルック関東プライムリーグチャレンジ 2024-2025";
-        spread = "https://docs.google.com/spreadsheets/d/1kBpGiuiLKyC_7OtfByiIjTSfkiraFLiXcfhg0M9IDp4/htmlview";
-        scoreSheetLink = "https://drive.google.com/drive/folders/10ROR9DwH0O1fm-EYdBkryKH1MOEDBJqf?usp=sharing"
+        season = MolkkyPrimeConstants.season202425SecondDivName;
+        spread = MolkkyPrimeConstants.season202425SecondDivSheetUrl;
+        scoreSheetLink = MolkkyPrimeConstants.season202425SecondDivScoreUrl;
     } else if (row['gid'].slice(0, 2) == "GC") {
-        season = "モルック関東プライムリーグ 2024-2025";
-        spread = "https://docs.google.com/spreadsheets/d/1tziwaA_nYHBd_0If1XpTobUFhOoJJ7Q06qs7Qnqavtg/htmlview";
-        scoreSheetLink = "https://drive.google.com/drive/folders/1yNpuiqhPSXbiiEwsa66W_jHh5C5Gy3fA?usp=sharing"
+        season = MolkkyPrimeConstants.season202425FirstDivName;
+        spread = MolkkyPrimeConstants.season202425FirstDivSheetUrl;
+        scoreSheetLink = MolkkyPrimeConstants.season202425FirstDivScoreUrl;
     } else if (row['gid'].slice(0, 2) == "BC") {
-        season = "モルック関東プライムリーグチャレンジ シーズン2 2023-2024";
-        spread = "https://docs.google.com/spreadsheets/d/1NB-nrZ2Rs3xWpekjWS3P5TA18-wWWp0wLZgiuEpVr2M/htmlview";
-        scoreSheetLink = "https://drive.google.com/drive/folders/1D6Dc_D-noOcRCZZ_8Uc3qwibHSDqnbqi?usp=sharing"
+        season = MolkkyPrimeConstants.season202324SecondDivName;
+        spread = MolkkyPrimeConstants.season202324SecondDivSheetUrl;
+        scoreSheetLink = MolkkyPrimeConstants.season202324SecondDivScoreUrl;
     } else if (row['gid'].slice(0, 1) == "B") {
-        season = "モルック関東プライムリーグ シーズン2 2023-2024";
-        spread = "https://docs.google.com/spreadsheets/d/1hewXb6NwdBJC-1seLhKNoy4SvC6ZVuZMzJhOllv6uaU/htmlview";
-        scoreSheetLink = "https://drive.google.com/drive/folders/1D6Dc_D-noOcRCZZ_8Uc3qwibHSDqnbqi?usp=sharing"
+        season = MolkkyPrimeConstants.season202324FirstDivName;
+        spread = MolkkyPrimeConstants.season202324FirstDivSheetUrl;
+        scoreSheetLink = MolkkyPrimeConstants.season202324FirstDivScoreUrl;
     } else if (row['gid'].slice(0, 1) == "A") {
-        season = "モルック関東プライムリーグ シーズン1 2023";
-        spread = "https://docs.google.com/spreadsheets/d/1RWfsQh9StzwwF9hNnbIQ9e3LpPDu3tBJh--cpSwWix8/htmlview";
-        scoreSheetLink = "https://drive.google.com/drive/folders/13pcmQw3qALGLyHxM4nRjQbF_pNfAiv5c?usp=sharing"
+        season = MolkkyPrimeConstants.season2023FirstDivName;
+        spread = MolkkyPrimeConstants.season2023FirstDivSheetUrl;
+        scoreSheetLink = MolkkyPrimeConstants.season2023FirstDivScoreUrl;
     }
     $("#match-season-name").append(season);
 
@@ -95,7 +94,7 @@ function appendMatch(match) {
 
     var setnum = Number(row['hsn']) + Number(row['asn']);
     let emptyTd = "<td></td>";
-    
+
     if (setnum == 4) {
         var hp5 = emptyTd;
         var ap5 = emptyTd;
@@ -153,20 +152,20 @@ function appendMatch(match) {
 
     if (row['isdone'] == 1) {
         $('#match-result-table').append(`
-            <tr>${hset}<th class="is-size-6">S</th>${aset}</tr>
-            <tr>${hp1}<td class="is-size-6">1</td>${ap1}</tr>
-            <tr>${hp2}<td class="is-size-6">2</td>${ap2}</tr>
-            <tr>${hp3}<td class="is-size-6">3</td>${ap3}</tr>
-            <tr>${hp4}<td class="is-size-6">4</td>${ap4}</tr>
-            <tr>${hp5}<td class="is-size-6">5</td>${ap5}</tr>
-            <tr>${hp6}<td class="is-size-6">6</td>${ap6}</tr>
-            <tr>${hp7}<td class="is-size-6">7</td>${ap7}</tr>
-            <tr>${hp8}<td class="is-size-6">8</td>${ap8}</tr>
+            <tr>${hset}<th class="${MID_TEXT_SIZE}">S</th>${aset}</tr>
+            <tr>${hp1}<td class="${MID_TEXT_SIZE}">1</td>${ap1}</tr>
+            <tr>${hp2}<td class="${MID_TEXT_SIZE}">2</td>${ap2}</tr>
+            <tr>${hp3}<td class="${MID_TEXT_SIZE}">3</td>${ap3}</tr>
+            <tr>${hp4}<td class="${MID_TEXT_SIZE}">4</td>${ap4}</tr>
+            <tr>${hp5}<td class="${MID_TEXT_SIZE}">5</td>${ap5}</tr>
+            <tr>${hp6}<td class="${MID_TEXT_SIZE}">6</td>${ap6}</tr>
+            <tr>${hp7}<td class="${MID_TEXT_SIZE}">7</td>${ap7}</tr>
+            <tr>${hp8}<td class="${MID_TEXT_SIZE}">8</td>${ap8}</tr>
             <tr>
-                <td class="is-size-6" align="right">${row['homethrow']}-<strong class="has-text-success">${row['homeqh']}</strong>-<strong class="has-text-danger">${row['homefault']}</strong><br/>
+                <td class="${MID_TEXT_SIZE}" align="right">${row['homethrow']}-<strong class="has-text-success">${row['homeqh']}</strong>-<strong class="has-text-danger">${row['homefault']}</strong><br/>
                 (<strong class="has-text-success">${homeQhPer}</strong>-<strong class="has-text-danger">${homeFaPer}</strong>)</td>
                 <td>📊</td>
-                <td class="is-size-6" align="left">${row['awaythrow']}-<strong class="has-text-success">${row['awayqh']}</strong>-<strong class="has-text-danger">${row['awayfault']}</strong><br/>
+                <td class="${MID_TEXT_SIZE}" align="left">${row['awaythrow']}-<strong class="has-text-success">${row['awayqh']}</strong>-<strong class="has-text-danger">${row['awayfault']}</strong><br/>
                 (<strong class="has-text-success">${awayQhPer}</strong>-<strong class="has-text-danger">${awayFaPer}</strong>)</td>
             </tr>
         `);
@@ -226,14 +225,14 @@ function convertPoint(point, fin, isHome) {
     var align = isHome ? "right" : "left";
     var finisher = fin != "" ? `<small>（${fin}）</small>` : "";
     if (Number(point) == 50 && isHome) {
-        return `<td class="has-background-success-80 is-size-7" align="${align}">${finisher}50</td>`;
+        return `<td class="has-background-success-80 ${SMALL_TEXT_SIZE}" align="${align}">${finisher}50</td>`;
     } else if (Number(point) == 50 && !isHome) {
-        return `<td class="has-background-success-80 is-size-7" align="${align}">50${finisher}</td>`;
+        return `<td class="has-background-success-80 ${SMALL_TEXT_SIZE}" align="${align}">50${finisher}</td>`;
     } else if (Number(point) == 0) {
-        return `<td class="has-background-danger-80 is-size-7" align="${align}">0</td>`;
+        return `<td class="has-background-danger-80 ${SMALL_TEXT_SIZE}" align="${align}">0</td>`;
     } else if (point == "") {
-        return `<td class="is-size-7" align="${align}"></td>`;
+        return `<td class="${SMALL_TEXT_SIZE}" align="${align}"></td>`;
     } else {
-        return `<td class="is-size-7" align="${align}">${point}</td>`;
+        return `<td class="${SMALL_TEXT_SIZE}" align="${align}">${point}</td>`;
     }
 }

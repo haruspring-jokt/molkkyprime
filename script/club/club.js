@@ -1,8 +1,8 @@
 // データ取得先スプレッドシートAPIURL
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74uBMyiS7zG2tWl6ew5MDU8Rdqr8ErfIVhMoRakEY6iB1i63tg/exec";
 const EMPTY_CID = "CZZ";
 const TH_TAG_FROM = `<th class="is-primary is-size-7" align="center">`;
 const TH_TAG_TO = `</th>`;
+const SMALL_TEXT_SIZE = "is-size-7";
 
 (function ($) {
     /**
@@ -16,6 +16,8 @@ const TH_TAG_TO = `</th>`;
         /**
          * ページ個別
          */
+        // 固定リンク設定
+        appendConstLinks();
         // リクエストパラメータにクラブIDがある場合
         let url = new URL(window.location.href);
         let params = url.searchParams;
@@ -31,19 +33,34 @@ const TH_TAG_TO = `</th>`;
             var param = {
                 'cid': selected
             }
-            var localData = localStorage.getItem('pageDataStringify');
+            var localData = localStorage.getItem('clubPageDataStringify');
             refreshClubData(JSON.parse(localData), param);
         });
     });
 
 }(window.jQuery));
 
+function appendConstLinks() {
+    $('#club-menu-list').append(`
+        <li><a href="${MolkkyPrimeConstants.clubPlayerSheetUrl}"
+        class="has-text-link is-size-7" target="_blank">詳細はスプレッドシートへ</a></li>
+    `);
+    $('#club-detail').append(`
+        <a href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
+                        target="_blank">詳細はスプレッドシートへ</a>
+    `);
+    $('#player-detail').append(`
+        <a href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
+                        target="_blank">詳細はスプレッドシートへ</a>
+    `);
+}
+
 /**
  * 画面初期表示
  * @param {string} cid クラブID
  */
 function initDisplay(cid) {
-    var url = SHEET_URL;
+    var url = MolkkyPrimeConstants.sheetUrl;
     url = url + "?api=CLUB";
     $.ajax({
         url: url,
@@ -51,7 +68,7 @@ function initDisplay(cid) {
         dataType: 'json',
     }).done(function (datas) {
         var datasStringify = JSON.stringify(datas);
-        localStorage.setItem('pageDataStringify', datasStringify);
+        localStorage.setItem('clubPageDataStringify', datasStringify);
         var pageData = JSON.parse(datasStringify);
 
         // セレクトボックスにクラブ一覧を設定する
@@ -90,7 +107,7 @@ function createClubSelectBox(clubs, cid) {
     var defaultCid = clubs[0]['cid'];
     for (const i in clubs) {
         const club = clubs[i];
-        var division = club['division'] === 'YKSI' ? '【ユクシ】' : '【チャレンジ】';
+        var division = club['division'] === MolkkyPrimeConstants.firstDivName ? '【ユクシ】' : '【チャレンジ】';
         var isDefaultClub = club['cid'] == cid ? 'selected' : '';
         $('select[name="club-data"]').append(`
             <option value="${club['cid']}" label="${division + club['clubHpName']}" ${isDefaultClub}></option>
@@ -117,8 +134,8 @@ function createClubData(clubs, players, scheduleYksi, scheduleKaksi, cid) {
     })[0];
 
     // ディビジョン判別フラグ
-    var isYksi = club['division'] == 'YKSI'
-    var isKaksi = club['division'] == 'KAKSI'
+    var isYksi = club['division'] == MolkkyPrimeConstants.firstDivName;
+    var isKaksi = club['division'] == MolkkyPrimeConstants.secondDivName;
 
     // クラブ情報の設定
     appendClub(club, cid, isYksi, isKaksi);
@@ -138,7 +155,7 @@ function createClubData(clubs, players, scheduleYksi, scheduleKaksi, cid) {
 function appendClub(club, cid, isYksi, isKaksi) {
 
     // クラブ名・アイコン
-    var divisionName = isYksi ? "モルック関東プライムリーグユクシ" : "モルック関東プライムリーグチャレンジ";
+    var divisionName = isYksi ? MolkkyPrimeConstants.firstDivFullName : MolkkyPrimeConstants.secondDivFullName;
     $('#club-name').html(club['clubHpName']);
     $('#club-division').html(divisionName);
     $('#club-image').html(`
@@ -155,7 +172,7 @@ function appendClub(club, cid, isYksi, isKaksi) {
             ${currentRank} 位（
             <strong class="has-text-success">${club['win']}W</strong>-<strong class="has-text-danger">${club['lose']}L</strong>-${club['draw']}D
             ）`);
-    $('#club-playernum').html(club['playerNum'] + " 人");
+    $('#club-playernum').html(club['currentPlayerNum'] + " 人");
     $('#club-4pgames').html(club['4playersGames'] + " 試合");
     $('#club-nopart').html(club['NotParticipatingPlayer']);
     $('#club-qhpar').html(qhPer);
@@ -222,11 +239,11 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
         var acnTdClass = "";
         $("#club-games").append(`
             <tr>
-                <td class="is-size-7" align="right">${game['sec']}</td>
-                <td class="is-size-7" align="left">${gamedate}${video}</td>
-                <td class="is-size-7 ${hcnTdClass}" align="center">${hcn}</td>
-                <td class="is-size-7 ${resultClass}" align="center">${result}</td>
-                <td class="is-size-7 ${acnTdClass}" align="center">${acn}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">${gamedate}${video}</td>
+                <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
+                <td class="${SMALL_TEXT_SIZE} ${resultClass}" align="center">${result}</td>
+                <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
             </tr>
         `);
     }
@@ -274,14 +291,14 @@ function appendPlayers(players, cid, isYksi) {
             ? (Math.round(player['averageBlakePoint'] * 10) / 10).toFixed(1) + "" : "";
         $('#player-table').append(`
             <tr>s
-                <td class="is-size-7" align="left">${player['playerName']}</td>
-                <td class="is-size-7" align="right">${game}</td>
-                <td class="is-size-7" align="right">${set}</td>
-                <td class="is-size-7" align="left">${mainOrder}</td>
-                <td class="is-size-7" align="left">${qhf}</td>
-                <td class="is-size-7" align="right">${fin}</td>
-                <td class="is-size-7" align="right">${popt}</td>
-                <td class="is-size-7" align="right">${averageBlakePoint}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">${player['playerName']}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${game}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${set}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">${mainOrder}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">${qhf}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${fin}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${popt}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${averageBlakePoint}</td>
             </tr>
         `);
     }
@@ -335,15 +352,15 @@ function appendTransfer(datasJson, tableId, progressId) {
     for (const i in datasJson) {
         const tf = datasJson[i];
         if (tf['isEnable']) {
-            var division = (tf['division'] == "YKSI") ? "リーグ" : "チャレンジ";
+            var division = (tf['division'] == "YKSI") ? MolkkyPrimeConstants.firstDivShortName : MolkkyPrimeConstants.secondDivShortName;
             var color = (tf['division'] == "YKSI") ? "has-text-primary" : "has-text-success-40";
             var tfDate = new Date(tf['date']).toLocaleDateString();
             $(tableId).append(`
                 <tr class="mkpl-player-row-1">
                     <input type="hidden" name="transfer-id" value="${tf['id']}" /> 
-                    <td class="is-size-7" align="left">${tfDate}</td>
-                    <td class="is-size-7" align="left"><strong class="${color}">${division}</strong></td>
-                    <td class="is-size-7" align="left">${tf['title']}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">${tfDate}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left"><strong class="${color}">${division}</strong></td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">${tf['title']}</td>
                 </tr>
             `);
         }
@@ -363,7 +380,7 @@ function appendFreeAgents(datasJson, tableId, progressId) {
             <div class="table-container" id="">
                 <table class="table is-fullwidth is-narrow">
                 <tr>
-                    <th class="is-light" is-size-7">選手</th>
+                    <th class="is-light" ${SMALL_TEXT_SIZE}">選手</th>
                 </tr>
         `;
     for (const i in datasJson) {
@@ -386,7 +403,7 @@ function appendFreeAgents(datasJson, tableId, progressId) {
                     <td class="is-size-6" align="left"><strong>${fa['pname']}</strong></td>
                 </tr>
                 <tr>
-                    <td class="is-size-7" align="left">${profile}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">${profile}</td>
                 </tr>
             `;
     }

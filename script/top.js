@@ -1,17 +1,18 @@
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzReUILfuAbo8yJrIzQ74uBMyiS7zG2tWl6ew5MDU8Rdqr8ErfIVhMoRakEY6iB1i63tg/exec";
+const SMALL_TEXT_SIZE = "is-size-7";
 
 $(function () {
     /**
      * ページ個別
      */
+    // 固定リンク設定
+    appendConstLinks();
     // 各種データ取得・設定
     fetchData();
 });
 
 function fetchData() {
-    var url = SHEET_URL;
+    var url = MolkkyPrimeConstants.sheetUrl;
     url = url + "?api=TOP";
-    console.log(url);
     $.ajax({
         url: url,
         type: 'GET',
@@ -25,14 +26,103 @@ function fetchData() {
         // 順位表1部
         appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress");
         // 日程1部
-        appendSchedule(datasJson['monthYksi'], '#yksi-monthly-schedule', "#yksi-schedule-progress", "YKSI");
+        appendSchedule(datasJson['monthYksi'], '#yksi-monthly-schedule', "#yksi-schedule-progress", MolkkyPrimeConstants.firstDivName);
         // 個人賞
         appendAward(datasJson['award'], "yksi");
         // 順位表2部
         appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress");
         // 日程2部
-        appendSchedule(datasJson['monthKaksi'], '#kaksi-monthly-schedule', "#kaksi-schedule-progress", "KAKSI");
+        appendSchedule(datasJson['monthKaksi'], '#kaksi-monthly-schedule', "#kaksi-schedule-progress", MolkkyPrimeConstants.secondDivName);
     });
+}
+
+/**
+ * 固定リンク設定
+ */
+function appendConstLinks() {
+    // 画像
+    $('#yksi-card-image').html(`
+        <figure class="image is-16by9">
+            <img class="is-rounded" src="./asset/${MolkkyPrimeConstants.currentYksiCoverUrl}" alt="mkpl-yksi-cover" />
+        </figure>
+    `);
+    $('#kaksi-card-image').html(`
+        <figure class="image is-16by9">
+            <img class="is-rounded" src="./asset/${MolkkyPrimeConstants.currentKaksiCoverUrl}" alt="mkpl-kaksi-cover" />
+        </figure>
+    `);
+
+    // 選手スタッフ向け共通リンク
+    $('#mkpl-top-common-links').html(`
+        <li class="is-size-6"><a href="./regulation/" target="_blank">規約</a></li>
+        <li class="is-size-6"><a
+                href="${MolkkyPrimeConstants.scoreSheetTemplateUrl}"
+                target="_blank">推奨スコアシート（PDF）</a></li>
+        <li class="is-size-6"><a
+                href="${MolkkyPrimeConstants.season202425FirstDivScoreUrl}"
+                target="_blank">
+                提出済みスコアシート保存フォルダ（Googleドライブ）
+            </a></li>
+        <li class="is-size-6"><a
+                href="${MolkkyPrimeConstants.clubPlayerSheetUrl}"
+                target="_blank">選手・クラブリスト（Googleスプレッドシート）</a></li>
+    `);
+
+    // ユクシ向けリンク
+    $('#mkpl-yksi-links').html(`
+        <li class="is-size-6"><a
+            href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
+            target="_blank">日程・結果・順位表スプレッドシート</a>
+        </li>
+        <li class="is-size-6"><a
+                href="${MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl}"
+                target="_blank">シーズンガイド（Googleプレゼンテーション）</a></li>
+        <li class="is-size-6"><a
+                href="${MolkkyPrimeConstants.allSeasonStatsSheetUrl}"
+                target="_blank">リーグ通算成績（Googleスプレッドシート）</a></li>
+    `);
+
+    // チャレンジ向けリンク
+    $('#mkpl-kaksi-links').html(`
+        <li class="is-size-6"><a
+            href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
+            target="_blank">日程・結果・順位表スプレッドシート</a>
+        </li>
+        <li class="is-size-6"><a
+            href="${MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl}"
+            target="_blank">シーズンガイド（Googleプレゼンテーション）</a></li>
+    `);
+
+    // ニュース一覧
+    $('#mkpl-news-links').html(`
+        <a href="${MolkkyPrimeConstants.newsLinks}" target="_blank">ニュース一覧へ</a>
+    `)
+
+    // 順位表説明
+    $('#mkpl-rank-rules-yksi').html(MolkkyPrimeConstants.rankRulesYksi);
+    $('#mkpl-rank-rules-kaksi').html(MolkkyPrimeConstants.rankRulesKaksi);
+
+    // 日程表説明
+    $('#top-yksi-schedule-link').html(`
+        <p class="content is-size-7"><a
+            href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
+            target="_blank">詳細はスプレッドシートへ</a></p>
+    `);
+    $('#top-kaksi-schedule-link').html(`
+        <p class="content is-size-7"><a
+            href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
+            target="_blank">詳細はスプレッドシートへ</a></p>
+    `);
+
+    // OPT説明
+    $('#top-opt-detail').html(MolkkyPrimeConstants.optDetail);
+
+    MolkkyPrimeConstants.yksiClubSnsUrls.forEach(function(row) {
+        $('#top-yksi-club-links').append(`
+            <li class="is-size-6"><a href="${row['url']}" target="_blank">${row['name']}</a></li>
+        `);
+    })
+
 }
 
 /**
@@ -73,11 +163,11 @@ function appendAward(datasJson, division) {
         }
         $("#" + division + "-award-qh").append(`
             <tr>
-            <td class="is-size-7" align="right">${rank}</td>
-            <td class="is-size-7" align="left">${row['pname']}</td>
-            <td class="is-size-7" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
-            <td class="is-size-7" align="right">${qhpro}</td>
-            <td class="is-size-7" align="right">${qhByThrow}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${qhpro}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${qhByThrow}</td>
             </tr>
         `);
     }
@@ -100,11 +190,11 @@ function appendAward(datasJson, division) {
         }
         $("#" + division + "-award-fa").append(`
             <tr>
-            <td class="is-size-7" align="right">${rank}</td>
-            <td class="is-size-7" align="left">${row['pname']}</td>
-            <td class="is-size-7" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
-            <td class="is-size-7" align="right">${fapro}</td>
-            <td class="is-size-7" align="right">${throws}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${fapro}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
             </tr>
         `);
     }
@@ -117,7 +207,7 @@ function appendAward(datasJson, division) {
             break;
         }
         var row = optDatas[i];
-        var opt = (Math.floor(row['opt'] * 100) / 100).toFixed(2);
+        var opt = (Math.round(row['opt'] * 100) / 100).toFixed(2);
         var throws = Math.floor(row['throw']);
         if (Number(i) > 0 && row['opt'] != Math.floor(optDatas[Number(i) - 1]['opt'])) {
             rank = rank + tie;
@@ -127,11 +217,11 @@ function appendAward(datasJson, division) {
         }
         $("#" + division + "-award-opt").append(`
             <tr>
-            <td class="is-size-7" align="right">${rank}</td>
-            <td class="is-size-7" align="left">${row['pname']}</td>
-            <td class="is-size-7" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
-            <td class="is-size-7" align="right">${opt}</td>
-            <td class="is-size-7" align="right">${throws}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${opt}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
             </tr>
         `);
     }
@@ -153,10 +243,10 @@ function appendAward(datasJson, division) {
         }
         $("#" + division + "-award-fin").append(`
             <tr>
-            <td class="is-size-7" align="right">${rank}</td>
-            <td class="is-size-7" align="left">${row['pname']}</td>
-            <td class="is-size-7" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
-            <td class="is-size-7" align="right">${finish}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${finish}</td>
             </tr>
         `);
     }
@@ -180,14 +270,14 @@ function appendStandings(datasJson, tableId, progressId) {
         }
         $(tableId).append(`
             <tr>
-            <td class="is-size-7" align="right">${ranknum}</td>
-            <td class="is-size-7"><a href="./club?cid=${rank['cid']}" target="_blank">${club}</a></td>
-            <td class="is-size-7" align="right">${rank['game']}</td>
-            <td class="is-size-7" align="right">${rank['winpoint']}</td>
-            <td class="is-size-7" align="right">${rank['win']}</td>
-            <td class="is-size-7" align="right">${rank['lose']}</td>
-            <td class="is-size-7" align="right">${rank['draw']}</td>
-            <td class="is-size-7" align="right">${(Math.floor(rank['setper'] * 100) / 100).toFixed(2)}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
+            <td class="${SMALL_TEXT_SIZE}"><a href="./club?cid=${rank['cid']}" target="_blank">${club}</a></td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['game']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['winpoint']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['win']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['lose']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['draw']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${(Math.round(rank['setper'] * 100) / 100).toFixed(2)}</td>
             </tr>
         `);
     }
@@ -204,7 +294,6 @@ function appendStandings(datasJson, tableId, progressId) {
 function appendSchedule(datasJson, tableId, progressId, division) {
     for (const i in datasJson) {
         const game = datasJson[i];
-        // console.log(game);
         var gamedate = "";
         if (game['date']) {
             gamedate = new Date(game['date']).toLocaleDateString();
@@ -212,7 +301,7 @@ function appendSchedule(datasJson, tableId, progressId, division) {
             gamedate = "日程調整中";
         }
         var video = (game['videourl'] != "")
-                ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
+            ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
         var hcn = `<a href="./club?cid=${game['hcid']}" target="_blank">${game['hcn']}</a>`;
         var acn = `<a href="./club?cid=${game['acid']}" target="_blank">${game['acn']}</a>`;
         var hcnTdClass = "";
@@ -229,11 +318,11 @@ function appendSchedule(datasJson, tableId, progressId, division) {
         $(tableId).append(
             `
             <tr>
-            <td class="is-size-7" align="right">${game['sec']}</td>
-            <td class="is-size-7" align="left">${gamedate}${video}</td>
-            <td class="is-size-7 ${hcnTdClass}" align="center">${hcn}</td>
-            <td class="is-size-7" align="center"><a class="has-text-link" href="./match?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
-            <td class="is-size-7 ${acnTdClass}" align="center">${acn}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left">${gamedate}${video}</td>
+            <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="center"><a class="has-text-link" href="./match?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
+            <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
             </tr>
             `
         );
