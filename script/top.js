@@ -1,243 +1,283 @@
 const SMALL_TEXT_SIZE = "is-size-7";
 
-$(function () {
+$(document).ready(() => {
     /**
      * ページ個別
      */
-    // 固定リンク設定
-    appendConstLinks();
-    // 各種データ取得・設定
-    fetchData();
+    initializePage();
 });
 
-function fetchData() {
-    var url = MolkkyPrimeConstants.sheetUrl;
-    url = url + "?api=TOP";
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
-        var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
-
-        // ニュース
-        appendNews(datasJson['news']);
-        // 順位表1部
-        appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress");
-        // 日程1部
-        appendSchedule(datasJson['monthYksi'], '#yksi-monthly-schedule', "#yksi-schedule-progress", MolkkyPrimeConstants.firstDivName);
-        // 個人賞
-        appendAward(datasJson['award'], "yksi");
-        // 順位表2部
-        appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress");
-        // 日程2部
-        appendSchedule(datasJson['monthKaksi'], '#kaksi-monthly-schedule', "#kaksi-schedule-progress", MolkkyPrimeConstants.secondDivName);
-    });
-}
+/**
+ * ページの初期化処理
+ */
+const initializePage = () => {
+    setupConstLinks();
+    loadData();
+};
 
 /**
  * 固定リンク設定
  */
-function appendConstLinks() {
-    // 画像
-    $('#yksi-card-image').html(`
-        <figure class="image is-16by9">
-            <img class="is-rounded" src="./asset/${MolkkyPrimeConstants.currentYksiCoverUrl}" alt="mkpl-yksi-cover" />
-        </figure>
-    `);
-    $('#kaksi-card-image').html(`
-        <figure class="image is-16by9">
-            <img class="is-rounded" src="./asset/${MolkkyPrimeConstants.currentKaksiCoverUrl}" alt="mkpl-kaksi-cover" />
-        </figure>
-    `);
+const setupConstLinks = () => {
+    appendConstLinks();
+};
 
-    // 選手スタッフ向け共通リンク
-    $('#mkpl-top-common-links').html(`
-        <li class="is-size-6"><a href="./regulation/" target="_blank">規約</a></li>
-        <li class="is-size-6"><a
-                href="${MolkkyPrimeConstants.scoreSheetTemplateUrl}"
-                target="_blank">推奨スコアシート（PDF）</a></li>
-        <li class="is-size-6"><a
-                href="${MolkkyPrimeConstants.season202425FirstDivScoreUrl}"
-                target="_blank">
-                提出済みスコアシート保存フォルダ（Googleドライブ）
-            </a></li>
-        <li class="is-size-6"><a
-                href="${MolkkyPrimeConstants.clubPlayerSheetUrl}"
-                target="_blank">選手・クラブリスト（Googleスプレッドシート）</a></li>
-    `);
+/**
+ * 各種データ取得・設定
+ */
+const loadData = () => {
+    fetchData()
+        .then(datasJson => processFetchedData(datasJson))
+        .catch(error => console.error("データ取得エラー:", error));
+};
 
-    // ユクシ向けリンク
-    $('#mkpl-yksi-links').html(`
-        <li class="is-size-6"><a
-            href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
-            target="_blank">日程・結果・順位表スプレッドシート</a>
-        </li>
-        <li class="is-size-6"><a
-                href="${MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl}"
-                target="_blank">シーズンガイド（Googleプレゼンテーション）</a></li>
-        <li class="is-size-6"><a
-                href="${MolkkyPrimeConstants.allSeasonStatsSheetUrl}"
-                target="_blank">リーグ通算成績（Googleスプレッドシート）</a></li>
-    `);
+/**
+ * データ取得
+ */
+const fetchData = () => {
+    const url = `${MolkkyPrimeConstants.sheetUrl}?api=TOP`;
+    return $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+    });
+};
 
-    // チャレンジ向けリンク
-    $('#mkpl-kaksi-links').html(`
-        <li class="is-size-6"><a
-            href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
-            target="_blank">日程・結果・順位表スプレッドシート</a>
-        </li>
-        <li class="is-size-6"><a
-            href="${MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl}"
-            target="_blank">シーズンガイド（Googleプレゼンテーション）</a></li>
-    `);
+/**
+ * 取得したデータの処理
+ */
+const processFetchedData = (datasJson) => {
+    appendNews(datasJson['news']);
+    appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress");
+    appendSchedule(datasJson['monthYksi'], '#yksi-monthly-schedule', "#yksi-schedule-progress", MolkkyPrimeConstants.firstDivName);
+    appendAward(datasJson['award'], "yksi");
+    appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress");
+    appendSchedule(datasJson['monthKaksi'], '#kaksi-monthly-schedule', "#kaksi-schedule-progress", MolkkyPrimeConstants.secondDivName);
+};
 
-    // ニュース一覧
+/**
+ * 固定リンク設定
+ */
+const appendConstLinks = () => {
+    setupImages();
+    setupLinks();
+    setupDescriptions();
+    setupClubLinks();
+};
+
+/**
+ * 各ディビジョンカバー画像設定
+ */
+const setupImages = () => {
+    const images = [
+        { id: "yksi-card-image", src: MolkkyPrimeConstants.currentYksiCoverUrl, alt: "mkpl-yksi-cover" },
+        { id: "kaksi-card-image", src: MolkkyPrimeConstants.currentKaksiCoverUrl, alt: "mkpl-kaksi-cover" }
+    ];
+    images.forEach(({ id, src, alt }) => {
+        $(`#${id}`).html(createImageHtml(src, alt));
+    });
+};
+
+const createImageHtml = (src, alt) => `
+    <figure class="image is-16by9">
+        <img class="is-rounded" src="./asset/${src}" alt="${alt}" />
+    </figure>
+`;
+
+/**
+ * ページ上部のリンク設定
+ */
+const setupLinks = () => {
+    const commonLinks = [
+        { href: "./regulation/", text: "規約" },
+        { href: MolkkyPrimeConstants.scoreSheetTemplateUrl, text: "推奨スコアシート（PDF）" },
+        { href: MolkkyPrimeConstants.season202425FirstDivScoreUrl, text: "提出済みスコアシート保存フォルダ（Googleドライブ）" },
+        { href: MolkkyPrimeConstants.clubPlayerSheetUrl, text: "選手・クラブリスト（Googleスプレッドシート）" }
+    ];
+    appendLinks('#mkpl-top-common-links', commonLinks);
+
+    const yksiLinks = [
+        { href: MolkkyPrimeConstants.season202425AllDivSheetUrl, text: "日程・結果・順位表スプレッドシート" },
+        { href: MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
+        { href: MolkkyPrimeConstants.allSeasonStatsSheetUrl, text: "リーグ通算成績（Googleスプレッドシート）" }
+    ];
+    appendLinks('#mkpl-yksi-links', yksiLinks);
+
+    const kaksiLinks = [
+        { href: MolkkyPrimeConstants.season202425AllDivSheetUrl, text: "日程・結果・順位表スプレッドシート" },
+        { href: MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" }
+    ];
+    appendLinks('#mkpl-kaksi-links', kaksiLinks);
+
     $('#mkpl-news-links').html(`
         <a href="${MolkkyPrimeConstants.newsLinks}" target="_blank">ニュース一覧へ</a>
-    `)
+    `);
+};
 
-    // 順位表説明
+/**
+ * ページ上部のリンク設定
+ * @param {string} containerId 
+ * @param {map} links 
+ */
+const appendLinks = (containerId, links) => {
+    $(containerId).html(links.map(({ href, text }) =>
+        `<li class="is-size-6"><a href="${href}" target="_blank">${text}</a></li>`
+    ).join(""));
+};
+
+/**
+ * 説明文設定
+ */
+const setupDescriptions = () => {
     $('#mkpl-rank-rules-yksi').html(MolkkyPrimeConstants.rankRulesYksi);
     $('#mkpl-rank-rules-kaksi').html(MolkkyPrimeConstants.rankRulesKaksi);
 
-    // 日程表説明
-    $('#top-yksi-schedule-link').html(`
-        <p class="content is-size-7"><a
-            href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
-            target="_blank">詳細はスプレッドシートへ</a></p>
-    `);
-    $('#top-kaksi-schedule-link').html(`
-        <p class="content is-size-7"><a
-            href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
-            target="_blank">詳細はスプレッドシートへ</a></p>
-    `);
+    $('#top-yksi-schedule-link').html(createDescriptionHtml(MolkkyPrimeConstants.season202425AllDivSheetUrl));
+    $('#top-kaksi-schedule-link').html(createDescriptionHtml(MolkkyPrimeConstants.season202425AllDivSheetUrl));
 
-    // OPT説明
     $('#top-opt-detail').html(MolkkyPrimeConstants.optDetail);
+};
 
-    MolkkyPrimeConstants.yksiClubSnsUrls.forEach(function (row) {
+/**
+ * スプレッドシートリンク生成
+ * @param {string} url 
+ * @returns スプレッドシートリンクタグ
+ */
+const createDescriptionHtml = (url) => `
+    <p class="content is-size-7"><a href="${url}" target="_blank">詳細はスプレッドシートへ</a></p>
+`;
+
+/**
+ * クラブリンク設定
+ */
+const setupClubLinks = () => {
+    MolkkyPrimeConstants.yksiClubSnsUrls.forEach(row => {
         $('#top-yksi-club-links').append(`
             <li class="is-size-6"><a href="${row['url']}" target="_blank">${row['name']}</a></li>
         `);
     });
-
-}
+};
 
 /**
  * ニュース設定
  */
-function appendNews(news) {
-    news.forEach(function (row) {
-        var date = new Date(row['date']).toLocaleDateString();
+const appendNews = (news) => {
+    news.forEach(row => {
+        const date = new Date(row['date']).toLocaleDateString();
         $('#news-list').append(`
             <li><a href="https://blog.jajapatatas.com/entry/${row['id']}" target="_blank">（${date}） ${row['title']}</a></li>
         `);
     });
     $("#news-progress").empty();
-}
+};
 
 /**
  * 個人賞設定
  */
 function appendAward(datasJson, division) {
-    var qhDatas = datasJson['qh'];
-    var rank = 1;
-    var tie = 0;
-    qhDatas.some(function (row, i) {
-        var qhpro = (Math.round(row['qhpro'] * 100 * 100) / 100).toFixed(2) + "%";
-        var qhByThrow = Math.floor(row['qh']) + "/" + Math.floor(row['throw']);
-        if (i > 0 && row['qhpro'] != Math.floor(qhDatas[i - 1]['qhpro'])) {
-            rank = rank + tie;
+
+    // QH賞
+    const qhDatas = datasJson['qh'];
+    let rank = 1;
+    let tie = 0;
+    const qhRowsHtml = qhDatas.slice(0, 10).map((row, i) => {
+        const qhpro = `${(row['qhpro'] * 100).toFixed(2)}%`;
+        const qhByThrow = `${Math.floor(row['qh'])}/${Math.floor(row['throw'])}`;
+        if (i > 0 && (row['qhpro'] < qhDatas[i - 1]['qhpro'])) {
+            rank += tie;
             tie = 1;
         } else {
             tie++;
         }
-        $("#" + division + "-award-qh").append(`
+        return `
             <tr>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${qhpro}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${qhByThrow}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a>
+                </td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${qhpro}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${qhByThrow}</td>
             </tr>
-        `);
-        return i >= 9;
-    });
+        `;
+    }).join("");
+    $(`#${division}-award-qh`).append(qhRowsHtml);
 
-    var faDatas = datasJson['fa'];
+    // FA賞
+    const faDatas = datasJson['fa'];
     rank = 1;
     tie = 0;
-    faDatas.some(function (row, i) {
-        var row = faDatas[i];
-        var fapro = (Math.round(row['faupro'] * 100 * 100) / 100).toFixed(2) + "%";
-        var throws = Math.floor(row['fault']) + "/" + Math.floor(row['throw']);
-        if (i > 0 && row['faupro'] != Math.floor(faDatas[i - 1]['faupro'])) {
-            rank = rank + tie;
+    const faRowsHtml = faDatas.slice(0, 10).map((row, i) => {
+        const fapro = `${(row['faupro'] * 100).toFixed(2)}%`;
+        const throws = `${Math.floor(row['fault'])}/${Math.floor(row['throw'])}`;
+        if (i > 0 && (row['faupro'] > faDatas[i - 1]['faupro'])) {
+            rank += tie;
             tie = 1;
         } else {
             tie++;
         }
-        $("#" + division + "-award-fa").append(`
+        return `
             <tr>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${fapro}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${fapro}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
             </tr>
-        `);
-        return i >= 9;
-    });
+        `;
+    }).join("");
+    $(`#${division}-award-fa`).append(faRowsHtml);
 
-    var optDatas = datasJson['opt'];
+    // OPT
+    const optDatas = datasJson["opt"];
     rank = 1;
     tie = 0;
-    optDatas.some(function (row, i) {
-        var row = optDatas[i];
-        var opt = (Math.round(row['opt'] * 100) / 100).toFixed(2);
-        var throws = Math.floor(row['throw']);
-        if (i > 0 && row['opt'] != Math.floor(optDatas[i - 1]['opt'])) {
-            rank = rank + tie;
+    const optRowsHtml = optDatas.slice(0, 10).map((row, i) => {
+        const opt = (Math.round(row["opt"] * 100) / 100).toFixed(2);
+        const throws = Math.floor(row["throw"]);
+        if (i > 0 && (row["opt"] < optDatas[i - 1]["opt"])) {
+            rank += tie;
             tie = 1;
         } else {
             tie++;
         }
-        $("#" + division + "-award-opt").append(`
+        return `
             <tr>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${opt}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">${row["pname"]}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <a href="./club?cid=${row["cid"]}" target="_blank">${row["cname"]}</a></td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${opt}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
             </tr>
-        `);
-        return i >= 9;
-    });
+        `;
+    }).join("");
+    $(`#${division}-award-opt`).append(optRowsHtml);
 
-    var finDatas = datasJson['fin'];
+    // finish
+    const finDatas = datasJson['fin'];
     rank = 1;
     tie = 0;
-    finDatas.some(function (row, i) {
-        var row = finDatas[i];
-        var finish = Math.floor(row['finish']);
-        if (i > 0 && finish != Math.floor(finDatas[i - 1]['finish'])) {
+    const finRowsHtml = finDatas.map((row, i) => {
+        const finish = Math.floor(row['finish']);
+        if (i > 0 && finish < finDatas[i - 1]['finish']) {
             rank = rank + tie;
             tie = 1;
         } else {
             tie++;
         }
-        if (rank > 10) return;
-        $("#" + division + "-award-fin").append(`
+        if (rank > 10) { return };
+        return `
             <tr>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${finish}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${finish}</td>
             </tr>
-        `);
-    });
+        `;
+    }).join("");
+    $(`#${division}-award-fin`).append(finRowsHtml);
 }
 
 /**
@@ -248,26 +288,27 @@ function appendAward(datasJson, division) {
  * @param {*} progressId 
  */
 function appendStandings(datasJson, tableId, progressId) {
-    datasJson.some(function (rank, i) {
-        var ranknum = Number(rank['rank']);
-        var club = rank['cname'];
-        if (club.length > 16) {
-            // クラブ名が長い場合省略する
-            club = '<abbr title="' + rank['club'] + '">' + club.slice(0, 15) + '...' + '</abbr>';
-        }
-        $(tableId).append(`
+    const rowsHtml = datasJson.map((rank) => {
+        const ranknum = Number(rank["rank"]);
+        // クラブ名称は長い場合省略する
+        let club = rank['cname'].length <= 16 ? rank["cname"]
+            : `<abbr title="${rank["club"]}">${rank['cname'].slice(0, 15)}...</abbr>`;
+        return `
             <tr>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
-            <td class="${SMALL_TEXT_SIZE}"><a href="./club?cid=${rank['cid']}" target="_blank">${club}</a></td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['game']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['winpoint']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['win']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['lose']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['draw']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${(Math.round(rank['setper'] * 100) / 100).toFixed(2)}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
+                <td class="${SMALL_TEXT_SIZE}">
+                    <a href="./club?cid=${rank["cid"]}" target="_blank">${club}</a>
+                </td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["game"]}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["winpoint"]}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["win"]}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["lose"]}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["draw"]}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${(rank["setper"]).toFixed(2)}</td>
             </tr>
-        `);
-    });
+        `;
+    }).join("");
+    $(tableId).append(rowsHtml);
     $(progressId).empty();
 }
 
@@ -279,39 +320,46 @@ function appendStandings(datasJson, tableId, progressId) {
  * @param {*} progressId 
  */
 function appendSchedule(datasJson, tableId, progressId, division) {
-    datasJson.some(function (game, i) {
-        var gamedate = "";
-        if (game['date']) {
-            gamedate = new Date(game['date']).toLocaleDateString();
-        } else {
-            gamedate = "日程調整中";
-        }
-        var video = (game['videourl'] != "")
-            ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
-        var hcn = `<a href="./club?cid=${game['hcid']}" target="_blank">${game['hcn']}</a>`;
-        var acn = `<a href="./club?cid=${game['acid']}" target="_blank">${game['acn']}</a>`;
-        var hcnTdClass = "";
-        var acnTdClass = "";
-        if (!(game['hsn'] == game['asn'])) {
-            if (game['hsn'] > game['asn']) {
-                hcn = "<strong>" + hcn + "</strong>";
-                hcnTdClass = (division == "YKSI") ? "has-background-primary-80" : "has-background-success-80";
+    const rowsHtml = datasJson.map((game) => {
+        // 日付のフォーマット処理
+        const gamedate = game["date"] ? new Date(game["date"]).toLocaleDateString() : "日程調整中";
+
+        // 動画リンクの生成
+        const video = game["videourl"] ? ` <a href="${game["videourl"]}" target="_blank"> [動画]</a>` : "";
+
+        // クラブリンクの生成
+        let hcn = `<a href="./club?cid=${game["hcid"]}" target="_blank">${game["hcn"]}</a>`;
+        let acn = `<a href="./club?cid=${game["acid"]}" target="_blank">${game["acn"]}</a>`;
+
+        // スタイル適用用のクラス
+        let hcnTdClass = "";
+        let acnTdClass = "";
+
+        // 勝敗のハイライト処理
+        if (game["hsn"] !== game["asn"]) {
+            const highlightClass = division === "YKSI" ? "has-background-primary-80" : "has-background-success-80";
+            if (game["hsn"] > game["asn"]) {
+                hcn = `<strong>${hcn}</strong>`;
+                hcnTdClass = highlightClass;
             } else {
-                acn = "<strong>" + acn + "</strong>";
-                acnTdClass = (division == "YKSI") ? "has-background-primary-80" : "has-background-success-80";
+                acn = `<strong>${acn}</strong>`;
+                acnTdClass = highlightClass;
             }
         }
-        $(tableId).append(
-            `
+
+        return `
             <tr>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left">${gamedate}${video}</td>
-            <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="center"><a class="has-text-link" href="./match?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
-            <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${game["sec"]}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">${gamedate}${video}</td>
+                <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="center">
+                    <a class="has-text-link" href="./match?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a>
+                </td>
+                <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
             </tr>
-            `
-        );
-    });
+        `;
+    }).join("");
+
+    $(tableId).append(rowsHtml);
     $(progressId).empty();
 }

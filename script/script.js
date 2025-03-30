@@ -1,3 +1,4 @@
+const TEXT_SIZE = "is-size-6";
 /**
  * 定数クラス
  */
@@ -270,151 +271,176 @@ function convertClubFromCid(cid) {
     return clubMap.get(cid) || "";
 }
 
+const getDivisionCodeFrom = (cid) => {
+    const divisionMap = new Map([
+        ['C01', MolkkyPrimeConstants.secondDivName],
+        ['C02', MolkkyPrimeConstants.firstDivName],
+        ['C03', MolkkyPrimeConstants.firstDivName],
+        ['C04', MolkkyPrimeConstants.firstDivName],
+        ['C05', MolkkyPrimeConstants.firstDivName],
+        ['C06', MolkkyPrimeConstants.firstDivName],
+        ['C07', MolkkyPrimeConstants.firstDivName],
+        ['C08', MolkkyPrimeConstants.firstDivName],
+        ['C09', ""],
+        ['C10', MolkkyPrimeConstants.firstDivName],
+        ['C11', MolkkyPrimeConstants.secondDivName],
+        ['C12', MolkkyPrimeConstants.secondDivName],
+        ['C13', MolkkyPrimeConstants.secondDivName],
+        ['C14', MolkkyPrimeConstants.secondDivName],
+        ['C15', MolkkyPrimeConstants.secondDivName]
+    ]);
+    return divisionMap.get(cid) || "";
+};
+
+/**
+ * 改行文字を変換する 
+ * @param {string} text 変換対象
+ * @param {string} to 変換後
+ * @returns 変換結果
+ */
+const convertNewLineTo = (text, to) => {
+    return text.replace(/\r?\n/g, to);
+};
+
 /**
  * ヘッダー追加
  */
 function appendHeader() {
-    // 階層によって変化するリンクの設定
-    var top = "./";
-    var logo = "./asset/logo.png";
-    var schedule = "./schedule/";
-    var club = "./club/";
-    var news = MolkkyPrimeConstants.newsLinks;
-    var entry = "./entry/";
-    var regulation = "./regulation/";
-    var past202324 = "./past/202324/";
-    var past2023 = "./past/2023/";
-    var twitter = MolkkyPrimeConstants.twitter;
-    var youtube = MolkkyPrimeConstants.youtube;
-    var suzuri = MolkkyPrimeConstants.suzuri;
+    // リンク設定をオブジェクトに統一
+    const links = {
+        top: "./",
+        logo: "./asset/logo.png",
+        schedule: "./schedule/",
+        club: "./club/",
+        news: MolkkyPrimeConstants.newsLinks,
+        entry: "./entry/",
+        regulation: "./regulation/",
+        past202324: "./past/202324/",
+        past2023: "./past/2023/",
+        twitter: MolkkyPrimeConstants.twitter,
+        youtube: MolkkyPrimeConstants.youtube,
+        suzuri: MolkkyPrimeConstants.suzuri
+    };
 
-    if (location.pathname != "/") {
-        var addPath = "";
-        if (location.pathname.split("/").length == 3) {
-            // 2階層
-            addPath = ".";
-        } else if (location.pathname.split("/").length == 4) {
-            // 3階層
-            addPath = "../.";
-        }
-        top = addPath + top;
-        logo = addPath + logo;
-        schedule = addPath + schedule;
-        club = addPath + club;
-        entry = addPath + entry;
-        regulation = addPath + regulation;
-        past202324 = addPath + past202324;
-        past2023 = addPath + past2023;
+    // 階層調整処理
+    const depth = location.pathname.split("/").length - 1;
+    if (location.pathname !== "/") {
+        const addPath = depth === 2 ? "." : depth === 3 ? "../." : "";
+        Object.keys(links).forEach((key) => {
+            if (!links[key].startsWith("http")) {
+                links[key] = addPath + links[key];
+            }
+        });
     }
 
-    $("#mkpl-header").append(`
-        <!-- navbar -->
-            <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
-                <div class="navbar-brand">
-                    <a class="navbar-item" href="${top}"><img src="${logo}"
-                            alt="Mölkky Kanto Prime League Logo"></a>
-                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-                        data-target="navbarBasicExample">
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                    </a>
-                </div>
-                <div id="navbarBasicExample" class="navbar-menu">
-                    <div class="navbar-start">
-                        <a class="navbar-item" href="${schedule}">日程・結果・順位表</a>
-                        <a class="navbar-item" href="${club}">クラブ・選手</a>
-                        <a class="navbar-item" href="${entry}">エントリー・FA申請</a>
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link">More</a>
-                            <div class="navbar-dropdown">
-                                <a class="navbar-item" target="_blank"
-                                    href="${news}" target="_blank">ニュース<small class="is-size-7">（外部サイトへ）</small></a>
-                                <a class="navbar-item" href="${regulation}">ルール</a>
-                                <a class="navbar-item">データ <strong>*Comming Soon*</strong></a>
-                                <a class="navbar-link">過去のシーズン <strong></strong>
-                                    <a class="navbar-item" href="${past202324}">シーズン2023-24 <strong></strong></a>
-                                    <a class="navbar-item" href="${past2023}">シーズン2023 <strong></strong></a>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="navbar-end">
-                        <div class="navbar-item">
-                            <div class="buttons columns">
-                                <a class="column button is-info" target="_blank" href="${twitter}">Twitter(X)</a>
-                                <a class="column button is-danger" target="_blank" href="${youtube}">YouTube</a>
-                                <a class="column button is-dark" target="_blank" href="${suzuri}">SUZURI</a>
-                            </div>
+    // ヘッダーHTMLをテンプレートリテラルで定義
+    const headerHtml = `
+        <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="${links.top}">
+                    <img src="${links.logo}" alt="Mölkky Kanto Prime League Logo">
+                </a>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="${links.schedule}">日程・結果・順位表</a>
+                    <a class="navbar-item" href="${links.club}">クラブ・選手</a>
+                    <a class="navbar-item" href="${links.entry}">エントリー・FA申請</a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">More</a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="${links.news}" target="_blank">
+                                ニュース<small class="is-size-7">（外部サイトへ）</small>
+                            </a>
+                            <a class="navbar-item" href="${links.regulation}">ルール</a>
+                            <a class="navbar-item">データ <strong>*Coming Soon*</strong></a>
+                            <a class="navbar-link">過去のシーズン</a>
+                            <a class="navbar-item" href="${links.past202324}">シーズン2023-24</a>
+                            <a class="navbar-item" href="${links.past2023}">シーズン2023</a>
                         </div>
                     </div>
                 </div>
-            </nav>
-        `);
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="buttons columns">
+                            <a class="column button is-info" target="_blank" href="${links.twitter}">Twitter(X)</a>
+                            <a class="column button is-danger" target="_blank" href="${links.youtube}">YouTube</a>
+                            <a class="column button is-dark" target="_blank" href="${links.suzuri}">SUZURI</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    `;
+
+    // ヘッダーを追加
+    $("#mkpl-header").append(headerHtml);
 }
 
 /**
  * フッター追加
  */
 function appendFooter() {
-    // 階層によって変化するリンクの設定
-    var top = "./";
-    var logo = "./asset/logo.png";
-    var schedule = "./schedule/";
-    var club = "./club/";
-    var news = MolkkyPrimeConstants.newsLinks;;
-    var entry = "./entry/";
-    var regulation = "./regulation/";
-    var past202324 = "./past/202324/";
-    var past2023 = "./past/2023/";
-    var twitter = MolkkyPrimeConstants.twitter;
-    var youtube = MolkkyPrimeConstants.youtube;
-    var suzuri = MolkkyPrimeConstants.suzuri;
-    var mail = MolkkyPrimeConstants.mailContact;
+    // 基本リンク設定
+    const links = {
+        top: "./",
+        logo: "./asset/logo.png",
+        schedule: "./schedule/",
+        club: "./club/",
+        news: MolkkyPrimeConstants.newsLinks,
+        entry: "./entry/",
+        regulation: "./regulation/",
+        past202324: "./past/202324/",
+        past2023: "./past/2023/",
+        twitter: MolkkyPrimeConstants.twitter,
+        youtube: MolkkyPrimeConstants.youtube,
+        suzuri: MolkkyPrimeConstants.suzuri,
+        mail: MolkkyPrimeConstants.mailContact,
+    };
 
-    if (location.pathname != "/") {
-        var addPath = "";
-        if (location.pathname.split("/").length == 3) {
-            // 2階層
-            addPath = ".";
-        } else if (location.pathname.split("/").length == 4) {
-            // 3階層
-            addPath = "../.";
-        }
-        top = addPath + top;
-        logo = addPath + logo;
-        schedule = addPath + schedule;
-        club = addPath + club;
-        entry = addPath + entry;
-        regulation = addPath + regulation;
-        past202324 = addPath + past202324;
-        past2023 = addPath + past2023;
+    // 階層によるパス調整
+    const depth = location.pathname.split("/").length - 1;
+    if (location.pathname !== "/") {
+        const addPath = depth === 2 ? "." : depth === 3 ? "../." : "";
+        Object.keys(links).forEach((key) => {
+            if (!links[key].startsWith("http")) {
+                links[key] = addPath + links[key];
+            }
+        });
     }
 
-    $("#mkpl-footer").append(`
+    // フッターHTMLを一括生成
+    const footerHtml = `
         <div class="columns" id="site-map">
-                <ul class="content column">モルック関東プライムリーグ
-                    <li><a class="content is-size-6" href="${top}">トップ</a></li>
-                    <li><a class="content is-size-6" href="${schedule}">日程・結果・順位表</a></li>
-                    <li><a class="content is-size-6" href="${club}">クラブ・選手</a></li>
-                    <li><a class="content is-size-6"
-                            href="${news}"
-                            target="_blank">ニュース</a></li>
-                    <li><a class="content is-size-6" href="${entry}">エントリー・FA申請</a></li>
-                    <li><a class="content is-size-6" href="${regulation}">ルール</a></li>
-                    <li><a class="content is-size-6" href="">データ *coming soon*</a></li>
-                </ul>
-                <ul class="content column">過去のシーズン
-                    <li><a class="content is-size-6" href="${past2023}">シーズン2023</a></li>
-                    <li><a class="content is-size-6" href="${past202324}">シーズン2023-2024</a></li>
-                </ul>
-                <ul class="content column">リンク
-                    <li><a class="content is-size-6" href="${youtube}" target="_blank">YouTube</a></li>
-                    <li><a class="content is-size-6" href="${twitter}" target="_blank">Twitter(X)</a></li>
-                    <li><a class="content is-size-6" href="${suzuri}" target="_blank">SUZURI</a></li>
-                    <li><a class="content is-size-6" href="${mail}">メール</a></li>
-                </ul>
-            </div>
-    `);
+            <ul class="content column">モルック関東プライムリーグ
+                <li><a class="content ${TEXT_SIZE}" href="${links.top}">トップ</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.schedule}">日程・結果・順位表</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.club}">クラブ・選手</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.news}" target="_blank">ニュース</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.entry}">エントリー・FA申請</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.regulation}">ルール</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="">データ *coming soon*</a></li>
+            </ul>
+            <ul class="content column">過去のシーズン
+                <li><a class="content ${TEXT_SIZE}" href="${links.past2023}">シーズン2023</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.past202324}">シーズン2023-2024</a></li>
+            </ul>
+            <ul class="content column">リンク
+                <li><a class="content ${TEXT_SIZE}" href="${links.youtube}" target="_blank">YouTube</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.twitter}" target="_blank">Twitter(X)</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.suzuri}" target="_blank">SUZURI</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.mail}">メール</a></li>
+            </ul>
+        </div>
+    `;
+
+    // フッターに追加
+    $("#mkpl-footer").append(footerHtml);
 }
+

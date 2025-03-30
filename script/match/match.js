@@ -81,15 +81,6 @@ function appendMatch(match) {
     var hset = convertSet(row['hsn'], row['hr']);
     var aset = convertSet(row['asn'], row['ar']);
 
-    var hp1 = convertPoint(row['hs1'], row['s1fin'], true);
-    var hp2 = convertPoint(row['hs2'], row['s2fin'], true);
-    var hp3 = convertPoint(row['hs3'], row['s3fin'], true);
-    var hp4 = convertPoint(row['hs4'], row['s4fin'], true);
-    var ap1 = convertPoint(row['as1'], row['s1fin'], false);
-    var ap2 = convertPoint(row['as2'], row['s2fin'], false);
-    var ap3 = convertPoint(row['as3'], row['s3fin'], false);
-    var ap4 = convertPoint(row['as4'], row['s4fin'], false);
-
     var setnum = Number(row['hsn']) + Number(row['asn']);
     let emptyTd = "<td></td>";
     let points = {};
