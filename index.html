@@ -92,102 +92,111 @@
                 <div class="card">
                     <div class="card-image" id="yksi-card-image"></div>
                 </div>
-                <div class="content">
-                    <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
-                    <div class="table-container">
-                        <table id="yksi-standings" class="table is-fullwidth is-narrow">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center">位</th>
-                                <th class="is-primary is-size-7" align="center">クラブ</th>
-                                <th class="is-primary is-size-7" align="center">試</th>
-                                <th class="is-primary is-size-7" align="center">点</th>
-                                <th class="is-primary is-size-7" align="center">勝</th>
-                                <th class="is-primary is-size-7" align="center">敗</th>
-                                <th class="is-primary is-size-7" align="center">分</th>
-                                <th class="is-primary is-size-7" align="center">率</th>
-                            </tr>
-                            <!-- yksi standings -->
-                        </table>
-                    </div>
-                    <div id="yksi-standings-progress"><progress class="progress is-small is-primary"
-                            max="100"></progress></div>
-                    <div id="mkpl-rank-rules-yksi"></div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="hero-body content">
+                <h4 class="title is-size-5">Kestääが初のリーグ制覇</h4>
+            </div>
+            <p class="content is-size-6">プライムリーグは「Kestää」が初制覇。SLAPSの3連覇を阻止し、2つ目のリーグ制覇経験クラブとなった。
+            </p>
+            <p class="content is-size-6">来シーズンについては<a href="./entry/">エントリーページを参照</a>。</p>
+        </section>
+        <section class="section">
+            <div class="content">
+                <h4 class="is-size-5">順位表（各クラブ全14試合）</h4>
+                <div class="table-container">
+                    <table id="yksi-standings" class="table is-fullwidth is-narrow">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center">位</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">試</th>
+                            <th class="is-primary is-size-7" align="center">点</th>
+                            <th class="is-primary is-size-7" align="center">勝</th>
+                            <th class="is-primary is-size-7" align="center">敗</th>
+                            <th class="is-primary is-size-7" align="center">分</th>
+                            <th class="is-primary is-size-7" align="center">率</th>
+                        </tr>
+                        <!-- yksi standings -->
+                    </table>
                 </div>
-                <div class="content">
-                    <h4 class="is-size-5">今月の試合</h4>
-                    <div class="table-container">
-                        <table id="yksi-monthly-schedule" class="table is-fullwidth is-narrow">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center">節</th>
-                                <th class="is-primary is-size-7" align="center">日程</th>
-                                <th class="is-primary is-size-7" align="center">ホーム</th>
-                                <th class="is-primary is-size-7" align="center">結果</th>
-                                <th class="is-primary is-size-7" align="center">アウェイ</th>
-                            </tr>
-                        </table>
-                    </div>
-                    <div id="yksi-schedule-progress"><progress class="progress is-small is-primary"
-                            max="100"></progress>
-                    </div>
-                    <p class="is-size-7">第1節・2節はフリー月としてシーズン中任意の時期に実施する。</p>
-                    <div id="top-yksi-schedule-link"></div>
+                <div id="yksi-standings-progress"><progress class="progress is-small is-primary" max="100"></progress>
                 </div>
-                <!-- award -->
-                <div class="content">
-                    <h4 class="content is-size-5">個人賞暫定順位</h4>
-                    <!-- qh -->
-                    <h5 class="is-size-6 content">QH賞 <small class="is-size-7">* Quality Hit（狙い通りの投擲）</small></h5>
-                    <div class="table-container">
-                        <table id="yksi-award-qh" class="table is-narrow is-fullwidth">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center"></th>
-                                <th class="is-primary is-size-7" align="center">選手</th>
-                                <th class="is-primary is-size-7" align="center">クラブ</th>
-                                <th class="is-primary is-size-7" align="center">QH率</th>
-                                <th class="is-primary is-size-7" align="center">QH/投</th>
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- fault -->
-                    <h5 class="is-size-6 content">フォルト回避賞</h5>
-                    <div class="table-container">
-                        <table id="yksi-award-fa" class="table is-narrow is-fullwidth">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center"></th>
-                                <th class="is-primary is-size-7" align="center">選手</th>
-                                <th class="is-primary is-size-7" align="center">クラブ</th>
-                                <th class="is-primary is-size-7" align="center">FA率</th>
-                                <th class="is-primary is-size-7" align="center">FA/投</th>
-                            </tr>
-                        </table>
-                    </div>
-                    <!-- opt -->
-                    <h5 class="is-size-6 content">OPT賞 <small class="is-size-7">* On Plus Throwing（得点効率指標）</small>
-                    </h5>
-                    <div class="table-container">
-                        <table id="yksi-award-opt" class="table is-narrow is-fullwidth">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center"></th>
-                                <th class="is-primary is-size-7" align="center">選手</th>
-                                <th class="is-primary is-size-7" align="center">クラブ</th>
-                                <th class="is-primary is-size-7" align="center">OPT</th>
-                                <th class="is-primary is-size-7" align="center">投</th>
-                            </tr>
-                        </table>
-                    </div>
-                    <div class="content" id="top-opt-detail"></div>
-                    <!-- finish -->
-                    <h5 class="is-size-6 content">フィニッシュ賞</h5>
-                    <div class="table-container">
-                        <table id="yksi-award-fin" class="table is-fullwidth is-narrow">
-                            <tr class="is-primary">
-                                <th class="is-primary is-size-7" align="center"></th>
-                                <th class="is-primary is-size-7" align="center">選手</th>
-                                <th class="is-primary is-size-7" align="center">クラブ</th>
-                                <th class="is-primary is-size-7" align="center">FIN数</th>
-                            </tr>
-                        </table>
-                    </div>
+                <div id="mkpl-rank-rules-yksi"></div>
+            </div>
+            <div class="content">
+                <h4 class="is-size-5">今月の試合</h4>
+                <div class="table-container">
+                    <table id="yksi-monthly-schedule" class="table is-fullwidth is-narrow">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center">節</th>
+                            <th class="is-primary is-size-7" align="center">日程</th>
+                            <th class="is-primary is-size-7" align="center">ホーム</th>
+                            <th class="is-primary is-size-7" align="center">結果</th>
+                            <th class="is-primary is-size-7" align="center">アウェイ</th>
+                        </tr>
+                    </table>
+                </div>
+                <div id="yksi-schedule-progress"><progress class="progress is-small is-primary" max="100"></progress>
+                </div>
+                <p class="is-size-7">第1節・2節はフリー月としてシーズン中任意の時期に実施する。</p>
+                <div id="top-yksi-schedule-link"></div>
+            </div>
+            <!-- award -->
+            <div class="content">
+                <h4 class="content is-size-5">個人賞暫定順位</h4>
+                <!-- qh -->
+                <h5 class="is-size-6 content">QH賞 <small class="is-size-7">* Quality Hit（狙い通りの投擲）</small></h5>
+                <div class="table-container">
+                    <table id="yksi-award-qh" class="table is-narrow is-fullwidth">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center"></th>
+                            <th class="is-primary is-size-7" align="center">選手</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">QH率</th>
+                            <th class="is-primary is-size-7" align="center">QH/投</th>
+                        </tr>
+                    </table>
+                </div>
+                <!-- fault -->
+                <h5 class="is-size-6 content">フォルト回避賞</h5>
+                <div class="table-container">
+                    <table id="yksi-award-fa" class="table is-narrow is-fullwidth">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center"></th>
+                            <th class="is-primary is-size-7" align="center">選手</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">FA率</th>
+                            <th class="is-primary is-size-7" align="center">FA/投</th>
+                        </tr>
+                    </table>
+                </div>
+                <!-- opt -->
+                <h5 class="is-size-6 content">OPT賞 <small class="is-size-7">* On Plus Throwing（得点効率指標）</small>
+                </h5>
+                <div class="table-container">
+                    <table id="yksi-award-opt" class="table is-narrow is-fullwidth">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center"></th>
+                            <th class="is-primary is-size-7" align="center">選手</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">OPT</th>
+                            <th class="is-primary is-size-7" align="center">投</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="content" id="top-opt-detail"></div>
+                <!-- finish -->
+                <h5 class="is-size-6 content">フィニッシュ賞</h5>
+                <div class="table-container">
+                    <table id="yksi-award-fin" class="table is-fullwidth is-narrow">
+                        <tr class="is-primary">
+                            <th class="is-primary is-size-7" align="center"></th>
+                            <th class="is-primary is-size-7" align="center">選手</th>
+                            <th class="is-primary is-size-7" align="center">クラブ</th>
+                            <th class="is-primary is-size-7" align="center">FIN数</th>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </section>
@@ -209,13 +218,6 @@
             <p class="content is-size-6">プライムリーグチャレンジは「コブラ団＋」が優勝し、来秋開幕予定の「モルック関東プライムリーグユクシ 2025-26 "DISPEL"への参入権を獲得しました。
             </p>
             <p class="content is-size-6">来シーズンについては<a href="./entry/">エントリーページを参照</a>。</p>
-            <div class="card">
-                <div class="card-image">
-                    <figure class="image is-16by9">
-                        <img class="is-rounded" src="./asset/special/cbr_victory.png" alt="cbr_victory" />
-                    </figure>
-                </div>
-            </div>
         </section>
         <section class="section">
             <div class="content">

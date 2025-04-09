@@ -70,8 +70,8 @@ const appendConstLinks = () => {
  */
 const setupImages = () => {
     const images = [
-        { id: "yksi-card-image", src: MolkkyPrimeConstants.currentYksiCoverUrl, alt: "mkpl-yksi-cover" },
-        { id: "kaksi-card-image", src: MolkkyPrimeConstants.currentKaksiCoverUrl, alt: "mkpl-kaksi-cover" }
+        { id: "yksi-card-image", src: "special/kestaa_victory.png", alt: "mkpl-yksi-cover" },
+        { id: "kaksi-card-image", src: "special/cbr_victory.png", alt: "mkpl-kaksi-cover" }
     ];
     images.forEach(({ id, src, alt }) => {
         $(`#${id}`).html(createImageHtml(src, alt));
