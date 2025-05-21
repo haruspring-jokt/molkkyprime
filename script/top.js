@@ -91,21 +91,21 @@ const setupLinks = () => {
     const commonLinks = [
         { href: "./regulation/", text: "規約" },
         { href: MolkkyPrimeConstants.scoreSheetTemplateUrl, text: "推奨スコアシート（PDF）" },
-        { href: MolkkyPrimeConstants.season202425FirstDivScoreUrl, text: "提出済みスコアシート保存フォルダ（Googleドライブ）" },
+        // { href: MolkkyPrimeConstants.season202425FirstDivScoreUrl, text: "提出済みスコアシート保存フォルダ（Googleドライブ）" },
         { href: MolkkyPrimeConstants.clubPlayerSheetUrl, text: "選手・クラブリスト（Googleスプレッドシート）" }
     ];
     appendLinks('#mkpl-top-common-links', commonLinks);
 
     const yksiLinks = [
-        { href: MolkkyPrimeConstants.season202425AllDivSheetUrl, text: "日程・結果・順位表スプレッドシート" },
-        { href: MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
-        { href: MolkkyPrimeConstants.allSeasonStatsSheetUrl, text: "リーグ通算成績（Googleスプレッドシート）" }
+        // { href: MolkkyPrimeConstants.season202425AllDivSheetUrl, text: "日程・結果・順位表スプレッドシート" },
+        // { href: MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
+        // { href: MolkkyPrimeConstants.allSeasonStatsSheetUrl, text: "リーグ通算成績（Googleスプレッドシート）" }
     ];
     appendLinks('#mkpl-yksi-links', yksiLinks);
 
     const kaksiLinks = [
-        { href: MolkkyPrimeConstants.season202425AllDivSheetUrl, text: "日程・結果・順位表スプレッドシート" },
-        { href: MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" }
+        // { href: MolkkyPrimeConstants.season202425AllDivSheetUrl, text: "日程・結果・順位表スプレッドシート" },
+        // { href: MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" }
     ];
     appendLinks('#mkpl-kaksi-links', kaksiLinks);
 
