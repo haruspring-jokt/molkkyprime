@@ -98,14 +98,14 @@ const setupLinks = () => {
 
     const yksiLinks = [
         // { href: MolkkyPrimeConstants.season202425AllDivSheetUrl, text: "日程・結果・順位表スプレッドシート" },
-        // { href: MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
+        { href: MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
         // { href: MolkkyPrimeConstants.allSeasonStatsSheetUrl, text: "リーグ通算成績（Googleスプレッドシート）" }
     ];
     appendLinks('#mkpl-yksi-links', yksiLinks);
 
     const kaksiLinks = [
         // { href: MolkkyPrimeConstants.season202425AllDivSheetUrl, text: "日程・結果・順位表スプレッドシート" },
-        // { href: MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" }
+        { href: MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" }
     ];
     appendLinks('#mkpl-kaksi-links', kaksiLinks);
 

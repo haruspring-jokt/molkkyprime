@@ -126,13 +126,19 @@ class MolkkyPrimeConstants {
     // シーズンガイドリンク
     // =================================================
     static get currentSeasonFirstDivGuideUrl() {
-        return this.season202425FirstDivGuideUrl;
+        return this.season202526FirstDivGuideUrl;
+    }
+    static get season202526FirstDivGuideUrl() {
+        return "https://docs.google.com/presentation/d/1hgD1lWqjFENRszDZMKNyleOh4YLzLapV644-LBqAPIk/";
     }
     static get season202425FirstDivGuideUrl() {
         return "https://docs.google.com/presentation/d/1F1ZTMUHTkiqN0pbkweLLT0IrM5-WZOyHI0-K_GMPeR0/";
     }
     static get currentSeasonSecondDivGuideUrl() {
-        return this.season202425SecondDivGuideUrl;
+        return this.season202526SecondDivGuideUrl;
+    }
+    static get season202526SecondDivGuideUrl() {
+        return "https://docs.google.com/presentation/d/1i9mhV0gKI6xrdUrRnsEcT6e2XnD_VUyP4H4UnJ8z6lw/";
     }
     static get season202425SecondDivGuideUrl() {
         return "https://docs.google.com/presentation/d/1_ZfZ-IxBkkIixzw2RsdMNSY49HHgg5CeYRlqrhMWA-8/";
@@ -201,12 +207,12 @@ class MolkkyPrimeConstants {
         return [
             { "url": "https://x.com/SLAPS_molkky", "name": "SLAPS Twitter" },
             { "url": "https://x.com/mcjp_official", "name": "jaja patatas Twitter" },
-            { "url": "https://x.com/sugi_molkky", "name": "杉並エンジョイモルック Twitter" },
             { "url": "https://x.com/fuchu_mol", "name": "Fuchu-möl White Horses Twitter" },
             { "url": "https://x.com/lowkey_molkky", "name": "löwkey with うんとこどっこいしょ大学 Twitter" },
             { "url": "https://x.com/Kestaa1013", "name": "Kestää Twitter" },
             { "url": "https://x.com/NXG_molkky", "name": "NEXT GENERATIONS Twitter" },
-            { "url": "https://x.com/molkky634", "name": "武蔵野 Twitter" }
+            { "url": "https://x.com/molkky634", "name": "武蔵野 Twitter" },
+            { "url": "https://x.com/cobradanplus", "name": "コブラ団＋ Twitter" },
         ];
     }
     static get currentYksiCoverUrl() {
@@ -266,7 +272,8 @@ function convertClubFromCid(cid) {
         ['C12', "にらそばとこくカレー"],
         ['C13', "ブラッキーズ"],
         ['C14', "コブラ団＋"],
-        ['C15', "Buddiesモルック部"]
+        ['C15', "Buddiesモルック部"],
+        ['C16', "SISU"]
     ]);
     return clubMap.get(cid) || "";
 }
@@ -276,7 +283,7 @@ const getDivisionCodeFrom = (cid) => {
         ['C01', MolkkyPrimeConstants.secondDivName],
         ['C02', MolkkyPrimeConstants.firstDivName],
         ['C03', MolkkyPrimeConstants.firstDivName],
-        ['C04', MolkkyPrimeConstants.firstDivName],
+        ['C04', MolkkyPrimeConstants.secondDivName],
         ['C05', MolkkyPrimeConstants.firstDivName],
         ['C06', MolkkyPrimeConstants.firstDivName],
         ['C07', MolkkyPrimeConstants.firstDivName],
@@ -286,8 +293,9 @@ const getDivisionCodeFrom = (cid) => {
         ['C11', MolkkyPrimeConstants.secondDivName],
         ['C12', MolkkyPrimeConstants.secondDivName],
         ['C13', MolkkyPrimeConstants.secondDivName],
-        ['C14', MolkkyPrimeConstants.secondDivName],
-        ['C15', MolkkyPrimeConstants.secondDivName]
+        ['C14', MolkkyPrimeConstants.firstDivName],
+        ['C15', MolkkyPrimeConstants.secondDivName],
+        ['C16', MolkkyPrimeConstants.secondDivName]
     ]);
     return divisionMap.get(cid) || "";
 };
