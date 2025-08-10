@@ -273,14 +273,18 @@ function convertClubFromCid(cid) {
         ['C13', "ブラッキーズ"],
         ['C14', "コブラ団＋"],
         ['C15', "Buddiesモルック部"],
-        ['C16', "SISU"]
+        ['C16', "SISU"],
+        ['C17', "Z-ÖNE"],
+        ['C18', "SEVEN'S"],
+        ['C19', "禅那"],
+        ['C20', "池袋ウッドペッカーズ"],
     ]);
     return clubMap.get(cid) || "";
 }
 
 const getDivisionCodeFrom = (cid) => {
     const divisionMap = new Map([
-        ['C01', MolkkyPrimeConstants.secondDivName],
+        ['C01', ""],
         ['C02', MolkkyPrimeConstants.firstDivName],
         ['C03', MolkkyPrimeConstants.firstDivName],
         ['C04', MolkkyPrimeConstants.secondDivName],
@@ -291,11 +295,15 @@ const getDivisionCodeFrom = (cid) => {
         ['C09', ""],
         ['C10', MolkkyPrimeConstants.firstDivName],
         ['C11', MolkkyPrimeConstants.secondDivName],
-        ['C12', MolkkyPrimeConstants.secondDivName],
+        ['C12', ""],
         ['C13', MolkkyPrimeConstants.secondDivName],
         ['C14', MolkkyPrimeConstants.firstDivName],
-        ['C15', MolkkyPrimeConstants.secondDivName],
-        ['C16', MolkkyPrimeConstants.secondDivName]
+        ['C15', ""],
+        ['C16', MolkkyPrimeConstants.secondDivName],
+        ['C17', MolkkyPrimeConstants.secondDivName],
+        ['C18', MolkkyPrimeConstants.secondDivName],
+        ['C19', MolkkyPrimeConstants.secondDivName],
+        ['C20', MolkkyPrimeConstants.secondDivName]
     ]);
     return divisionMap.get(cid) || "";
 };
@@ -324,6 +332,7 @@ function appendHeader() {
         entry: "./entry/",
         regulation: "./regulation/",
         past202324: "./past/202324/",
+        past202425: "./past/202425/",
         past2023: "./past/2023/",
         twitter: MolkkyPrimeConstants.twitter,
         youtube: MolkkyPrimeConstants.youtube,
@@ -369,6 +378,7 @@ function appendHeader() {
                             <a class="navbar-item" href="${links.regulation}">ルール</a>
                             <a class="navbar-item">データ <strong>*Coming Soon*</strong></a>
                             <a class="navbar-link">過去のシーズン</a>
+                            <a class="navbar-item" href="${links.past202425}">シーズン2024-25</a>
                             <a class="navbar-item" href="${links.past202324}">シーズン2023-24</a>
                             <a class="navbar-item" href="${links.past2023}">シーズン2023</a>
                         </div>
@@ -404,6 +414,7 @@ function appendFooter() {
         news: MolkkyPrimeConstants.newsLinks,
         entry: "./entry/",
         regulation: "./regulation/",
+        past202425: "./past/202425/",
         past202324: "./past/202324/",
         past2023: "./past/2023/",
         twitter: MolkkyPrimeConstants.twitter,
@@ -436,8 +447,9 @@ function appendFooter() {
                 <li><a class="content ${TEXT_SIZE}" href="">データ *coming soon*</a></li>
             </ul>
             <ul class="content column">過去のシーズン
-                <li><a class="content ${TEXT_SIZE}" href="${links.past2023}">シーズン2023</a></li>
-                <li><a class="content ${TEXT_SIZE}" href="${links.past202324}">シーズン2023-2024</a></li>
+            <li><a class="content ${TEXT_SIZE}" href="${links.past202425}">シーズン2024-2025</a></li>
+            <li><a class="content ${TEXT_SIZE}" href="${links.past202324}">シーズン2023-2024</a></li>
+            <li><a class="content ${TEXT_SIZE}" href="${links.past2023}">シーズン2023</a></li>
             </ul>
             <ul class="content column">リンク
                 <li><a class="content ${TEXT_SIZE}" href="${links.youtube}" target="_blank">YouTube</a></li>
