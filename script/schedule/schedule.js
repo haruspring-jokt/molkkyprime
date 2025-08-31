@@ -24,7 +24,7 @@ function appendConstLinks() {
     // 順位表
     $('#list').append(`
         <p class="content is-size-7"><a
-        href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
+        href="${MolkkyPrimeConstants.season202526AllDivSheetUrl}"
         target="_blank">${detailMsg}</a></p>
     `);
     // リーグ名
@@ -36,12 +36,12 @@ function appendConstLinks() {
     // 日程表説明
     $('#top-yksi-schedule-link').html(`
         <p class="content is-size-7"><a
-            href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
+            href="${MolkkyPrimeConstants.season202526YksiSheetUrl}"
             target="_blank">${detailMsg}</a></p>
     `);
     $('#top-kaksi-schedule-link').html(`
         <p class="content is-size-7"><a
-            href="${MolkkyPrimeConstants.season202425AllDivSheetUrl}"
+            href="${MolkkyPrimeConstants.season202526KaksiSheetUrl}"
             target="_blank">${detailMsg}</a></p>
     `);
 }
@@ -58,11 +58,12 @@ function fetchData() {
         var datasJson = JSON.parse(datasStringify);
 
         // 順位表1部
-        appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress");
+        appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress", "");
         // 日程1部
         appendSchedule(datasJson['scheduleYksi'], '#yksi-schedule', "#yksi-schedule-progress", "YKSI");
         // 順位表2部
-        appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress");
+        appendStandings(datasJson['rankKaksi'], "#kaksi-standings-group-a", "#kaksi-standings-group-a-progress", "A");
+        appendStandings(datasJson['rankKaksi'], "#kaksi-standings-group-b", "#kaksi-standings-group-b-progress", "B");
         // 日程2部
         appendSchedule(datasJson['scheduleKaksi'], '#kaksi-schedule', "#kaksi-schedule-progress", "KAKSI");
     });
@@ -75,7 +76,13 @@ function fetchData() {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendStandings(datasJson, tableId, progressId) {
+function appendStandings(datasJson, tableId, progressId, group) {
+    // グループが分かれている場合フィルタリング（25-26シーズンはチャレンジのみ）
+    if (group != "") {
+        datasJson = datasJson.filter(item => {
+            return item.group === group;
+        });
+    }
     datasJson.some(function (rank, i) {
         var ranknum = Number(rank['rank']);
         var club = rank['cname'];
@@ -124,9 +131,14 @@ function appendSchedule(datasJson, tableId, progressId, division) {
                 acnTdClass = (division == "YKSI") ? "has-background-primary-80" : "has-background-success-80";
             }
         }
+
+        let group = game["gid"].substr(-2) < 21 ? "A" : "B";
+        let gcol = division === "KAKSI" ? `<td class="${SMALL_TEXT_SIZE}" align="center">${group}</td>` : "";
+
         $(tableId).append(
             `
             <tr>
+            ${gcol}
             <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
             <td class="${SMALL_TEXT_SIZE}" align="left">${gamedate}${video}</td>
             <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>

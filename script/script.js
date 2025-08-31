@@ -39,10 +39,10 @@ class MolkkyPrimeConstants {
     // =================================================
 
     static get curerntSeasonFirstDivName() {
-        return this.season202425FirstDivName;
+        return this.season202526FirstDivName;
     }
     static get curerntSeasonSecondDivName() {
-        return this.season202425SecondDivName;
+        return this.season202526SecondDivName;
     }
     static get season202526FirstDivName() {
         return "モルック関東プライムリーグユクシ 2025-2026";
@@ -70,11 +70,15 @@ class MolkkyPrimeConstants {
     // シーズンシート管理
     // =================================================
 
-    static get season202426FirstDivSheetUrl() {
+    /** TODO 202526シーズン全Div閲覧用 */
+    static get season202526AllDivSheetUrl() {
         return "";
     }
-    static get season202426SecondDivSheetUrl() {
-        return "";
+    static get season202526YksiSheetUrl() {
+        return "https://docs.google.com/spreadsheets/d/1a6lG7tOyeJzhj8CRT2DNtQynDz6MWKopvR8hyl2riQs/htmlview";
+    }
+    static get season202526KaksiSheetUrl() {
+        return "https://docs.google.com/spreadsheets/d/13R5vGAaZ_n954aaAxk6bUaJu4DxdJ7Y_9fCVedGf-3U/htmlview";
     }
     /** 202425シーズン全Div閲覧用 */
     static get season202425AllDivSheetUrl() {
@@ -100,11 +104,11 @@ class MolkkyPrimeConstants {
     // シーズンスコアフォルダ管理
     // =================================================
 
-    static get season202426FirstDivScoreUrl() {
-        return "";
+    static get season202526FirstDivScoreUrl() {
+        return "https://drive.google.com/drive/folders/1MGeQehaymTDK7ampsI9JHABQlgPkBzPJ?usp=sharing";
     }
-    static get season202426SecondDivScoreUrl() {
-        return "";
+    static get season202526SecondDivScoreUrl() {
+        return "https://drive.google.com/drive/folders/1UrAfvlqjgxXFXTF2kEj-vDaaOuu9uXqR?usp=sharing";
     }
     static get season202425FirstDivScoreUrl() {
         return "https://drive.google.com/drive/folders/1yNpuiqhPSXbiiEwsa66W_jHh5C5Gy3fA?usp=sharing";
@@ -159,6 +163,10 @@ class MolkkyPrimeConstants {
     static get allSeasonStatsSheetUrl() {
         return "https://docs.google.com/spreadsheets/d/1C3QUewwyV3Aatk4kPyl9tIr4jaovf993P_TMciK-89I/htmlview";
     }
+    /** 試合当日の流れ */
+    static get gameDayGuideUrl() {
+        return "https://drive.google.com/file/d/1EeXfzICsEaWqzTh40SunimwuD_1fNBQ4/view";
+    }
 
     // =================================================
     // サイト内共通リンク・メッセージ
@@ -168,7 +176,7 @@ class MolkkyPrimeConstants {
     }
     static get rankRulesYksi() {
         return `
-            <p class="is-size-7">8位のクラブが来シーズンプライムリーグ（1部）参加権を喪失、2部参加またはリーグ離脱。</p>
+            <p class="is-size-7">2026-27シーズンを10クラブで行うため、今シーズンの降格はありません。</p>
             <p class="is-size-7">※試合中の順位表は公式記録が発表されるまでの暫定記録となります。<br />
                 ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
                 - セット獲得率が高いクラブ<br />
@@ -183,7 +191,7 @@ class MolkkyPrimeConstants {
     }
     static get rankRulesKaksi() {
         return `
-            <p class="is-size-7">1位のクラブが来シーズンプライムリーグ（1部）参加権を獲得。</p>
+            <p class="is-size-7">グループ1位が優勝決定戦、グループ2位が2位決定戦準決勝へ進出する。</p>
             <p class="is-size-7">※試合中の順位表は公式記録が発表されるまでの暫定記録となります。<br />
                 ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
                 - セット獲得率が高いクラブ<br />
@@ -216,10 +224,10 @@ class MolkkyPrimeConstants {
         ];
     }
     static get currentYksiCoverUrl() {
-        return "yksi_cover.png";
+        return "mkpl2526_yksi_main_light.png";
     }
     static get currentKaksiCoverUrl() {
-        return "kaksi_cover.png";
+        return "mkpl2526_kaksi_main_dark.png";
     }
     static get youtube() {
         return "https://youtube.com/@molkkyclanjajapatatas/";
@@ -278,6 +286,7 @@ function convertClubFromCid(cid) {
         ['C18', "SEVEN'S"],
         ['C19', "禅那"],
         ['C20', "池袋ウッドペッカーズ"],
+        ['C21', "ASA CREW"],
     ]);
     return clubMap.get(cid) || "";
 }
@@ -298,12 +307,13 @@ const getDivisionCodeFrom = (cid) => {
         ['C12', ""],
         ['C13', MolkkyPrimeConstants.secondDivName],
         ['C14', MolkkyPrimeConstants.firstDivName],
-        ['C15', ""],
+        ['C15', MolkkyPrimeConstants.secondDivName],
         ['C16', MolkkyPrimeConstants.secondDivName],
         ['C17', MolkkyPrimeConstants.secondDivName],
         ['C18', MolkkyPrimeConstants.secondDivName],
         ['C19', MolkkyPrimeConstants.secondDivName],
-        ['C20', MolkkyPrimeConstants.secondDivName]
+        ['C20', MolkkyPrimeConstants.secondDivName],
+        ['C21', MolkkyPrimeConstants.secondDivName]
     ]);
     return divisionMap.get(cid) || "";
 };

@@ -48,10 +48,11 @@ const fetchData = () => {
  */
 const processFetchedData = (datasJson) => {
     appendNews(datasJson['news']);
-    appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress");
+    appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress", "");
     appendSchedule(datasJson['monthYksi'], '#yksi-monthly-schedule', "#yksi-schedule-progress", MolkkyPrimeConstants.firstDivName);
     appendAward(datasJson['award'], "yksi");
-    appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress");
+    appendStandings(datasJson['rankKaksi'], "#kaksi-standings-group-a", "#kaksi-standings-group-a-progress", "A");
+    appendStandings(datasJson['rankKaksi'], "#kaksi-standings-group-b", "#kaksi-standings-group-b-progress", "B");
     appendSchedule(datasJson['monthKaksi'], '#kaksi-monthly-schedule', "#kaksi-schedule-progress", MolkkyPrimeConstants.secondDivName);
 };
 
@@ -70,8 +71,8 @@ const appendConstLinks = () => {
  */
 const setupImages = () => {
     const images = [
-        { id: "yksi-card-image", src: "special/kestaa_victory.png", alt: "mkpl-yksi-cover" },
-        { id: "kaksi-card-image", src: "special/cbr_victory.png", alt: "mkpl-kaksi-cover" }
+        { id: "yksi-card-image", src: "mkpl2526_yksi_main_light.png", alt: "mkpl-yksi-cover" },
+        { id: "kaksi-card-image", src: "mkpl2526_kaksi_main_dark.png", alt: "mkpl-kaksi-cover" }
     ];
     images.forEach(({ id, src, alt }) => {
         $(`#${id}`).html(createImageHtml(src, alt));
@@ -90,22 +91,25 @@ const createImageHtml = (src, alt) => `
 const setupLinks = () => {
     const commonLinks = [
         { href: "./regulation/", text: "規約" },
-        { href: MolkkyPrimeConstants.scoreSheetTemplateUrl, text: "推奨スコアシート（PDF）" },
+        // { href: MolkkyPrimeConstants.scoreSheetTemplateUrl, text: "推奨スコアシート（PDF）" },
+        // { href: MolkkyPrimeConstants.gameDayGuideUrl, text: "当日の流れガイド（PDF）" },
         // { href: MolkkyPrimeConstants.season202425FirstDivScoreUrl, text: "提出済みスコアシート保存フォルダ（Googleドライブ）" },
         { href: MolkkyPrimeConstants.clubPlayerSheetUrl, text: "選手・クラブリスト（Googleスプレッドシート）" }
     ];
     appendLinks('#mkpl-top-common-links', commonLinks);
 
     const yksiLinks = [
-        // { href: MolkkyPrimeConstants.season202425AllDivSheetUrl, text: "日程・結果・順位表スプレッドシート" },
-        { href: MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
-        // { href: MolkkyPrimeConstants.allSeasonStatsSheetUrl, text: "リーグ通算成績（Googleスプレッドシート）" }
+        { href: MolkkyPrimeConstants.season202526YksiSheetUrl, text: "日程・結果・順位表スプレッドシート" },
+        // { href: MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
+        { href: MolkkyPrimeConstants.allSeasonStatsSheetUrl, text: "リーグ通算成績（Googleスプレッドシート）" },
+        { href: MolkkyPrimeConstants.season202526FirstDivScoreUrl, text: "スコアシート保存フォルダ（Googleドライブ）" }
     ];
     appendLinks('#mkpl-yksi-links', yksiLinks);
 
     const kaksiLinks = [
-        // { href: MolkkyPrimeConstants.season202425AllDivSheetUrl, text: "日程・結果・順位表スプレッドシート" },
-        { href: MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" }
+        { href: MolkkyPrimeConstants.season202526KaksiSheetUrl, text: "日程・結果・順位表スプレッドシート" },
+        // { href: MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
+        { href: MolkkyPrimeConstants.season202526SecondDivScoreUrl, text: "スコアシート保存フォルダ（Googleドライブ）" }
     ];
     appendLinks('#mkpl-kaksi-links', kaksiLinks);
 
@@ -287,7 +291,13 @@ function appendAward(datasJson, division) {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendStandings(datasJson, tableId, progressId) {
+function appendStandings(datasJson, tableId, progressId, group) {
+    // グループが分かれている場合フィルタリング（25-26シーズンはチャレンジのみ）
+    if (group != "") {
+        datasJson = datasJson.filter(item => {
+            return item.group === group;
+        });
+    }
     const rowsHtml = datasJson.map((rank) => {
         const ranknum = Number(rank["rank"]);
         // クラブ名称は長い場合省略する
@@ -347,8 +357,12 @@ function appendSchedule(datasJson, tableId, progressId, division) {
             }
         }
 
+        let group = game["gid"].substr(-2) < 21 ? "A" : "B";
+        let gcol = division === "KAKSI" ? `<td class="${SMALL_TEXT_SIZE}" align="center">${group}</td>` : "";
+
         return `
             <tr>
+                ${gcol}
                 <td class="${SMALL_TEXT_SIZE}" align="right">${game["sec"]}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">${gamedate}${video}</td>
                 <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
