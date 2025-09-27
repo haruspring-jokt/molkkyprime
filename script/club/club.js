@@ -60,8 +60,7 @@ function appendConstLinks() {
  * @param {string} cid クラブID
  */
 function initDisplay(cid) {
-    var url = MolkkyPrimeConstants.sheetUrl;
-    url = url + "?api=CLUB";
+    var url = `https://storage.googleapis.com/molkkyprime-hp/clubPage.json`;
     $.ajax({
         url: url,
         type: 'GET',
@@ -237,7 +236,7 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
         $("#club-games").append(`
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">${gamedate}${video}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left"><a class="" href="../match?gid=${game['gid']}">${gamedate}</a>${video}</td>
                 <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
                 <td class="${SMALL_TEXT_SIZE} ${resultClass}" align="center">${result}</td>
                 <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>

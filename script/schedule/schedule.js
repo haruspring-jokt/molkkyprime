@@ -47,8 +47,7 @@ function appendConstLinks() {
 }
 
 function fetchData() {
-    var url = MolkkyPrimeConstants.sheetUrl;
-    url = url + "?api=SCHEDULE";
+    var url = `https://storage.googleapis.com/molkkyprime-hp/schedulePage.json`;
     $.ajax({
         url: url,
         type: 'GET',
@@ -140,7 +139,7 @@ function appendSchedule(datasJson, tableId, progressId, division) {
             <tr>
             ${gcol}
             <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left">${gamedate}${video}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="../match?gid=${game['gid']}">${gamedate}</a>${video}</td>
             <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
             <td class="${SMALL_TEXT_SIZE}" align="center"><a class="has-text-link" href="../match?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
             <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>

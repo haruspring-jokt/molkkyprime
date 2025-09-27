@@ -35,7 +35,7 @@ const loadData = () => {
  * データ取得
  */
 const fetchData = () => {
-    const url = `${MolkkyPrimeConstants.sheetUrl}?api=TOP`;
+    const url = `https://storage.googleapis.com/molkkyprime-hp/topPage.json`;
     return $.ajax({
         url: url,
         type: 'GET',
@@ -364,7 +364,7 @@ function appendSchedule(datasJson, tableId, progressId, division) {
             <tr>
                 ${gcol}
                 <td class="${SMALL_TEXT_SIZE}" align="right">${game["sec"]}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">${gamedate}${video}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="./match?gid=${game["gid"]}">${gamedate}</a>${video}</td>
                 <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="center">
                     <a class="has-text-link" href="./match?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a>

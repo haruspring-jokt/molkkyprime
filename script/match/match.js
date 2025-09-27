@@ -12,8 +12,7 @@ $(function () {
 });
 
 function fetchMatch(gid) {
-    var url = MolkkyPrimeConstants.sheetUrl;
-    url = url + "?api=MATCH&gid=" + gid;
+    var url = `https://storage.googleapis.com/molkkyprime-hp/matchPage.json`;
     $.ajax({
         url: url,
         type: 'GET',
@@ -21,7 +20,10 @@ function fetchMatch(gid) {
     }).done(function (datas) {
         var datasStringify = JSON.stringify(datas);
         var datasJson = JSON.parse(datasStringify);
-        appendMatch(datasJson['match']);
+        var match = datasJson['match'].filter(function(item) {
+            return item.gid === gid;
+        });
+        appendMatch(match);
     });
 }
 
