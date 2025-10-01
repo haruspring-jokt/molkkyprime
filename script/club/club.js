@@ -330,7 +330,7 @@ function getClubNameTd(cid, cname, selectedCid) {
     if (cid == selectedCid) {
         return cname;
     } else {
-        return `<a href="../club?cid=${cid}" target="_blank">${cname}</a>`;
+        return `<a href="../club?cid=${cid}">${cname}</a>`;
     }
 }
 

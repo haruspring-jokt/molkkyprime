@@ -157,7 +157,7 @@ const createDescriptionHtml = (url) => `
 const setupClubLinks = () => {
     MolkkyPrimeConstants.yksiClubSnsUrls.forEach(row => {
         $('#top-yksi-club-links').append(`
-            <li class="is-size-6"><a href="${row['url']}" target="_blank">${row['name']}</a></li>
+            <li class="is-size-6"><a href="${row['url']}">${row['name']}</a></li>
         `);
     });
 };
@@ -198,7 +198,7 @@ function appendAward(datasJson, division) {
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a>
+                    <a href="./club?cid=${row['cid']}">${row['cname']}</a>
                 </td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${qhpro}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${qhByThrow}</td>
@@ -225,7 +225,7 @@ function appendAward(datasJson, division) {
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
+                    <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${fapro}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
             </tr>
@@ -251,7 +251,7 @@ function appendAward(datasJson, division) {
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">${row["pname"]}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./club?cid=${row["cid"]}" target="_blank">${row["cname"]}</a></td>
+                    <a href="./club?cid=${row["cid"]}">${row["cname"]}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${opt}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
             </tr>
@@ -276,7 +276,7 @@ function appendAward(datasJson, division) {
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}" target="_blank">${row['cname']}</a></td>
+                <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${finish}</td>
             </tr>
         `;
@@ -338,8 +338,8 @@ function appendSchedule(datasJson, tableId, progressId, division) {
         const video = game["videourl"] ? ` <a href="${game["videourl"]}" target="_blank"> [動画]</a>` : "";
 
         // クラブリンクの生成
-        let hcn = `<a href="./club?cid=${game["hcid"]}" target="_blank">${game["hcn"]}</a>`;
-        let acn = `<a href="./club?cid=${game["acid"]}" target="_blank">${game["acn"]}</a>`;
+        let hcn = `<a href="./club?cid=${game["hcid"]}">${game["hcn"]}</a>`;
+        let acn = `<a href="./club?cid=${game["acid"]}">${game["acn"]}</a>`;
 
         // スタイル適用用のクラス
         let hcnTdClass = "";

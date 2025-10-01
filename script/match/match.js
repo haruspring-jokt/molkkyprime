@@ -42,8 +42,8 @@ function appendMatch(match) {
         `);
     }
 
-    var hcnfull = `<a href="../club?cid=${row['hcid']}" target=_blank>${convertClubFromCid(row['hcid'])}</a>`;
-    var acnfull = `<a href="../club?cid=${row['acid']}" target=_blank>${convertClubFromCid(row['acid'])}</a>`;
+    var hcnfull = `<a href="../club?cid=${row['hcid']}">${convertClubFromCid(row['hcid'])}</a>`;
+    var acnfull = `<a href="../club?cid=${row['acid']}">${convertClubFromCid(row['acid'])}</a>`;
 
     var season, spread, scoreSheetLink = "";
     if (row['gid'].slice(0, 3) == "GCC") {
