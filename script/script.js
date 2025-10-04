@@ -340,6 +340,7 @@ function appendHeader() {
         club: "./club/",
         news: MolkkyPrimeConstants.newsLinks,
         entry: "./entry/",
+        files: "./files/",
         regulation: "./regulation/",
         past202324: "./past/202324/",
         past202425: "./past/202425/",
@@ -379,6 +380,7 @@ function appendHeader() {
                     <a class="navbar-item" href="${links.schedule}">日程・結果・順位表</a>
                     <a class="navbar-item" href="${links.club}">クラブ・選手</a>
                     <a class="navbar-item" href="${links.entry}">エントリー・FA申請</a>
+                    <a class="navbar-item" href="${links.files}">参加者向け資料</a>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">More</a>
                         <div class="navbar-dropdown">
@@ -423,6 +425,7 @@ function appendFooter() {
         club: "./club/",
         news: MolkkyPrimeConstants.newsLinks,
         entry: "./entry/",
+        files: "./files/",
         regulation: "./regulation/",
         past202425: "./past/202425/",
         past202324: "./past/202324/",
@@ -453,6 +456,7 @@ function appendFooter() {
                 <li><a class="content ${TEXT_SIZE}" href="${links.club}">クラブ・選手</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="${links.news}" target="_blank">ニュース</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="${links.entry}">エントリー・FA申請</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.files}">参加者向け資料</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="${links.regulation}">ルール</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="">データ *coming soon*</a></li>
             </ul>

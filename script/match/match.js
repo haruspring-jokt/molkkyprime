@@ -45,8 +45,20 @@ function appendMatch(match) {
     var hcnfull = `<a href="../club?cid=${row['hcid']}">${convertClubFromCid(row['hcid'])}</a>`;
     var acnfull = `<a href="../club?cid=${row['acid']}">${convertClubFromCid(row['acid'])}</a>`;
 
+    // GIDの末尾2文字を数字化し、20以下の場合はグループA、それ以上はグループBとする
+    const group = row['gid'].slice(0, 3) == "GDC" && Number(row['gid'].slice(-2)) <= 20 ? "グループA" :
+                  row['gid'].slice(0, 3) == "GDC" && Number(row['gid'].slice(-2)) > 20 ? "グループB" : "";
+
     var season, spread, scoreSheetLink = "";
-    if (row['gid'].slice(0, 3) == "GCC") {
+    if (row['gid'].slice(0, 3) == "GDC") {
+        season = MolkkyPrimeConstants.season202526SecondDivName;
+        spread = MolkkyPrimeConstants.season202526KaksiSheetUrl;
+        scoreSheetLink = MolkkyPrimeConstants.season202526SecondDivScoreUrl;
+    } else if (row['gid'].slice(0, 2) == "GD") {
+        season = MolkkyPrimeConstants.season202526FirstDivName;
+        spread = MolkkyPrimeConstants.season202526YksiSheetUrl;
+        scoreSheetLink = MolkkyPrimeConstants.season202526FirstDivScoreUrl;
+    } else if (row['gid'].slice(0, 3) == "GCC") {
         season = MolkkyPrimeConstants.season202425SecondDivName;
         spread = MolkkyPrimeConstants.season202425SecondDivSheetUrl;
         scoreSheetLink = MolkkyPrimeConstants.season202425SecondDivScoreUrl;
@@ -70,7 +82,7 @@ function appendMatch(match) {
     $("#match-season-name").append(season);
 
     var date = (row['date']) ? new Date(row['date']).toLocaleDateString() : "";
-    $("#match-match-name").append(`第${row['sec']}節 ${date}`);
+    $("#match-match-name").append(`${group} 第${row['sec']}節 ${date}`);
 
     $('#match-home-cname').append(hcnfull);
     $('#match-home-players').append(row['homeplayers']);
