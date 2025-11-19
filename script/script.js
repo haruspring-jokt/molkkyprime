@@ -338,6 +338,7 @@ function appendHeader() {
         logo: "./asset/logo.png",
         schedule: "./schedule/",
         club: "./club/",
+        transfer: "./transfer/",
         news: MolkkyPrimeConstants.newsLinks,
         entry: "./entry/",
         files: "./files/",
@@ -369,16 +370,17 @@ function appendHeader() {
                     <img src="${links.logo}" alt="Mölkky Kanto Prime League Logo">
                 </a>
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true" class="has-text-primary"></span>
+                    <span aria-hidden="true" class="has-text-primary"></span>
+                    <span aria-hidden="true" class="has-text-primary"></span>
+                    <span aria-hidden="true" class="has-text-primary"></span>
                 </a>
             </div>
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start">
                     <a class="navbar-item" href="${links.schedule}">日程・結果・順位表</a>
                     <a class="navbar-item" href="${links.club}">クラブ・選手</a>
+                    <a class="navbar-item" href="${links.transfer}">公示</a>
                     <a class="navbar-item" href="${links.entry}">エントリー・FA申請</a>
                     <a class="navbar-item" href="${links.files}">参加者向け資料</a>
                     <div class="navbar-item has-dropdown is-hoverable">
@@ -423,6 +425,7 @@ function appendFooter() {
         logo: "./asset/logo.png",
         schedule: "./schedule/",
         club: "./club/",
+        transfer: "./transfer/",
         news: MolkkyPrimeConstants.newsLinks,
         entry: "./entry/",
         files: "./files/",
@@ -454,6 +457,7 @@ function appendFooter() {
                 <li><a class="content ${TEXT_SIZE}" href="${links.top}">トップ</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="${links.schedule}">日程・結果・順位表</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="${links.club}">クラブ・選手</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.transfer}">公示</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="${links.news}" target="_blank">ニュース</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="${links.entry}">エントリー・FA申請</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="${links.files}">参加者向け資料</a></li>

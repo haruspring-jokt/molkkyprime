@@ -49,11 +49,79 @@ const fetchData = () => {
 const processFetchedData = (datasJson) => {
     appendNews(datasJson['news']);
     appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress", "");
-    appendSchedule(datasJson['monthYksi'], '#yksi-monthly-schedule', "#yksi-schedule-progress", MolkkyPrimeConstants.firstDivName);
+    const monthYksiFiltered = filterMonthEntries(datasJson['monthYksi']);
+    appendSchedule(monthYksiFiltered, '#yksi-monthly-schedule', "#yksi-schedule-progress", MolkkyPrimeConstants.firstDivName);
     appendAward(datasJson['award'], "yksi");
     appendStandings(datasJson['rankKaksi'], "#kaksi-standings-group-a", "#kaksi-standings-group-a-progress", "A");
     appendStandings(datasJson['rankKaksi'], "#kaksi-standings-group-b", "#kaksi-standings-group-b-progress", "B");
-    appendSchedule(datasJson['monthKaksi'], '#kaksi-monthly-schedule', "#kaksi-schedule-progress", MolkkyPrimeConstants.secondDivName);
+    const monthKaksiFiltered = filterMonthEntries(datasJson['monthKaksi']);
+    appendSchedule(monthKaksiFiltered, '#kaksi-monthly-schedule', "#kaksi-schedule-progress", MolkkyPrimeConstants.secondDivName);
+};
+
+/**
+     * 月別データのフィルター
+     * - 月 (month) が現在の月と一致する
+     * - OR 年月( year + month ) が現在の年月より前 かつ isdonenumber !== 1
+     */
+const filterMonthEntries = (monthEntries = []) => {
+    if (!Array.isArray(monthEntries)) return [];
+
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth() + 1;
+    const currentYm = currentYear * 100 + currentMonth;
+
+    // フィルタ
+    const filtered = monthEntries.filter(entry => {
+        const year = Number(entry?.year);
+        const month = Number(entry?.month);
+        const isDoneNumber = Number(entry?.isdonenumber);
+
+        if (!Number.isFinite(year) || !Number.isFinite(month)) return false;
+
+        const entryYm = year * 100 + month;
+        const isCurrentMonth = (year === currentYear && month === currentMonth);
+        const isPastAndNotDone = (entryYm < currentYm && isDoneNumber !== 1);
+
+        return isCurrentMonth || isPastAndNotDone;
+    });
+
+    // ソート
+    return filtered.sort((a, b) => {
+        const aHasDate = !!a?.date;
+        const bHasDate = !!b?.date;
+
+        // date 未設定は先頭
+        if (!aHasDate && bHasDate) return -1;
+        if (aHasDate && !bHasDate) return 1;
+
+        // 両方 date 未設定: gid で比較（無ければ等価）
+        if (!aHasDate && !bHasDate) {
+            const agid = a?.gid ?? "";
+            const bgid = b?.gid ?? "";
+            return agid.localeCompare(bgid, undefined, { numeric: true });
+        }
+
+        // 両方 date 設定: 日付比較（昇順）
+        const atime = Date.parse(a.date);
+        const btime = Date.parse(b.date);
+
+        if (Number.isNaN(atime) && Number.isNaN(btime)) {
+            // どちらも無効な日付→gidで比較
+            const agid = a?.gid ?? "";
+            const bgid = b?.gid ?? "";
+            return agid.localeCompare(bgid, undefined, { numeric: true });
+        }
+        if (Number.isNaN(atime)) return -1; // 無効日付は先に（要件に合わせるならここを1に変更）
+        if (Number.isNaN(btime)) return 1;
+
+        if (atime !== btime) return atime - btime;
+
+        // 同じ日付の場合は gid 昇順
+        const agid = a?.gid ?? "";
+        const bgid = b?.gid ?? "";
+        return agid.localeCompare(bgid, undefined, { numeric: true });
+    });
 };
 
 /**
@@ -307,7 +375,7 @@ function appendStandings(datasJson, tableId, progressId, group) {
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
                 <td class="${SMALL_TEXT_SIZE}">
-                    <a href="./club?cid=${rank["cid"]}" target="_blank">${club}</a>
+                    <a href="./club?cid=${rank["cid"]}">${club}</a>
                 </td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank["game"]}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank["winpoint"]}</td>
@@ -330,6 +398,7 @@ function appendStandings(datasJson, tableId, progressId, group) {
  * @param {*} progressId 
  */
 function appendSchedule(datasJson, tableId, progressId, division) {
+
     const rowsHtml = datasJson.map((game) => {
         // 日付のフォーマット処理
         const gamedate = game["date"] ? new Date(game["date"]).toLocaleDateString() : "日程調整中";
