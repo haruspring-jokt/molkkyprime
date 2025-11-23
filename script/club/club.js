@@ -284,7 +284,7 @@ function appendPlayers(players, cid, isYksi) {
             ? (Math.round(player['averageBlakePoint'] * 10) / 10).toFixed(1) + "" : "";
         $('#player-table').append(`
             <tr>s
-                <td class="${SMALL_TEXT_SIZE}" align="left">${player['playerName']}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left"><a href="../player?pid=${player.pid}">${player['playerName']}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${game}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${set}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">${mainOrder}</td>

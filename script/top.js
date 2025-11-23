@@ -264,10 +264,10 @@ function appendAward(datasJson, division) {
         return `
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./club?cid=${row['cid']}">${row['cname']}</a>
-                </td>
+                    <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${qhpro}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${qhByThrow}</td>
             </tr>
@@ -291,7 +291,8 @@ function appendAward(datasJson, division) {
         return `
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">
                     <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${fapro}</td>
@@ -317,7 +318,8 @@ function appendAward(datasJson, division) {
         return `
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">${row["pname"]}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">
                     <a href="./club?cid=${row["cid"]}">${row["cname"]}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${opt}</td>
@@ -343,8 +345,10 @@ function appendAward(datasJson, division) {
         return `
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">${row['pname']}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left"><a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
+                <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${finish}</td>
             </tr>
         `;

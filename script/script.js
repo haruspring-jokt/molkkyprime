@@ -291,6 +291,33 @@ function convertClubFromCid(cid) {
     return clubMap.get(cid) || "";
 }
 
+function convertClubCodeFromCid(cid) {
+    const clubMap = new Map([
+        ['C01', "NKL"],
+        ['C02', "SLP"],
+        ['C03', "JJP"],
+        ['C04', "SUGI"],
+        ['C05', "FWH"],
+        ['C06', "LUD"],
+        ['C07', "KES"],
+        ['C08', "NXG"],
+        ['C09', "TMR"],
+        ['C10', "MSN"],
+        ['C11', "STM"],
+        ['C12', "NRC"],
+        ['C13', "BKS"],
+        ['C14', "CBR"],
+        ['C15', "BUD"],
+        ['C16', "SISU"],
+        ['C17', "ZONE"],
+        ['C18', "7S"],
+        ['C19', "ZNA"],
+        ['C20', "IWDP"],
+        ['C21', "ASA"],
+    ]);
+    return clubMap.get(cid) || "";
+}
+
 const getDivisionCodeFrom = (cid) => {
     const divisionMap = new Map([
         ['C01', ""],
