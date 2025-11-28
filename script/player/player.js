@@ -40,7 +40,7 @@ function initDisplay(playerId) {
         const filteredPlayerData = datas.playerData.filter((player) => {
             return player.pid === playerId;
         }).sort((a, b) => {
-            return b.season - a.season;
+            return b.season.toString().localeCompare(a.season, undefined, { numeric: true });
         });
 
         console.log(filteredPlayerInfo[0]);
@@ -69,6 +69,14 @@ function createPlayerData(info, data) {
 }
 
 function appendSeasonData(info, season, isYksi, isKaksi) {
+    let totals = {
+        "gameTotal": 0,
+        "setTotal": 0,
+        "throwTotal": 0,
+    }
+    if (season.length == 0) {
+        return totals;
+    }
     // テーブルヘッダーを動的に生成
     const seasonHeader = season.map(se =>
         `<th class="has-background-primary-80 is-narrow">${se.season}</th>`
@@ -94,11 +102,11 @@ function appendSeasonData(info, season, isYksi, isKaksi) {
         ['setD3', '└D3rd', true, season.map(se => numberFormat(se.setD3, 0))],
         ['setD4', '└D4th', true, season.map(se => numberFormat(se.setD4, 0))],
         ['throw', 'TH', true, season.map(se => numberFormat(se.throw, 0))],
-        ['qh', 'QH(%)', true, season.map(se => numberFormat(se.qh, 0) + " " + `(${perNumberFormat(se.qhRaito, 1)})`)],
+        ['qh', 'QH(%)', true, season.map(se => numberFormat(se.qh, 0) + " " + `(${perNumberFormat(se.qhRaito, 1)}%)`)],
         ['qhRank', 'QH RANK', true, season.map(se => numberFormat(se.qhRank, 0))],
-        ['fault', 'FAULT(%)', true, season.map(se => numberFormat(se.fault, 0) + " " + `(${perNumberFormat(se.faultRaito, 1)})`)],
+        ['fault', 'FAULT(%)', true, season.map(se => numberFormat(se.fault, 0) + " " + `(${perNumberFormat(se.faultRaito, 1)}%)`)],
         ['faultRank', 'FA RANK', true, season.map(se => numberFormat(se.faultRank, 0))],
-        ['notQh', 'NOTQH(%)', true, season.map(se => numberFormat(se.notQh, 0) + " " + `(${perNumberFormat(se.notQhRaito, 1)})`)],
+        ['notQh', 'NOTQH(%)', true, season.map(se => numberFormat(se.notQh, 0) + " " + `(${perNumberFormat(se.notQhRaito, 1)}%)`)],
         ['qhAroundFa', 'QH/FA', true, season.map(se => numberFormat(se.qhAroundFa, 1))],
         ['finish', 'FINISH', true, season.map(se => numberFormat(se.finish, 0))],
         ['opt', 'OPT', true, season.map(se => optNumber(se.opt))],
@@ -115,7 +123,7 @@ function appendSeasonData(info, season, isYksi, isKaksi) {
 
     $(".player-data-season > tbody").append(allHtml);
 
-    const totals = {
+    totals = {
         "gameTotal": season.map(se => se.game || 0).reduce((a, b) => a + b, 0),
         "setTotal": season.map(se => se.set || 0).reduce((a, b) => a + b, 0),
         "throwTotal": season.map(se => se.throw || 0).reduce((a, b) => a + b, 0),
@@ -145,12 +153,12 @@ function makeTr(array, colName, isNumber) {
     const tds = array.map(ar => {
         const greyClass = isNumber && (ar == 0 || ar == "" || ar == "-" || !ar)
             ? "has-text-grey-lighter" : "";
-        const rankClass = isRankColumn && ar >= 1 && ar <= 3
-            ? "has-text-weight-bold has-text-info" : "";
+        const rankClass = isRankColumn && ar >= 1 && ar <= 3 ? "has-text-weight-bold has-text-link"
+            : isRankColumn && ar >= 4 && ar <= 10 ? "has-text-weight has-text-info"
+            : "";
         return `<td class="is-narrow">
             <span class="${isRight} ${greyClass} ${rankClass}">${ar}${isRankColumn ? "位" : ""}</span></td>`;
     }).join("");
-
 
     return `
         <tr class="is-size-7 table">
@@ -161,9 +169,9 @@ function makeTr(array, colName, isNumber) {
 }
 
 function overScore(throws, qhRaito, faultRaito) {
-    const qh = qhRaito == 0 || qhRaito == "" || qhRaito == "|" ? 0
+    const qh = qhRaito == 0 || qhRaito == "" || qhRaito == "|" ? `<span class="has-text-success">0%</span>`
         : `<span class="has-text-success">${perNumberFormat(qhRaito, 0)}%</span>`;
-    const fault = faultRaito == 0 || faultRaito == "" || faultRaito == "|" ? 0
+    const fault = faultRaito == 0 || faultRaito == "" || faultRaito == "|" ? `<span class="has-text-danger">0%</span>`
         : `<span class="has-text-danger">${perNumberFormat(faultRaito, 0)}%</span>`;
     return `
         ${qh}-${fault} (${numberFormat(throws, 0)})
@@ -178,6 +186,9 @@ function perNumberFormat(num, di) {
 }
 
 function optNumber(opt) {
+    if (opt == "" || opt == "-" || !opt) {
+        return "-";
+    }
     return (Math.round(opt * 100) / 100).toFixed(2)
 }
 
