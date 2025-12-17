@@ -103,7 +103,12 @@ function createClubSelectBox(clubs, cid) {
     $('select[name="club-data"]').html("");
     var defaultCid = clubs[0]['cid'];
     clubs.some(function (club, i) {
-        var division = club['division'] === MolkkyPrimeConstants.firstDivName ? '【ユクシ】' : '【チャレンジ】';
+        if (["CFA", "CXX", "CZZ"].includes(club['cid'])) {
+            // 非表示対象クラブ
+            return;
+        }
+        var division = club['division'] === MolkkyPrimeConstants.firstDivName ? '【ユクシ】' :
+            club['division'] === MolkkyPrimeConstants.secondDivName ? '【チャレンジ】' : "【非参加】";
         var isDefaultClub = club['cid'] == cid ? 'selected' : '';
         $('select[name="club-data"]').append(`
             <option value="${club['cid']}" label="${division + club['clubHpName']}" ${isDefaultClub}></option>
