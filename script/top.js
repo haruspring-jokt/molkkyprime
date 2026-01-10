@@ -83,7 +83,11 @@ const filterMonthEntries = (monthEntries = []) => {
         const isCurrentMonth = (year === currentYear && month === currentMonth);
         const isPastAndNotDone = (entryYm < currentYm && isDoneNumber !== 1);
 
-        return isCurrentMonth || isPastAndNotDone;
+        // TODO entry.date が現在月の範囲内のものもreturnのOR条件に追加する
+        const entryDate = entry?.date ? new Date(entry.date) : null;
+        const isWithinCurrentMonth = entryDate && entryDate.getFullYear() === currentYear && entryDate.getMonth() + 1 === currentMonth;
+
+        return isCurrentMonth || isPastAndNotDone || isWithinCurrentMonth;
     });
 
     // ソート
