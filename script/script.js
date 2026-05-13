@@ -44,6 +44,12 @@ class MolkkyPrimeConstants {
     static get curerntSeasonSecondDivName() {
         return this.season202526SecondDivName;
     }
+    static get season202627FirstDivName() {
+        return "モルック関東プライムリーグユクシ 2025-2026";
+    }
+    static get season202627SecondDivName() {
+        return "モルック関東プライムリーグチャレンジ 2025-2026";
+    }
     static get season202526FirstDivName() {
         return "モルック関東プライムリーグユクシ 2025-2026";
     }
@@ -70,7 +76,14 @@ class MolkkyPrimeConstants {
     // シーズンシート管理
     // =================================================
 
-    /** TODO 202526シーズン全Div閲覧用 */
+    /** 2627 */
+    static get season202627YksiSheetUrl() {
+        return "";
+    }
+    static get season202627KaksiSheetUrl() {
+        return "";
+    }
+    /** 202526シーズン全Div閲覧用 */
     static get season202526AllDivSheetUrl() {
         return "";
     }
@@ -104,6 +117,12 @@ class MolkkyPrimeConstants {
     // シーズンスコアフォルダ管理
     // =================================================
 
+    static get season202627FirstDivScoreUrl() {
+        return "";
+    }
+    static get season202627SecondDivScoreUrl() {
+        return "";
+    }
     static get season202526FirstDivScoreUrl() {
         return "https://drive.google.com/drive/folders/1MGeQehaymTDK7ampsI9JHABQlgPkBzPJ?usp=sharing";
     }
@@ -132,6 +151,9 @@ class MolkkyPrimeConstants {
     static get currentSeasonFirstDivGuideUrl() {
         return this.season202526FirstDivGuideUrl;
     }
+    static get season202627FirstDivGuideUrl() {
+        return "";
+    }
     static get season202526FirstDivGuideUrl() {
         return "https://docs.google.com/presentation/d/1hgD1lWqjFENRszDZMKNyleOh4YLzLapV644-LBqAPIk/";
     }
@@ -140,6 +162,9 @@ class MolkkyPrimeConstants {
     }
     static get currentSeasonSecondDivGuideUrl() {
         return this.season202526SecondDivGuideUrl;
+    }
+    static get season202627SecondDivGuideUrl() {
+        return "";
     }
     static get season202526SecondDivGuideUrl() {
         return "https://docs.google.com/presentation/d/1i9mhV0gKI6xrdUrRnsEcT6e2XnD_VUyP4H4UnJ8z6lw/";
@@ -370,8 +395,9 @@ function appendHeader() {
         entry: "./entry/",
         files: "./files/",
         regulation: "./regulation/",
-        past202324: "./past/202324/",
+        past202526: "./past/202526/",
         past202425: "./past/202425/",
+        past202324: "./past/202324/",
         past2023: "./past/2023/",
         twitter: MolkkyPrimeConstants.twitter,
         youtube: MolkkyPrimeConstants.youtube,
@@ -419,6 +445,7 @@ function appendHeader() {
                             <a class="navbar-item" href="${links.regulation}">ルール</a>
                             <a class="navbar-item">データ <strong>*Coming Soon*</strong></a>
                             <a class="navbar-link">過去のシーズン</a>
+                            <a class="navbar-item" href="${links.past202526}">シーズン2025-26</a>
                             <a class="navbar-item" href="${links.past202425}">シーズン2024-25</a>
                             <a class="navbar-item" href="${links.past202324}">シーズン2023-24</a>
                             <a class="navbar-item" href="${links.past2023}">シーズン2023</a>
@@ -457,6 +484,7 @@ function appendFooter() {
         entry: "./entry/",
         files: "./files/",
         regulation: "./regulation/",
+        past202526: "./past/202526/",
         past202425: "./past/202425/",
         past202324: "./past/202324/",
         past2023: "./past/2023/",
@@ -492,6 +520,7 @@ function appendFooter() {
                 <li><a class="content ${TEXT_SIZE}" href="">データ *coming soon*</a></li>
             </ul>
             <ul class="content column">過去のシーズン
+            <li><a class="content ${TEXT_SIZE}" href="${links.past202526}">シーズン2025-2026</a></li>
             <li><a class="content ${TEXT_SIZE}" href="${links.past202425}">シーズン2024-2025</a></li>
             <li><a class="content ${TEXT_SIZE}" href="${links.past202324}">シーズン2023-2024</a></li>
             <li><a class="content ${TEXT_SIZE}" href="${links.past2023}">シーズン2023</a></li>
