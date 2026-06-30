@@ -164,7 +164,7 @@ class MolkkyPrimeConstants {
         return this.season202526SecondDivGuideUrl;
     }
     static get season202627SecondDivGuideUrl() {
-        return "";
+        return "https://docs.google.com/presentation/d/1IJ8c9hk8iuyoi6Za8Te4Vj18BmME5UfpOJEq0k3bDIs/";
     }
     static get season202526SecondDivGuideUrl() {
         return "https://docs.google.com/presentation/d/1i9mhV0gKI6xrdUrRnsEcT6e2XnD_VUyP4H4UnJ8z6lw/";
