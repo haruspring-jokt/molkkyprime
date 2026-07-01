@@ -178,7 +178,7 @@ class MolkkyPrimeConstants {
     // =================================================
     /** スコアシートテンプレートURL */
     static get scoreSheetTemplateUrl() {
-        return "https://drive.google.com/file/d/1EheuTYzXLCBqkYUFI23C9OEZtFpx4Lgu/view";
+        return "https://drive.google.com/drive/folders/1FtsCeh3jk8RKi4lhZhpaHv0HE0xxtx-B?usp=sharing";
     }
     /** クラブ・選手マスタシートURL */
     static get clubPlayerSheetUrl() {
