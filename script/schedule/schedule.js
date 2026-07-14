@@ -19,8 +19,8 @@ function appendConstLinks() {
     };
     const detailMsg = "詳細はスプレッドシートへ";
     // 画像
-    $('#yksi-card-image').html(addImg(`../asset/${MolkkyPrimeConstants.currentYksiCoverUrl}`), "mkpl-yksi-cover");
-    $('#kaksi-card-image').html(addImg(`../asset/${MolkkyPrimeConstants.currentKaksiCoverUrl}`), "mkpl-kaksi-cover");
+    $('#yksi-card-image').html(addImg(`../past/${MolkkyPrimeConstants.currentYksiCoverUrl}`), "mkpl-yksi-cover");
+    $('#kaksi-card-image').html(addImg(`../past/${MolkkyPrimeConstants.currentKaksiCoverUrl}`), "mkpl-kaksi-cover");
     // 順位表
     $('#list').append(`
         <p class="content is-size-7"><a

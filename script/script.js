@@ -39,16 +39,16 @@ class MolkkyPrimeConstants {
     // =================================================
 
     static get curerntSeasonFirstDivName() {
-        return this.season202526FirstDivName;
+        return this.season202627FirstDivName;
     }
     static get curerntSeasonSecondDivName() {
-        return this.season202526SecondDivName;
+        return this.season202627SecondDivName;
     }
     static get season202627FirstDivName() {
-        return "モルック関東プライムリーグユクシ 2025-2026";
+        return "モルック関東プライムリーグユクシ 2026-2027";
     }
     static get season202627SecondDivName() {
-        return "モルック関東プライムリーグチャレンジ 2025-2026";
+        return "モルック関東プライムリーグチャレンジ 2026-2027";
     }
     static get season202526FirstDivName() {
         return "モルック関東プライムリーグユクシ 2025-2026";
@@ -118,10 +118,10 @@ class MolkkyPrimeConstants {
     // =================================================
 
     static get season202627FirstDivScoreUrl() {
-        return "";
+        return "https://drive.google.com/drive/folders/19abgTZIUT2Zq65PGprTpKz8E74x1CfLq";
     }
     static get season202627SecondDivScoreUrl() {
-        return "";
+        return "https://drive.google.com/drive/folders/12T-l_biUJz0SPEwdq5DagD9UvqAdBgnd";
     }
     static get season202526FirstDivScoreUrl() {
         return "https://drive.google.com/drive/folders/1MGeQehaymTDK7ampsI9JHABQlgPkBzPJ?usp=sharing";
@@ -149,10 +149,10 @@ class MolkkyPrimeConstants {
     // シーズンガイドリンク
     // =================================================
     static get currentSeasonFirstDivGuideUrl() {
-        return this.season202526FirstDivGuideUrl;
+        return this.season202627FirstDivGuideUrl;
     }
     static get season202627FirstDivGuideUrl() {
-        return "";
+        return "https://docs.google.com/presentation/d/1L-9nSpJuRZBga-yeRdIwBwCPw3h2SHpJxf7dHkbtjSQ/";
     }
     static get season202526FirstDivGuideUrl() {
         return "https://docs.google.com/presentation/d/1hgD1lWqjFENRszDZMKNyleOh4YLzLapV644-LBqAPIk/";
@@ -161,7 +161,7 @@ class MolkkyPrimeConstants {
         return "https://docs.google.com/presentation/d/1F1ZTMUHTkiqN0pbkweLLT0IrM5-WZOyHI0-K_GMPeR0/";
     }
     static get currentSeasonSecondDivGuideUrl() {
-        return this.season202526SecondDivGuideUrl;
+        return this.season202627SecondDivGuideUrl;
     }
     static get season202627SecondDivGuideUrl() {
         return "https://docs.google.com/presentation/d/1IJ8c9hk8iuyoi6Za8Te4Vj18BmME5UfpOJEq0k3bDIs/";
@@ -178,7 +178,7 @@ class MolkkyPrimeConstants {
     // =================================================
     /** スコアシートテンプレートURL */
     static get scoreSheetTemplateUrl() {
-        return "https://drive.google.com/drive/folders/1FtsCeh3jk8RKi4lhZhpaHv0HE0xxtx-B?usp=sharing";
+        return "https://drive.google.com/drive/folders/1FtsCeh3jk8RKi4lhZhpaHv0HE0xxtx-B";
     }
     /** クラブ・選手マスタシートURL */
     static get clubPlayerSheetUrl() {
@@ -201,7 +201,7 @@ class MolkkyPrimeConstants {
     }
     static get rankRulesYksi() {
         return `
-            <p class="is-size-7">8位のクラブはシーズン終了後、チャレンジ3位クラブと入れ替えプレーオフを実施する。2026-27シーズンは10クラブ体制となる。</p>
+            <p class="is-size-7">2026-27シーズンは10クラブ体制となる。降格となる順位は開幕前に決定する。</p>
             <p class="is-size-7">※試合中の順位表は公式記録が発表されるまでの暫定記録となります。<br />
                 ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
                 - セット獲得率が高いクラブ<br />
@@ -216,7 +216,7 @@ class MolkkyPrimeConstants {
     }
     static get rankRulesKaksi() {
         return `
-            <p class="is-size-7">グループ1位が昇格確定し優勝決定戦へ進出する。グループ2位が3位決定戦へ進出し、3位決定戦で勝利するとユクシ8位との入れ替えプレーオフに進出する。</p>
+            <p class="is-size-7">昇格となる順位は開幕前に決定する。</p>
             <p class="is-size-7">※試合中の順位表は公式記録が発表されるまでの暫定記録となります。<br />
                 ※シーズンの全日程が完了した際に、以下の順で順位を決定する。<br />
                 - セット獲得率が高いクラブ<br />
@@ -240,19 +240,21 @@ class MolkkyPrimeConstants {
         return [
             { "url": "https://x.com/SLAPS_molkky", "name": "SLAPS Twitter" },
             { "url": "https://x.com/mcjp_official", "name": "jaja patatas Twitter" },
-            { "url": "https://x.com/fuchu_mol", "name": "Fuchu-möl White Horses Twitter" },
             { "url": "https://x.com/lowkey_molkky", "name": "löwkey with うんとこどっこいしょ大学 Twitter" },
             { "url": "https://x.com/Kestaa1013", "name": "Kestää Twitter" },
             { "url": "https://x.com/NXG_molkky", "name": "NEXT GENERATIONS Twitter" },
             { "url": "https://x.com/molkky634", "name": "武蔵野 Twitter" },
             { "url": "https://x.com/cobradanplus", "name": "コブラ団＋ Twitter" },
+            { "url": "https://x.com/rooney_mol10", "name": "SISU Twitter" },
+            { "url": "https://x.com/SEVENS_molkky", "name": "SEVEN'S Twitter" },
+            { "url": "https://x.com/ASACREW9", "name": "ASA CREW Twitter" },
         ];
     }
     static get currentYksiCoverUrl() {
-        return "mkpl2526_yksi_main_light.png";
+        return "202627/asset/mkpl2627_yksi_theme_light.jpg";
     }
     static get currentKaksiCoverUrl() {
-        return "mkpl2526_kaksi_main_dark.png";
+        return "202627/asset/mkpl2627_kaksi_theme_dark.jpg";
     }
     static get youtube() {
         return "https://youtube.com/@molkkyclanjajapatatas/";
@@ -312,6 +314,7 @@ function convertClubFromCid(cid) {
         ['C19', "禅那"],
         ['C20', "池袋ウッドペッカーズ"],
         ['C21', "ASA CREW"],
+        ['C22', "Yritän"],
     ]);
     return clubMap.get(cid) || "";
 }
@@ -339,6 +342,7 @@ function convertClubCodeFromCid(cid) {
         ['C19', "ZNA"],
         ['C20', "IWDP"],
         ['C21', "ASA"],
+        ['C22', "YRT"],
     ]);
     return clubMap.get(cid) || "";
 }
@@ -348,24 +352,25 @@ const getDivisionCodeFrom = (cid) => {
         ['C01', ""],
         ['C02', MolkkyPrimeConstants.firstDivName],
         ['C03', MolkkyPrimeConstants.firstDivName],
-        ['C04', MolkkyPrimeConstants.secondDivName],
-        ['C05', MolkkyPrimeConstants.firstDivName],
+        ['C04', ""],
+        ['C05', ""],
         ['C06', MolkkyPrimeConstants.firstDivName],
         ['C07', MolkkyPrimeConstants.firstDivName],
         ['C08', MolkkyPrimeConstants.firstDivName],
         ['C09', ""],
         ['C10', MolkkyPrimeConstants.firstDivName],
-        ['C11', MolkkyPrimeConstants.secondDivName],
+        ['C11', ""],
         ['C12', ""],
-        ['C13', MolkkyPrimeConstants.secondDivName],
+        ['C13', ""],
         ['C14', MolkkyPrimeConstants.firstDivName],
-        ['C15', MolkkyPrimeConstants.secondDivName],
-        ['C16', MolkkyPrimeConstants.secondDivName],
-        ['C17', MolkkyPrimeConstants.secondDivName],
-        ['C18', MolkkyPrimeConstants.secondDivName],
+        ['C15', ""],
+        ['C16', MolkkyPrimeConstants.firstDivName],
+        ['C17', ""],
+        ['C18', MolkkyPrimeConstants.firstDivName],
         ['C19', MolkkyPrimeConstants.secondDivName],
         ['C20', MolkkyPrimeConstants.secondDivName],
-        ['C21', MolkkyPrimeConstants.secondDivName]
+        ['C21', MolkkyPrimeConstants.firstDivName],
+        ['C22', MolkkyPrimeConstants.secondDivName],
     ]);
     return divisionMap.get(cid) || "";
 };
