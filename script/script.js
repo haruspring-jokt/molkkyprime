@@ -361,7 +361,7 @@ const getDivisionCodeFrom = (cid) => {
         ['C10', MolkkyPrimeConstants.firstDivName],
         ['C11', ""],
         ['C12', ""],
-        ['C13', ""],
+        ['C13', MolkkyPrimeConstants.secondDivName],
         ['C14', MolkkyPrimeConstants.firstDivName],
         ['C15', ""],
         ['C16', MolkkyPrimeConstants.firstDivName],
