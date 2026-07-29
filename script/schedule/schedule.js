@@ -24,7 +24,7 @@ function appendConstLinks() {
     // 順位表
     $('#list').append(`
         <p class="content is-size-7"><a
-        href="${MolkkyPrimeConstants.season202526AllDivSheetUrl}"
+        href="${MolkkyPrimeConstants.season202627AllDivSheetUrl}"
         target="_blank">${detailMsg}</a></p>
     `);
     // リーグ名
@@ -36,12 +36,12 @@ function appendConstLinks() {
     // 日程表説明
     $('#top-yksi-schedule-link').html(`
         <p class="content is-size-7"><a
-            href="${MolkkyPrimeConstants.season202526YksiSheetUrl}"
+            href="${MolkkyPrimeConstants.season202627YksiSheetUrl}"
             target="_blank">${detailMsg}</a></p>
     `);
     $('#top-kaksi-schedule-link').html(`
         <p class="content is-size-7"><a
-            href="${MolkkyPrimeConstants.season202526KaksiSheetUrl}"
+            href="${MolkkyPrimeConstants.season202627KaksiSheetUrl}"
             target="_blank">${detailMsg}</a></p>
     `);
 }

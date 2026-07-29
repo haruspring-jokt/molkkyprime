@@ -78,10 +78,10 @@ class MolkkyPrimeConstants {
 
     /** 2627 */
     static get season202627YksiSheetUrl() {
-        return "";
+        return "https://docs.google.com/spreadsheets/d/1o62hc3H1IgFDS78jO8V1Sc9U-cLM63cdOAKpPL8tnhs/htmlview";
     }
     static get season202627KaksiSheetUrl() {
-        return "";
+        return "https://docs.google.com/spreadsheets/d/1N4hM4UG3ip37YYHB_j-POujdYpNYAvrXp_h3ilTXC7E/htmlview";
     }
     /** 202526シーズン全Div閲覧用 */
     static get season202526AllDivSheetUrl() {
@@ -210,7 +210,7 @@ class MolkkyPrimeConstants {
                 - 総得失点差が高いクラブ<br />
                 - 登録選手数が多いクラブ<br />
                 - 上記でも決まらなかった場合は同順位<br />
-                ※シーズンの7試合以上を4人構成で出場すること。<br />
+                ※シーズンの9試合以上を4人構成で出場すること。<br />
                 ※「率」：セット率。勝ちセット / 負けセット
             </p>`;
     }
@@ -352,7 +352,7 @@ const getDivisionCodeFrom = (cid) => {
         ['C01', ""],
         ['C02', MolkkyPrimeConstants.firstDivName],
         ['C03', MolkkyPrimeConstants.firstDivName],
-        ['C04', ""],
+        ['C04', MolkkyPrimeConstants.secondDivName],
         ['C05', ""],
         ['C06', MolkkyPrimeConstants.firstDivName],
         ['C07', MolkkyPrimeConstants.firstDivName],
@@ -365,7 +365,7 @@ const getDivisionCodeFrom = (cid) => {
         ['C14', MolkkyPrimeConstants.firstDivName],
         ['C15', ""],
         ['C16', MolkkyPrimeConstants.firstDivName],
-        ['C17', ""],
+        ['C17', MolkkyPrimeConstants.secondDivName],
         ['C18', MolkkyPrimeConstants.firstDivName],
         ['C19', MolkkyPrimeConstants.secondDivName],
         ['C20', MolkkyPrimeConstants.secondDivName],

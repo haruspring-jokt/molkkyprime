@@ -143,8 +143,8 @@ const appendConstLinks = () => {
  */
 const setupImages = () => {
     const images = [
-        { id: "yksi-card-image", src: "mkpl2526_yksi_main_light.png", alt: "mkpl-yksi-cover" },
-        { id: "kaksi-card-image", src: "mkpl2526_kaksi_main_dark.png", alt: "mkpl-kaksi-cover" }
+        { id: "yksi-card-image", src: "mkpl2627_yksi_main_light.png", alt: "mkpl-yksi-cover" },
+        { id: "kaksi-card-image", src: "mkpl2627_kaksi_main_dark.png", alt: "mkpl-kaksi-cover" }
     ];
     images.forEach(({ id, src, alt }) => {
         $(`#${id}`).html(createImageHtml(src, alt));
@@ -171,17 +171,17 @@ const setupLinks = () => {
     appendLinks('#mkpl-top-common-links', commonLinks);
 
     const yksiLinks = [
-        { href: MolkkyPrimeConstants.season202526YksiSheetUrl, text: "日程・結果・順位表スプレッドシート" },
+        { href: MolkkyPrimeConstants.season202627YksiSheetUrl, text: "日程・結果・順位表スプレッドシート" },
         // { href: MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
         { href: MolkkyPrimeConstants.allSeasonStatsSheetUrl, text: "リーグ通算成績（Googleスプレッドシート）" },
-        { href: MolkkyPrimeConstants.season202526FirstDivScoreUrl, text: "スコアシート保存フォルダ（Googleドライブ）" }
+        { href: MolkkyPrimeConstants.season202627FirstDivScoreUrl, text: "スコアシート保存フォルダ（Googleドライブ）" }
     ];
     appendLinks('#mkpl-yksi-links', yksiLinks);
 
     const kaksiLinks = [
-        { href: MolkkyPrimeConstants.season202526KaksiSheetUrl, text: "日程・結果・順位表スプレッドシート" },
+        { href: MolkkyPrimeConstants.season202627KaksiSheetUrl, text: "日程・結果・順位表スプレッドシート" },
         // { href: MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
-        { href: MolkkyPrimeConstants.season202526SecondDivScoreUrl, text: "スコアシート保存フォルダ（Googleドライブ）" }
+        { href: MolkkyPrimeConstants.season202627SecondDivScoreUrl, text: "スコアシート保存フォルダ（Googleドライブ）" }
     ];
     appendLinks('#mkpl-kaksi-links', kaksiLinks);
 

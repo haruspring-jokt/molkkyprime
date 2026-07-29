@@ -255,6 +255,20 @@ function convertStats(throwCount, qualityHit, fault, qhPer, faPer, align) {
 function getSeasonConfig(gid) {
     const gidMap = [
         {
+            prefix: "GEC",
+            season: MolkkyPrimeConstants.season202627SecondDivName,
+            spread: MolkkyPrimeConstants.season202627KaksiSheetUrl,
+            score: MolkkyPrimeConstants.season202627SecondDivScoreUrl,
+            division: 2
+        },
+        {
+            prefix: "GE",
+            season: MolkkyPrimeConstants.season202627FirstDivName,
+            spread: MolkkyPrimeConstants.season202627YksiSheetUrl,
+            score: MolkkyPrimeConstants.season202627FirstDivScoreUrl,
+            division: 1
+        },
+        {
             prefix: "GDC",
             season: MolkkyPrimeConstants.season202526SecondDivName,
             spread: MolkkyPrimeConstants.season202526KaksiSheetUrl,

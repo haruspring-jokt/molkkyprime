@@ -46,11 +46,11 @@ function appendConstLinks() {
         class="has-text-link is-size-7" target="_blank">詳細はスプレッドシートへ</a></li>
     `);
     $('#club-detail').append(`
-        <a href="${MolkkyPrimeConstants.season202526AllDivSheetUrl}"
+        <a href="${MolkkyPrimeConstants.season202627AllDivSheetUrl}"
                         target="_blank">詳細はスプレッドシートへ</a>
     `);
     $('#player-detail').append(`
-        <a href="${MolkkyPrimeConstants.season202526AllDivSheetUrl}"
+        <a href="${MolkkyPrimeConstants.season202627AllDivSheetUrl}"
                         target="_blank">詳細はスプレッドシートへ</a>
     `);
 }
