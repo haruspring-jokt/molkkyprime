@@ -12,7 +12,7 @@ $(function () {
 });
 
 function appendConstLinks() {
-    var addImg = function(url, alt) {
+    var addImg = function (url, alt) {
         return `<figure class="image is-16by9">
             <img class="is-rounded" src="${url}" alt="${alt}" />
         </figure>`;
@@ -61,8 +61,7 @@ function fetchData() {
         // 日程1部
         appendSchedule(datasJson['scheduleYksi'], '#yksi-schedule', "#yksi-schedule-progress", "YKSI");
         // 順位表2部
-        appendStandings(datasJson['rankKaksi'], "#kaksi-standings-group-a", "#kaksi-standings-group-a-progress", "A");
-        appendStandings(datasJson['rankKaksi'], "#kaksi-standings-group-b", "#kaksi-standings-group-b-progress", "B");
+        appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress", "");
         // 日程2部
         appendSchedule(datasJson['scheduleKaksi'], '#kaksi-schedule', "#kaksi-schedule-progress", "KAKSI");
     });
@@ -84,6 +83,7 @@ function appendStandings(datasJson, tableId, progressId, group) {
     }
     datasJson.some(function (rank, i) {
         var ranknum = Number(rank['rank']);
+        if (ranknum < 1) { return; }
         var club = rank['cname'];
         if (club.length > 20) {
             // クラブ名が長い場合省略する
@@ -116,7 +116,7 @@ function appendSchedule(datasJson, tableId, progressId, division) {
     datasJson.some(function (game, i) {
         var gamedate = (game['date']) ? new Date(game['date']).toLocaleDateString() : "";
         var video = (game['videourl'] != "")
-                ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
+            ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
         var hcn = `<a href="../club?cid=${game['hcid']}">${game['hcn']}</a>`;
         var acn = `<a href="../club?cid=${game['acid']}">${game['acn']}</a>`;
         var hcnTdClass = "";
@@ -132,12 +132,10 @@ function appendSchedule(datasJson, tableId, progressId, division) {
         }
 
         let group = game["gid"].substr(-2) < 21 ? "A" : "B";
-        let gcol = division === "KAKSI" ? `<td class="${SMALL_TEXT_SIZE}" align="center">${group}</td>` : "";
 
         $(tableId).append(
             `
             <tr>
-            ${gcol}
             <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
             <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="../match?gid=${game['gid']}">${gamedate}</a>${video}</td>
             <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>

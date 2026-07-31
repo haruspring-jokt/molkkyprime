@@ -52,17 +52,18 @@ const processFetchedData = (datasJson) => {
     const monthYksiFiltered = filterMonthEntries(datasJson['monthYksi']);
     appendSchedule(monthYksiFiltered, '#yksi-monthly-schedule', "#yksi-schedule-progress", MolkkyPrimeConstants.firstDivName);
     appendAward(datasJson['award'], "yksi");
-    appendStandings(datasJson['rankKaksi'], "#kaksi-standings-group-a", "#kaksi-standings-group-a-progress", "A");
-    appendStandings(datasJson['rankKaksi'], "#kaksi-standings-group-b", "#kaksi-standings-group-b-progress", "B");
+    appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress", "");
     const monthKaksiFiltered = filterMonthEntries(datasJson['monthKaksi']);
     appendSchedule(monthKaksiFiltered, '#kaksi-monthly-schedule', "#kaksi-schedule-progress", MolkkyPrimeConstants.secondDivName);
 };
 
 /**
-     * 月別データのフィルター
-     * - 月 (month) が現在の月と一致する
-     * - OR 年月( year + month ) が現在の年月より前 かつ isdonenumber !== 1
-     */
+ * 月別データのフィルター
+ * - 月 (month) が現在の月と一致する
+ * - OR 年月( year + month ) が現在の年月より前 かつ isdonenumber !== 1
+ * - OR リーグ開幕前の場合は最初の月のデータを含める
+ * - OR フィルタ結果が空の場合は最新月のデータを含める
+ */
 const filterMonthEntries = (monthEntries = []) => {
     if (!Array.isArray(monthEntries)) return [];
 
@@ -71,27 +72,58 @@ const filterMonthEntries = (monthEntries = []) => {
     const currentMonth = today.getMonth() + 1;
     const currentYm = currentYear * 100 + currentMonth;
 
+    const getMonthKey = (year, month) => year * 100 + month;
+
+    const validEntries = monthEntries.filter(entry => {
+        const year = Number(entry?.year);
+        const month = Number(entry?.month);
+        return Number.isFinite(year) && Number.isFinite(month);
+    });
+
+    if (validEntries.length === 0) return [];
+
+    const earliestEntry = validEntries.reduce((earliest, entry) => {
+        const earliestYm = getMonthKey(Number(earliest.year), Number(earliest.month));
+        const entryYm = getMonthKey(Number(entry.year), Number(entry.month));
+        return entryYm < earliestYm ? entry : earliest;
+    }, validEntries[0]);
+
+    const latestEntry = validEntries.reduce((latest, entry) => {
+        const latestYm = getMonthKey(Number(latest.year), Number(latest.month));
+        const entryYm = getMonthKey(Number(entry.year), Number(entry.month));
+        return entryYm > latestYm ? entry : latest;
+    }, validEntries[0]);
+
+    const earliestYm = getMonthKey(Number(earliestEntry.year), Number(earliestEntry.month));
+    const latestYm = getMonthKey(Number(latestEntry.year), Number(latestEntry.month));
+
     // フィルタ
-    const filtered = monthEntries.filter(entry => {
+    const filtered = validEntries.filter(entry => {
         const year = Number(entry?.year);
         const month = Number(entry?.month);
         const isDoneNumber = Number(entry?.isdonenumber);
 
-        if (!Number.isFinite(year) || !Number.isFinite(month)) return false;
-
-        const entryYm = year * 100 + month;
+        const entryYm = getMonthKey(year, month);
         const isCurrentMonth = (year === currentYear && month === currentMonth);
         const isPastAndNotDone = (entryYm < currentYm && isDoneNumber !== 1);
+        const isBeforeOpeningMonth = currentYm < earliestYm && entryYm === earliestYm;
 
         // TODO entry.date が現在月の範囲内のものもreturnのOR条件に追加する
         const entryDate = entry?.date ? new Date(entry.date) : null;
         const isWithinCurrentMonth = entryDate && entryDate.getFullYear() === currentYear && entryDate.getMonth() + 1 === currentMonth;
 
-        return isCurrentMonth || isPastAndNotDone || isWithinCurrentMonth;
+        return isCurrentMonth || isPastAndNotDone || isWithinCurrentMonth || isBeforeOpeningMonth;
     });
 
+    const fallbackEntries = validEntries.filter(entry => {
+        const entryYm = getMonthKey(Number(entry.year), Number(entry.month));
+        return entryYm === latestYm;
+    });
+
+    const resultEntries = filtered.length > 0 ? filtered : fallbackEntries;
+
     // ソート
-    return filtered.sort((a, b) => {
+    return resultEntries.sort((a, b) => {
         const aHasDate = !!a?.date;
         const bHasDate = !!b?.date;
 
@@ -254,110 +286,146 @@ function appendAward(datasJson, division) {
 
     // QH賞
     const qhDatas = datasJson['qh'];
-    let rank = 1;
-    let tie = 0;
-    const qhRowsHtml = qhDatas.slice(0, 10).map((row, i) => {
-        const qhpro = `${(row['qhpro'] * 100).toFixed(2)}%`;
-        const qhByThrow = `${Math.floor(row['qh'])}/${Math.floor(row['throw'])}`;
-        if (i > 0 && (row['qhpro'] < qhDatas[i - 1]['qhpro'])) {
-            rank += tie;
-            tie = 1;
-        } else {
-            tie++;
-        }
-        return `
-            <tr>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${qhpro}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${qhByThrow}</td>
-            </tr>
-        `;
-    }).join("");
-    $(`#${division}-award-qh`).append(qhRowsHtml);
+    if (!Array.isArray(qhDatas) || qhDatas.length === 0) {
+        $(`#${division}-award-qh`).empty();
+    } else {
+        let rank = 1;
+        let tie = 0;
+        const qhRowsHtml = qhDatas.slice(0, 10).map((row, i) => {
+            const qhproValue = Number(row['qhpro']);
+            const qhValue = Number(row['qh']);
+            const throwValue = Number(row['throw']);
+            const hasValidValues = Number.isFinite(qhproValue) && Number.isFinite(qhValue) && Number.isFinite(throwValue);
+            if (!hasValidValues) return "";
+
+            const qhpro = `${(qhproValue * 100).toFixed(2)}%`;
+            const qhByThrow = `${Math.floor(qhValue)}/${Math.floor(throwValue)}`;
+            if (i > 0 && (qhproValue < qhDatas[i - 1]['qhpro'])) {
+                rank += tie;
+                tie = 1;
+            } else {
+                tie++;
+            }
+            return `
+                <tr>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                        <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                        <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${qhpro}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${qhByThrow}</td>
+                </tr>
+            `;
+        }).join("");
+        $(`#${division}-award-qh`).append(qhRowsHtml);
+    }
 
     // FA賞
     const faDatas = datasJson['fa'];
-    rank = 1;
-    tie = 0;
-    const faRowsHtml = faDatas.slice(0, 10).map((row, i) => {
-        const fapro = `${(row['faupro'] * 100).toFixed(2)}%`;
-        const throws = `${Math.floor(row['fault'])}/${Math.floor(row['throw'])}`;
-        if (i > 0 && (row['faupro'] > faDatas[i - 1]['faupro'])) {
-            rank += tie;
-            tie = 1;
-        } else {
-            tie++;
-        }
-        return `
-            <tr>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${fapro}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
-            </tr>
-        `;
-    }).join("");
-    $(`#${division}-award-fa`).append(faRowsHtml);
+    if (!Array.isArray(faDatas) || faDatas.length === 0) {
+        $(`#${division}-award-fa`).empty();
+    } else {
+        rank = 1;
+        tie = 0;
+        const faRowsHtml = faDatas.slice(0, 10).map((row, i) => {
+            const faproValue = Number(row['faupro']);
+            const faultValue = Number(row['fault']);
+            const throwValue = Number(row['throw']);
+            const hasValidValues = Number.isFinite(faproValue) && Number.isFinite(faultValue) && Number.isFinite(throwValue);
+            if (!hasValidValues) return "";
+
+            const fapro = `${(faproValue * 100).toFixed(2)}%`;
+            const throws = `${Math.floor(faultValue)}/${Math.floor(throwValue)}`;
+            if (i > 0 && (faproValue > faDatas[i - 1]['faupro'])) {
+                rank += tie;
+                tie = 1;
+            } else {
+                tie++;
+            }
+            return `
+                <tr>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                        <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                        <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${fapro}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
+                </tr>
+            `;
+        }).join("");
+        $(`#${division}-award-fa`).append(faRowsHtml);
+    }
 
     // OPT
     const optDatas = datasJson["opt"];
-    rank = 1;
-    tie = 0;
-    const optRowsHtml = optDatas.slice(0, 10).map((row, i) => {
-        const opt = (Math.round(row["opt"] * 100) / 100).toFixed(2);
-        const throws = Math.floor(row["throw"]);
-        if (i > 0 && (row["opt"] < optDatas[i - 1]["opt"])) {
-            rank += tie;
-            tie = 1;
-        } else {
-            tie++;
-        }
-        return `
-            <tr>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./club?cid=${row["cid"]}">${row["cname"]}</a></td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${opt}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
-            </tr>
-        `;
-    }).join("");
-    $(`#${division}-award-opt`).append(optRowsHtml);
+    if (!Array.isArray(optDatas) || optDatas.length === 0) {
+        $(`#${division}-award-opt`).empty();
+    } else {
+        rank = 1;
+        tie = 0;
+        const optRowsHtml = optDatas.slice(0, 10).map((row, i) => {
+            const optValue = Number(row["opt"]);
+            const throwValue = Number(row["throw"]);
+            const hasValidValues = Number.isFinite(optValue) && Number.isFinite(throwValue);
+            if (!hasValidValues) return "";
+
+            const opt = (Math.round(optValue * 100) / 100).toFixed(2);
+            const throws = Math.floor(throwValue);
+            if (i > 0 && (optValue < optDatas[i - 1]["opt"])) {
+                rank += tie;
+                tie = 1;
+            } else {
+                tie++;
+            }
+            return `
+                <tr>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                        <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                        <a href="./club?cid=${row["cid"]}">${row["cname"]}</a></td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${opt}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
+                </tr>
+            `;
+        }).join("");
+        $(`#${division}-award-opt`).append(optRowsHtml);
+    }
 
     // finish
     const finDatas = datasJson['fin'];
-    rank = 1;
-    tie = 0;
-    const finRowsHtml = finDatas.map((row, i) => {
-        const finish = Math.floor(row['finish']);
-        if (i > 0 && finish < finDatas[i - 1]['finish']) {
-            rank = rank + tie;
-            tie = 1;
-        } else {
-            tie++;
-        }
-        if (rank > 10) { return };
-        return `
-            <tr>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">
-                    <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${finish}</td>
-            </tr>
-        `;
-    }).join("");
-    $(`#${division}-award-fin`).append(finRowsHtml);
+    if (!Array.isArray(finDatas) || finDatas.length === 0) {
+        $(`#${division}-award-fin`).empty();
+    } else {
+        rank = 1;
+        tie = 0;
+        const finRowsHtml = finDatas.map((row, i) => {
+            const finishValue = Number(row['finish']);
+            if (!Number.isFinite(finishValue)) return "";
+
+            const finish = Math.floor(finishValue);
+            if (i > 0 && finishValue < finDatas[i - 1]['finish']) {
+                rank = rank + tie;
+                tie = 1;
+            } else {
+                tie++;
+            }
+            if (rank > 10) { return };
+            return `
+                <tr>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                        <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                        <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">${finish}</td>
+                </tr>
+            `;
+        }).join("");
+        $(`#${division}-award-fin`).append(finRowsHtml);
+    }
 }
 
 /**
@@ -376,6 +444,7 @@ function appendStandings(datasJson, tableId, progressId, group) {
     }
     const rowsHtml = datasJson.map((rank) => {
         const ranknum = Number(rank["rank"]);
+        if (ranknum < 1) { return; }
         // クラブ名称は長い場合省略する
         let club = rank['cname'].length <= 16 ? rank["cname"]
             : `<abbr title="${rank["club"]}">${rank['cname'].slice(0, 15)}...</abbr>`;
@@ -390,7 +459,7 @@ function appendStandings(datasJson, tableId, progressId, group) {
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank["win"]}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank["lose"]}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank["draw"]}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${(rank["setper"]).toFixed(2)}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["setper"] ? rank["setper"].toFixed(2) : ""}</td>
             </tr>
         `;
     }).join("");
@@ -435,11 +504,9 @@ function appendSchedule(datasJson, tableId, progressId, division) {
         }
 
         let group = game["gid"].substr(-2) < 21 ? "A" : "B";
-        let gcol = division === "KAKSI" ? `<td class="${SMALL_TEXT_SIZE}" align="center">${group}</td>` : "";
 
         return `
             <tr>
-                ${gcol}
                 <td class="${SMALL_TEXT_SIZE}" align="right">${game["sec"]}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="./match?gid=${game["gid"]}">${gamedate}</a>${video}</td>
                 <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
