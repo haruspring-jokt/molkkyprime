@@ -7,9 +7,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, shrink-to-fit=yes">
 
-    <!-- spectre -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
-
     <!-- google font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,7 +17,9 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <!-- molkkyprime -->
+    <link rel="stylesheet" href="../my-bulma-project.css">
     <link rel="stylesheet" href="../style/style.css">
+    <script src="../script/script.js"></script>
     <script src="../script/club/club.js"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4W483V0S8"></script>
@@ -31,150 +30,189 @@
 
         gtag('config', 'G-C4W483V0S8');
     </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8922718369591652"
+        crossorigin="anonymous"></script>
 
     <title>クラブ・選手｜モルック関東プライムリーグ</title>
 </head>
 
 <body>
-    <div class="container">
-        <header class="bd-header">
-            <!-- navbar -->
-            <nav class="navbar is-fixed-top is-light" role="navigation" aria-label="main navigation">
-                <div class="navbar-brand">
-                    <a class="navbar-item" href="../"><img src="../asset/logo.png"
-                            alt="Mölkky Kanto Prime League Logo"></a>
-                    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
-                        data-target="navbarBasicExample">
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                        <span aria-hidden="true"></span>
-                    </a>
-                </div>
-                <div id="navbarBasicExample" class="navbar-menu">
-                    <div class="navbar-start">
-                        <a class="navbar-item" href="../schedule/">日程・結果・順位表</a>
-                        <a class="navbar-item" href="./">クラブ・選手</a>
-                        <a class="navbar-item" target="_blank"
-                            href="https://blog.jajapatatas.com/archive/category/%E3%83%A2%E3%83%AB%E3%83%83%E3%82%AF%E9%96%A2%E6%9D%B1%E3%83%97%E3%83%A9%E3%82%A4%E3%83%A0%E3%83%AA%E3%83%BC%E3%82%B0">ニュース<small
-                                class="is-size-7">（外部サイトへ）</small></a>
-                        <div class="navbar-item has-dropdown is-hoverable">
-                            <a class="navbar-link">More</a>
-                            <div class="navbar-dropdown">
-                                <a class="navbar-item" href="../entry/">エントリー <strong>*早くて2025年7月案内開始*</strong></a>
-                                <a class="navbar-item" href="../regulation/">ルール</a>
-                                <a class="navbar-item">データ <strong>*Comming Soon*</strong></a>
-                                <a class="navbar-link">過去のシーズン <strong>*Comming Soon*</strong>
-                                    <a class="navbar-item" href="../past/202324/">シーズン2023-24 <strong>*Comming
-                                            Soon*</strong></a>
-                                    <a class="navbar-item" href="../past/2023/">シーズン2023 <strong>*Comming
-                                            Soon*</strong></a>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="navbar-end">
-                        <div class="navbar-item">
-                            <div class="buttons columns">
-                                <a class="column button is-info" target="_blank" href="https://x.com/molkkyprime">
-                                    Twitter(X)
-                                </a>
-                                <a class="column button is-danger" target="_blank"
-                                    href="https://youtube.com/@molkkyclanjajapatatas/">YouTube</a>
-                                <a class="column button is-dark" target="_blank"
-                                    href="https://suzuri.jp/haruspring_jokt/">SUZURI</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </nav>
+    <div class="container is-max-desktop">
+        <header id="mkpl-header" class="bd-header">
         </header>
 
-        <div class="container">
+        <section class="section">
+            <nav class="breadcrumb pt-4 m-0" aria-label="breadcrumbs">
+                <ul class="is-size-6">
+                    <li><a href="../">トップ</a></li>
+                    <li class="is-active"><a href="./" aria-current="page">クラブ・選手</a></li>
+                </ul>
+            </nav>
+        </section>
+
+        <div class="container is-max-desktop">
             <!-- Title -->
             <section class="hero is-medium mkpl-bg-cover is-dark">
                 <div class="hero-body mkpl-bg-filter">
                     <h1 class="title is-size-2 mkpl-title">クラブ・選手
-                        <p class="subtitle is-size-6">Club / Players</p>
+                        <p class="subtitle">Club / Players</p>
                     </h1>
                 </div>
             </section>
         </div>
 
-        <section class="hero">
-            <div class="hero-body">
-                <p class="content"><a href="./#yksi-players-hero">プライムリーグ選手一覧</a></p>
-                <p class="content"><a href="./#kaksi-players-hero">プライムリーグチャレンジ選手一覧</a></p>
-                <p class="content is-size-7"><a
-                        href="https://docs.google.com/spreadsheets/d/1G2_bgX4fAg9_xi_epk0g0OJwicN02_ymRtfKd5TJk5k"
-                        target="_blank">詳細はスプレッドシートへ</a></p>
-            </div>
-        </section>
-
-        <!-- yksi -->
-        <section class="hero">
-            <div class="hero-body">
-                <h3 id="yksi-players-hero" class="title is-size-4">プライムリーグ（1部リーグ） シーズン2024-25</h3>
-                <div class="subtitle is-size-7">Mölkky Kanto Prime League (Division 1) Season 2024-25</div>
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-16by9">
-                            <img class="is-rounded" src="../asset/yksi_cover.png" alt="mkpl-yksi-2425" />
-                        </figure>
-                    </div>
-                </div>
-                <div class="content">
-                    <h4 class="is-size-5">選手一覧</h4>
-                    <table id="yksi-players" class="table is-fullwidth is-narrow">
-                        <tr class="is-danger">
-                            <th class="is-danger">選手</th>
-                            <th class="is-danger" colspan="2">クラブ</th>
-                        </tr>
-                        <!-- yksi players -->
-                    </table>
-                    <div id="yksi-players-progress"><progress class="progress is-small is-danger" max="100"></progress>
-                    </div>
-                    <p class="is-size-7">* は助っ人選手（関東エリア外）。</p>
+        <section class="section">
+            <div class="content" id="list">
+                <div class="menu">
+                    <ul class="menu-list" id="club-menu-list">
+                        <li><a href="./#club-data" class="has-text-link is-size-6">クラブデータ</a></li>
+                        <li><a href="./#transfer" class="has-text-link is-size-6">公示</a></li>
+                        <li><a href="./#fa-hero" class="has-text-link is-size-6">FA選手一覧</a></li>
+                    </ul>
                 </div>
             </div>
         </section>
 
-        <!-- kaksi -->
-        <section class="hero">
-            <div class="hero-body">
-                <h3 id="kaksi-players-hero" class="title is-size-4">プライムリーグチャレンジ（2部リーグ） シーズン2024-25</h3>
-                <div class="subtitle is-size-7">Mölkky Kanto Prime League Challenge (Division 2) Season 2024-25</div>
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-16by9">
-                            <img class="is-rounded" src="../asset/kaksi_cover.png" alt="mkpl-kaksi-2425" />
-                        </figure>
-                    </div>
-                </div>
-                <div class="content">
-                    <h4 class="is-size-5">選手一覧</h4>
-                    <table id="kaksi-players" class="table is-fullwidth is-narrow">
-                        <tr class="is-primary">
-                            <th class="is-primary">選手</th>
-                            <th class="is-primary" colspan="2">クラブ</th>
-                        </tr>
-                        <!-- kaksi players -->
-                    </table>
-                    <div id="kaksi-players-progress"><progress class="progress is-small is-primary"
-                            max="100"></progress>
-                    </div>
-                    <p class="is-size-7">* は助っ人選手（関東エリア外）。</p>
+        <section class="section" id="club-data">
+            <h3 class="title is-size-3">クラブデータ</h3>
+            <div id="club-progress"><progress class="progress is-small is-light" max="100"></progress></div>
+            <div class="content dropdown">
+                <div class="dropdown-trigger">
+                    <select name="club-data" class="dropdown-content">
+                        <option value="" label="クラブを選択▼" selected>クラブを選択▼</option>
+                    </select>
                 </div>
             </div>
+            <!-- club infomatin div -->
+            <h4 class="title is-size-4" id="club-name"></h4>
+            <p class="subtitle is-size-6" id="club-division"></p>
+            <figure class="content image is-360x360" id="club-image">
+            </figure>
+
+            <!-- club infomation table -->
+            <h4 class="title is-size-4">今シーズン</h4>
+            <p class="subtitle is-size-6">Current Season</p>
+            <div class="table-container" id="club-infomation">
+                <table class="table is-fullwidth is-narrow">
+                    <tr>
+                        <th class="is-size-7 has-background-primary">暫定順位・成績</th>
+                        <td class="is-size-7" id="club-currentrank"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">登録選手数</th>
+                        <td class="is-size-7" id="club-playernum"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">4人出場試合数 *</th>
+                        <td class="is-size-7" id="club-4pgames"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">未出場選手 **</th>
+                        <td class="is-size-7" id="club-nopart"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">QH率</th>
+                        <td class="is-size-7" id="club-qhpar"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">フォルト率</th>
+                        <td class="is-size-7" id="club-fapar"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">OPT</th>
+                        <td class="is-size-7" id="club-opt"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">先攻セット勝率</th>
+                        <td class="is-size-7" id="club-attackwin"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">後攻セット勝率</th>
+                        <td class="is-size-7" id="club-defencewin"></td>
+                    </tr>
+                </table>
+                <p class="is-size-7 content">
+                    * 4人構成で試合を行った回数。2026-27シーズンは9試合以上が条件。<br />
+                    ** 最低出場要件を満たしていない選手一覧。26-27シーズンは4セット以上が条件。
+                </p>
+                <p class="is-size-7 content" id="club-detail"></p>
+            </div>
+
+            <!-- club infomation table -->
+            <h4 class="title is-size-5">試合結果</h4>
+            <p class="subtitle is-size-6">Games Result</p>
+            <div class="table-container">
+                <table id="club-games" class="table is-fullwidth is-narrow"></table>
+            </div>
+
+            <!-- total club data -->
+            <h4 class="title is-size-4">通算</h4>
+            <p class="subtitle is-size-6">Total</p>
+            <div class="table-container" id="club-infomation">
+                <table class="table is-fullwidth is-narrow">
+                    <tr>
+                        <th class="is-size-7 has-background-primary">ホームタウン</th>
+                        <td class="is-size-7" id="club-hometown"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">通算成績</th>
+                        <td class="is-size-7" id="club-pastrank"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">クラブカラー</th>
+                        <td class="is-size-7" id="club-color"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">Twitter</th>
+                        <td class="is-size-7" id="club-twitter"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">通算勝敗</th>
+                        <td class="is-size-7" id="club-total-win"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">ホーム通算</th>
+                        <td class="is-size-7" id="club-total-home-win"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">アウェイ通算</th>
+                        <td class="is-size-7" id="club-total-away-win"></td>
+                    </tr>
+                </table>
+                <p class="is-size-7 content">
+                    通算勝敗はプライムユクシ（1部）の試合のみ対象。
+                </p>
+            </div>
+
+            <!-- player of club info -->
+            <h4 class="title is-size-4 content">所属選手</h4>
+            <p class="subtitle is-size-6">Player</p>
+            <div class="table-container" id="player-of-club">
+                <table class="table is-fullwidth is-narrow" id="player-table">
+                </table>
+                <p class="is-size-7 content">
+                    項目のみかた<br />
+                    GM：出場試合数<br />
+                    SE：出場セット数<br />
+                    MOR：最も投擲数が多い番手<br />
+                    Q-N-F：QH（狙い通り）、NH（狙っていないがフォルトでない）、FA（フォルト）の割合<br />
+                    FIN：ラストスロー成功数<br />
+                    OPT：On Plus Throwing。<code>1投あたりの評価点総合計 / 総投擲数</code><br />
+                    <code>1投あたりの評価点 = {0.1 * ({ターン数} - 1) * [得点] + [得点]}</code><br />
+                    例えば8ターン目に5点を獲得した場合、評価点は<code>0.1 * (8 - 1) * 5 + 5 = 8.50</code>となる。<br />
+                    ABL：平均ブレーク点数
+                </p>
+                <p class="is-size-7 content" id="player-detail"></p>
+            </div>
         </section>
+
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="content has-text-centered">
-            <p>Mölkky Kanto Prime League 2023</p>
-        </div>
-    </footer>
+    <div class="container footer is-max-desktop">
+        <footer class="footer" id="mkpl-footer">
+        </footer>
+    </div>
 </body>
 
 </html>

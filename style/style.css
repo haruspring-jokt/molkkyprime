@@ -4,7 +4,7 @@ body {
 }
 
 .mkpl-bg-cover {
-    background-image: url(./background/cover.png);
+    background-image: url(./background/cover.jpg);
     background-color: transparent;
     background-size: cover;
     background-position: center;
@@ -16,4 +16,46 @@ body {
 
 .mkpl-title {
     text-shadow: #222222 1px 1px 20px;
+}
+
+.is-size-7 {
+    font-size: 0.8em !important;
+}
+
+.is-size-6 {
+    font-size: 0.9em !important;
+}
+
+.table td {
+    vertical-align: middle !important;
+}
+
+.table th {
+    text-align: center !important;
+}
+
+.table {
+    min-width: 320px !important;
+}
+
+.mkpl-under-header {
+    min-height: 52px !important;
+}
+
+.image.is-360x360 {
+    height: 360px;
+    width: 360px;
+}
+
+.is-table-center {
+    text-align: center !important;
+    align-content: center !important;
+}
+
+.match-table {
+    table-layout: fixed !important;
+}
+
+.match-table th:nth-child(2) {
+    width: 50px !important;
 }

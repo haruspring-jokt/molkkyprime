@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+
+<head>
+    <!-- meta -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=yes">
+
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- molkkyprime -->
+    <link rel="stylesheet" href="../my-bulma-project.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <script src="../script/script.js"></script>
+    <script src="../script/transfer/transfer.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4W483V0S8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-C4W483V0S8');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8922718369591652"
+        crossorigin="anonymous"></script>
+
+    <title>公示｜モルック関東プライムリーグ</title>
+</head>
+
+<body>
+    <div class="container is-max-desktop">
+        <header id="mkpl-header" class="bd-header">
+        </header>
+
+        <section class="section">
+            <nav class="breadcrumb pt-4 m-0" aria-label="breadcrumbs">
+                <ul class="is-size-6">
+                    <li><a href="../">トップ</a></li>
+                    <li class="is-active"><a href="./" aria-current="page">公示</a></li>
+                </ul>
+            </nav>
+        </section>
+
+        <div class="container is-max-desktop">
+            <!-- Title -->
+            <section class="hero is-medium mkpl-bg-cover is-dark">
+                <div class="hero-body mkpl-bg-filter">
+                    <h1 class="title is-size-2 mkpl-title">公示
+                        <p class="subtitle">Transfer</p>
+                    </h1>
+                </div>
+            </section>
+        </div>
+
+        <section class="section">
+            <div class="content" id="list">
+                <div class="menu">
+                    <ul class="menu-list" id="club-menu-list">
+                        <li><a href="./#transfer" class="has-text-link is-size-6">公示</a></li>
+                        <li><a href="./#fa-hero" class="has-text-link is-size-6">FA選手一覧</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- transfer -->
+        <section class="section" id="transfer">
+            <div class="content">
+                <h3 class="title is-size-4">公示</h3>
+                <div class="subtitle is-size-7">Transfer</div>
+                <div class="table-container">
+                    <table id="transfer-table" class="table is-fullwidth is-narrow">
+                        <tr class="is-light">
+                            <th class="is-light is-size-7 has-text-centered">日付</th>
+                            <th class="is-light is-size-7 has-text-centered" style="width: 80px;">カテゴリ</th>
+                            <th class="is-light is-size-7 has-text-centered">内容</th>
+                        </tr>
+                        <!-- transfer -->
+                    </table>
+                    <div id="transfer-progress"><progress class="progress is-small is-light" max="100"></progress>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- fa -->
+        <section class="section" id="fa-hero">
+            <div class="content">
+                <h3 class="title is-size-4">FA選手一覧</h3>
+                <div class="subtitle is-size-7">Free Agent</div>
+                <div class="content">
+                    <div id="free-agents">
+
+                    </div>
+                    <div id="free-agents-progress"><progress class="progress is-small is-light" max="100"></progress>
+                    </div>
+                </div>
+                <p class="is-size-7"><a href="../entry/#player-entry">FAエントリーについてはこちらを参照</a></p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <div class="container footer is-max-desktop">
+        <footer class="footer" id="mkpl-footer">
+        </footer>
+    </div>
+</body>
+
+</html>

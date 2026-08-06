@@ -1,58 +1,53 @@
+const SMALL_TEXT_SIZE = "is-size-7";
+
 // データ取得先スプレッドシートAPIURL
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzT2b0VNnz1jChrkzgDDSlPV9_WELpJH5rF6zBPzLCeFu-1NGt3ddX55WApLjOgP3nGnw/exec";
-
 $(function () {
-    /**
-     * 共通
-     */
-    // Check for click events on the navbar burger icon
-    $(".navbar-burger").click(function () {
-        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-        $(".navbar-burger").toggleClass("is-active");
-        $(".navbar-menu").toggleClass("is-active");
-    });
-
     /**
      * ページ個別
      */
+    // 固定リンク設定
+    appendConstLinks();
     // 各種データ取得・設定
-    fetchRank("YKSI");
-    fetchRank("KAKSI");
-    fetchScheduleAll("YKSI");
-    fetchScheduleAll("KAKSI");
+    fetchData();
 });
 
-/**
- * 順位表取得
- * @param str division ディヴィジョン 
- */
-function fetchRank(division) {
-    var url = SHEET_URL;
-    url = url + "?api=RANK_" + division;
-    console.log(url);
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
-        var datasStringify = JSON.stringify(datas);
-        var datasJson = JSON.parse(datasStringify);
-        if (division == "YKSI") {
-            appendStandings(datas, datasJson, "#yksi-standings", "#yksi-standings-progress");
-        } else if (division == "KAKSI") {
-            appendStandings(datas, datasJson, "#kaksi-standings", "#kaksi-standings-progress");
-        }
-    });
+function appendConstLinks() {
+    var addImg = function (url, alt) {
+        return `<figure class="image is-16by9">
+            <img class="is-rounded" src="${url}" alt="${alt}" />
+        </figure>`;
+    };
+    const detailMsg = "詳細はスプレッドシートへ";
+    // 画像
+    $('#yksi-card-image').html(addImg(`../past/${MolkkyPrimeConstants.currentYksiCoverUrl}`), "mkpl-yksi-cover");
+    $('#kaksi-card-image').html(addImg(`../past/${MolkkyPrimeConstants.currentKaksiCoverUrl}`), "mkpl-kaksi-cover");
+    // 順位表
+    $('#list').append(`
+        <p class="content is-size-7"><a
+        href="${MolkkyPrimeConstants.season202627AllDivSheetUrl}"
+        target="_blank">${detailMsg}</a></p>
+    `);
+    // リーグ名
+    $('#league-name-yksi').text(MolkkyPrimeConstants.curerntSeasonFirstDivName);
+    $('#league-name-kaksi').text(MolkkyPrimeConstants.curerntSeasonSecondDivName);
+    // 順位表説明
+    $('#mkpl-rank-rules-yksi').html(MolkkyPrimeConstants.rankRulesYksi);
+    $('#mkpl-rank-rules-kaksi').html(MolkkyPrimeConstants.rankRulesKaksi);
+    // 日程表説明
+    $('#top-yksi-schedule-link').html(`
+        <p class="content is-size-7"><a
+            href="${MolkkyPrimeConstants.season202627YksiSheetUrl}"
+            target="_blank">${detailMsg}</a></p>
+    `);
+    $('#top-kaksi-schedule-link').html(`
+        <p class="content is-size-7"><a
+            href="${MolkkyPrimeConstants.season202627KaksiSheetUrl}"
+            target="_blank">${detailMsg}</a></p>
+    `);
 }
 
-/**
- * 日程取得（全体）
- * @param {*} division 
- */
-function fetchScheduleAll(division) {
-    var url = SHEET_URL;
-    url = url + "?api=SCHEDULE_" + division;
-    console.log(url);
+function fetchData() {
+    var url = `https://storage.googleapis.com/molkkyprime-hp/schedulePage.json`;
     $.ajax({
         url: url,
         type: 'GET',
@@ -60,11 +55,15 @@ function fetchScheduleAll(division) {
     }).done(function (datas) {
         var datasStringify = JSON.stringify(datas);
         var datasJson = JSON.parse(datasStringify);
-        if (division == "YKSI") {
-            appendSchedule(datas, datasJson, '#yksi-schedule', "#yksi-schedule-progress")
-        } else if (division == "KAKSI") {
-            appendSchedule(datas, datasJson, '#kaksi-schedule', "#kaksi-schedule-progress")
-        }
+
+        // 順位表1部
+        appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress", "");
+        // 日程1部
+        appendSchedule(datasJson['scheduleYksi'], '#yksi-schedule', "#yksi-schedule-progress", "YKSI");
+        // 順位表2部
+        appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress", "");
+        // 日程2部
+        appendSchedule(datasJson['scheduleKaksi'], '#kaksi-schedule', "#kaksi-schedule-progress", "KAKSI");
     });
 }
 
@@ -75,30 +74,34 @@ function fetchScheduleAll(division) {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendStandings(datas, datasJson, tableId, progressId) {
-    for (const i in datasJson) {
-        const rank = datas[i];
-        var ranknum = Number(rank['rank']);
-        var club = rank['cname'];
-        if (club.length > 16) {
-            // クラブ名が長い場合省略する
-            club = '<abbr title="' + rank['club'] + '">' + club.slice(0, 15) + '...' + '</abbr>';
-        }
-        $(tableId).append(
-            `
-                    <tr>
-                    <td class="is-size-7" align="right">${ranknum}</td>
-                    <td class="is-size-7">${club}</td>
-                    <td class="is-size-7" align="right">${rank['game']}</td>
-                    <td class="is-size-7" align="right">${rank['winpoint']}</td>
-                    <td class="is-size-7" align="right">${rank['win']}</td>
-                    <td class="is-size-7" align="right">${rank['lose']}</td>
-                    <td class="is-size-7" align="right">${rank['draw']}</td>
-                    <td class="is-size-7" align="right">${Math.floor(rank['setper'] * 100) / 100}</td>
-                    </tr>
-                    `
-        );
+function appendStandings(datasJson, tableId, progressId, group) {
+    // グループが分かれている場合フィルタリング（25-26シーズンはチャレンジのみ）
+    if (group != "") {
+        datasJson = datasJson.filter(item => {
+            return item.group === group;
+        });
     }
+    datasJson.some(function (rank, i) {
+        var ranknum = Number(rank['rank']);
+        if (ranknum < 1) { return; }
+        var club = rank['cname'];
+        if (club.length > 20) {
+            // クラブ名が長い場合省略する
+            club = '<abbr title="' + rank['club'] + '">' + club.slice(0, 19) + '...' + '</abbr>';
+        }
+        $(tableId).append(`
+            <tr>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
+            <td class="${SMALL_TEXT_SIZE}"><a href="../club?cid=${rank['cid']}">${club}</a></td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['game']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['winpoint']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['win']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['lose']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['draw']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${(Math.round(rank['setper'] * 100) / 100).toFixed(2)}</td>
+            </tr>
+        `);
+    });
     $(progressId).empty();
 }
 
@@ -109,34 +112,39 @@ function appendStandings(datas, datasJson, tableId, progressId) {
  * @param {*} tableId 
  * @param {*} progressId 
  */
-function appendSchedule(datas, datasJson, tableId, progressId) {
-    for (const i in datasJson) {
-        const game = datas[i];
-        var gamedate = "";
-        if (game['date']) {
-            gamedate = new Date(game['date']).toLocaleDateString();
-        }
-        var hcn = game['hcn'];
-        var acn = game['acn'];
+function appendSchedule(datasJson, tableId, progressId, division) {
+    datasJson.some(function (game, i) {
+        var gamedate = (game['date']) ? new Date(game['date']).toLocaleDateString() : "";
+        var video = (game['videourl'] != "")
+            ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
+        var hcn = `<a href="../club?cid=${game['hcid']}">${game['hcn']}</a>`;
+        var acn = `<a href="../club?cid=${game['acid']}">${game['acn']}</a>`;
+        var hcnTdClass = "";
+        var acnTdClass = "";
         if (!(game['hsn'] == game['asn'])) {
             if (game['hsn'] > game['asn']) {
-                hcn = "<strong>" + hcn + "</strong>";
+                hcn = '<strong>' + hcn + "</strong>";
+                hcnTdClass = (division == "YKSI") ? "has-background-primary-80" : "has-background-success-80";
             } else {
                 acn = "<strong>" + acn + "</strong>";
+                acnTdClass = (division == "YKSI") ? "has-background-primary-80" : "has-background-success-80";
             }
         }
+
+        let group = game["gid"].substr(-2) < 21 ? "A" : "B";
+
         $(tableId).append(
             `
             <tr>
-            <td class="is-size-7" aligh="right">${game['sec']}</td>
-            <td class="is-size-7" align="left">${gamedate}</td>
-            <td class="is-size-7" align="left">${hcn}</td>
-            <td class="is-size-7" align="center">${game['hsn']} - ${game['asn']}</td>
-            <td class="is-size-7" align="left">${acn}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="../match?gid=${game['gid']}">${gamedate}</a>${video}</td>
+            <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="center"><a class="has-text-link" href="../match?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
+            <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
             </tr>
             `
         );
-    }
+    });
     $(progressId).empty();
 }
 
