@@ -65,7 +65,7 @@ function getClubNameTd(cid, cname, selectedCid) {
     if (cid == selectedCid) {
         return cname;
     } else {
-        return `<a href="../club?cid=${cid}">${cname}</a>`;
+        return `<a href="../club/?cid=${cid}">${cname}</a>`;
     }
 }
 
@@ -83,11 +83,11 @@ function appendTransfer(datasJson, tableId, progressId) {
             var tfDate = new Date(tf['date']).toLocaleDateString();
             var fromCname = tf['fromCname'] != "" ? tf['fromCname'] : "無所属";
             if (tf['fromClub'] != EMPTY_CID && tf['fromClub'] != "") {
-                fromCname = `<a href="../club?cid=${tf['fromClub']}">${tf['fromCname']}</a>`
+                fromCname = `<a href="../club/?cid=${tf['fromClub']}">${tf['fromCname']}</a>`
             }
             var toCname = tf['toCname'] != "" ? tf['toCname'] : "無所属";
             if (tf['toClub'] != EMPTY_CID && tf['toClub'] != "") {
-                toCname = `<a href="../club?cid=${tf['toClub']}">${tf['toCname']}</a>`
+                toCname = `<a href="../club/?cid=${tf['toClub']}">${tf['toCname']}</a>`
             }
 
             $(tableId).append(`

@@ -92,7 +92,7 @@ function appendStandings(datasJson, tableId, progressId, group) {
         $(tableId).append(`
             <tr>
             <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
-            <td class="${SMALL_TEXT_SIZE}"><a href="../club?cid=${rank['cid']}">${club}</a></td>
+            <td class="${SMALL_TEXT_SIZE}"><a href="../club/?cid=${rank['cid']}">${club}</a></td>
             <td class="${SMALL_TEXT_SIZE}" align="right">${rank['game']}</td>
             <td class="${SMALL_TEXT_SIZE}" align="right">${rank['winpoint']}</td>
             <td class="${SMALL_TEXT_SIZE}" align="right">${rank['win']}</td>
@@ -117,8 +117,8 @@ function appendSchedule(datasJson, tableId, progressId, division) {
         var gamedate = (game['date']) ? new Date(game['date']).toLocaleDateString() : "";
         var video = (game['videourl'] != "")
             ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
-        var hcn = `<a href="../club?cid=${game['hcid']}">${game['hcn']}</a>`;
-        var acn = `<a href="../club?cid=${game['acid']}">${game['acn']}</a>`;
+        var hcn = `<a href="../club/?cid=${game['hcid']}">${game['hcn']}</a>`;
+        var acn = `<a href="../club/?cid=${game['acid']}">${game['acn']}</a>`;
         var hcnTdClass = "";
         var acnTdClass = "";
         if (!(game['hsn'] == game['asn'])) {
@@ -137,9 +137,9 @@ function appendSchedule(datasJson, tableId, progressId, division) {
             `
             <tr>
             <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="../match?gid=${game['gid']}">${gamedate}</a>${video}</td>
+            <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="../match/?gid=${game['gid']}">${gamedate}</a>${video}</td>
             <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="center"><a class="has-text-link" href="../match?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
+            <td class="${SMALL_TEXT_SIZE}" align="center"><a class="has-text-link" href="../match/?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
             <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
             </tr>
             `

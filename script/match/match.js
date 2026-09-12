@@ -48,8 +48,8 @@ function appendMatch(data) {
         `);
     }
 
-    var hcnfull = `<a href="../club?cid=${match['hcid']}">${convertClubFromCid(match['hcid'])}</a>`;
-    var acnfull = `<a href="../club?cid=${match['acid']}">${convertClubFromCid(match['acid'])}</a>`;
+    var hcnfull = `<a href="../club/?cid=${match['hcid']}">${convertClubFromCid(match['hcid'])}</a>`;
+    var acnfull = `<a href="../club/?cid=${match['acid']}">${convertClubFromCid(match['acid'])}</a>`;
 
     //  2025-26 チャレンジ対応: GIDの末尾2文字を数字化し、20以下の場合はグループA、それ以上はグループBとする
     const group = match['gid'].slice(0, 3) == "GDC" && Number(match['gid'].slice(-2)) <= 20 ? "グループA" :
@@ -179,7 +179,7 @@ function convertPoint(point, fin, isHome, set) {
         const pname = set ? set[`${adStr}Pname${i}`] : "";
         const isFinish = set && pid && pid == set.finishPid;
         const star = isFinish ? ` <i class="lar la-star is-size-6"></i>` : "";
-        const plink = pid ? `<a href="../player?pid=${pid}" target="_blank">${pname}${star}</a>` : `${pname}${star}`;
+        const plink = pid ? `<a href="../player/?pid=${pid}" target="_blank">${pname}${star}</a>` : `${pname}${star}`;
         const fontClass = isFinish ? "has-text-weight-bold" : "";
         const orderIcon = getOrderIdon(i);
         if (pname) {

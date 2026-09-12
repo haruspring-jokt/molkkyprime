@@ -310,9 +310,9 @@ function appendAward(datasJson, division) {
                 <tr>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
                     <td class="${SMALL_TEXT_SIZE}" align="left">
-                        <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
+                        <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="${SMALL_TEXT_SIZE}" align="left">
-                        <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
+                        <a href="./club/?cid=${row['cid']}">${row['cname']}</a></td>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${qhpro}</td>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${qhByThrow}</td>
                 </tr>
@@ -347,9 +347,9 @@ function appendAward(datasJson, division) {
                 <tr>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
                     <td class="${SMALL_TEXT_SIZE}" align="left">
-                        <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
+                        <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="${SMALL_TEXT_SIZE}" align="left">
-                        <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
+                        <a href="./club/?cid=${row['cid']}">${row['cname']}</a></td>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${fapro}</td>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
                 </tr>
@@ -383,9 +383,9 @@ function appendAward(datasJson, division) {
                 <tr>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
                     <td class="${SMALL_TEXT_SIZE}" align="left">
-                        <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
+                        <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="${SMALL_TEXT_SIZE}" align="left">
-                        <a href="./club?cid=${row["cid"]}">${row["cname"]}</a></td>
+                        <a href="./club/?cid=${row["cid"]}">${row["cname"]}</a></td>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${opt}</td>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
                 </tr>
@@ -417,9 +417,9 @@ function appendAward(datasJson, division) {
                 <tr>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
                     <td class="${SMALL_TEXT_SIZE}" align="left">
-                        <a href="./player?pid=${row.pid}">${row['pname']}</a></td>
+                        <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="${SMALL_TEXT_SIZE}" align="left">
-                        <a href="./club?cid=${row['cid']}">${row['cname']}</a></td>
+                        <a href="./club/?cid=${row['cid']}">${row['cname']}</a></td>
                     <td class="${SMALL_TEXT_SIZE}" align="right">${finish}</td>
                 </tr>
             `;
@@ -452,7 +452,7 @@ function appendStandings(datasJson, tableId, progressId, group) {
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
                 <td class="${SMALL_TEXT_SIZE}">
-                    <a href="./club?cid=${rank["cid"]}">${club}</a>
+                    <a href="./club/?cid=${rank["cid"]}">${club}</a>
                 </td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank["game"]}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank["winpoint"]}</td>
@@ -484,8 +484,8 @@ function appendSchedule(datasJson, tableId, progressId, division) {
         const video = game["videourl"] ? ` <a href="${game["videourl"]}" target="_blank"> [動画]</a>` : "";
 
         // クラブリンクの生成
-        let hcn = `<a href="./club?cid=${game["hcid"]}">${game["hcn"]}</a>`;
-        let acn = `<a href="./club?cid=${game["acid"]}">${game["acn"]}</a>`;
+        let hcn = `<a href="./club/?cid=${game["hcid"]}">${game["hcn"]}</a>`;
+        let acn = `<a href="./club/?cid=${game["acid"]}">${game["acn"]}</a>`;
 
         // スタイル適用用のクラス
         let hcnTdClass = "";
@@ -508,10 +508,10 @@ function appendSchedule(datasJson, tableId, progressId, division) {
         return `
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${game["sec"]}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="./match?gid=${game["gid"]}">${gamedate}</a>${video}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="./match/?gid=${game["gid"]}">${gamedate}</a>${video}</td>
                 <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="center">
-                    <a class="has-text-link" href="./match?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a>
+                    <a class="has-text-link" href="./match/?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a>
                 </td>
                 <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
             </tr>

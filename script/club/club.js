@@ -231,7 +231,7 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
         var video = (game['videourl'] != "")
             ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
         var hcn = getClubNameTd(game['hcid'], game['hcn'], cid);
-        var result = `<a class="" href="../match?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a>`;
+        var result = `<a class="" href="../match/?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a>`;
         var resultClass = getResultClass(game, cid);
         var acn = getClubNameTd(game['acid'], game['acn'], cid);
         var hcnTdClass = "";
@@ -239,7 +239,7 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
         $("#club-games").append(`
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left"><a class="" href="../match?gid=${game['gid']}">${gamedate}</a>${video}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left"><a class="" href="../match/?gid=${game['gid']}">${gamedate}</a>${video}</td>
                 <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
                 <td class="${SMALL_TEXT_SIZE} ${resultClass}" align="center">${result}</td>
                 <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
@@ -273,6 +273,23 @@ function appendPlayers(players, cid, isYksi) {
         </tr>
     `);
     ps.some(function (player, i) {
+        var isStaff = player['game'] === '#N/A';
+        var playerName = isStaff ? `${player['playerName']} *S` : player['playerName'];
+        if (isStaff) {
+            $('#player-table').append(`
+                <tr>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">${playerName}</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">-</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">-</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">-</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="left">-</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">-</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">-</td>
+                    <td class="${SMALL_TEXT_SIZE}" align="right">-</td>
+                </tr>
+            `);
+            return;
+        }
         var game = isYksi ? player['game'] : "";
         var set = isYksi ? player['set'] : "";
         var mainOrder = isYksi ? player['mainOrder'] : "";
@@ -280,7 +297,8 @@ function appendPlayers(players, cid, isYksi) {
         var nhpro = (isYksi && player['qhPro'] != '-') ? Math.round(player['nhPro'] * 1 * 100) / 1 + "" : "";
         var fapro = (isYksi && player['qhPro'] != '-') ? Math.round(player['fauPro'] * 1 * 100) / 1 + "" : "";
         var qhf = isYksi ? `
-                <strong class="has-text-success">${qhpro}</strong>/${nhpro}/
+                <strong class="has-text-success">${qhpro}</strong>
+                / ${nhpro} /
                 <strong class="has-text-danger">${fapro}</strong>
             ` : "";
         var fin = isYksi ? player['fin'] : "";
@@ -289,7 +307,7 @@ function appendPlayers(players, cid, isYksi) {
             ? (Math.round(player['averageBlakePoint'] * 10) / 10).toFixed(1) + "" : "";
         $('#player-table').append(`
             <tr>s
-                <td class="${SMALL_TEXT_SIZE}" align="left"><a href="../player?pid=${player.pid}">${player['playerName']}</a></td>
+                <td class="${SMALL_TEXT_SIZE}" align="left"><a href="../player/?pid=${player.pid}">${playerName}</a></td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${game}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${set}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">${mainOrder}</td>
@@ -333,6 +351,6 @@ function getClubNameTd(cid, cname, selectedCid) {
     if (cid == selectedCid) {
         return cname;
     } else {
-        return `<a href="../club?cid=${cid}">${cname}</a>`;
+        return `<a href="../club/?cid=${cid}">${cname}</a>`;
     }
 }
