@@ -145,6 +145,7 @@ function appendInfo(info, totals, isYksi, isKaksi) {
     $(".player-profile-totalthrows").append(`<span>${totals.throwTotal}</span>`);
     $(".player-profile-awards").append(`<span>${info.award}</span>`);
     $(".player-profile-team").append(`<span>${info.team}</span>`);
+    $(".player-profile-club-history").append(`<span>${info.clubHistory}</span>`);
 }
 
 function makeTr(array, colName, isNumber) {
