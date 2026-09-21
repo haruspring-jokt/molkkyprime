@@ -27,12 +27,25 @@ function fetchMatch(gid) {
             set: datasJson['set'].filter(function (item) {
                 return item.gid === gid;
             })
-        }
-        appendMatch(match);
+        };
+
+        $.ajax({
+            url: `https://storage.googleapis.com/molkkyprime-hp/playerPage.json`,
+            type: 'GET',
+            dataType: 'json',
+        }).done(function (playerDatas) {
+            const playerIdsByName = (playerDatas.playerInfo || []).reduce(function (ids, player) {
+                ids[player.playerName] = player.pid;
+                return ids;
+            }, {});
+            appendMatch(match, playerIdsByName);
+        }).fail(function () {
+            appendMatch(match, {});
+        });
     });
 }
 
-function appendMatch(data) {
+function appendMatch(data, playerIdsByName) {
     var match = data.match[0];
     var set = data.set;
 
@@ -86,8 +99,8 @@ function appendMatch(data) {
             var setRow = set.find(function (item) {
                 return Number(item.set) == i;
             });
-            points[`hp${i}`] = convertPoint(match[`hs${i}`], match[`s${i}fin`], true, setRow);
-            points[`ap${i}`] = convertPoint(match[`as${i}`], match[`s${i}fin`], false, setRow);
+            points[`hp${i}`] = convertPoint(match[`hs${i}`], match[`s${i}fin`], true, setRow, playerIdsByName);
+            points[`ap${i}`] = convertPoint(match[`as${i}`], match[`s${i}fin`], false, setRow, playerIdsByName);
         } else {
             points[`hp${i}`] = emptyTd;
             points[`ap${i}`] = emptyTd;
@@ -117,9 +130,9 @@ function appendMatch(data) {
                 return html;
             })()}
             <tr>
-                ${convertStats(match['homethrow'], match['homeqh'], match['homefault'], homeQhPer, homeFaPer, 'right')}
+                ${convertStats(match['homethrow'], match['homeqh'], match['homefault'], homeQhPer, homeFaPer, match['homeopt'], 'right')}
                 <td><i class="las la-chart-bar"></i></td>
-                ${convertStats(match['awaythrow'], match['awayqh'], match['awayfault'], awayQhPer, awayFaPer, 'left')}
+                ${convertStats(match['awaythrow'], match['awayqh'], match['awayfault'], awayQhPer, awayFaPer, match['awayopt'], 'left')}
             </tr>
         `);
     }
@@ -158,9 +171,10 @@ function convertSet(set, win) {
  * @param {*} fin 
  * @param {*} isHome 
  * @param {*} set 
+ * @param {*} playerIdsByName 
  * @returns 
  */
-function convertPoint(point, fin, isHome, set) {
+function convertPoint(point, fin, isHome, set, playerIdsByName) {
     console.log(set);
 
     const backClass =
@@ -175,9 +189,13 @@ function convertPoint(point, fin, isHome, set) {
     for (let i = 1; i <= 4; i++) {
         const isOdd = set ? set.set % 2 === 1 : false;
         const adStr = (isOdd && isHome) || (!isOdd && !isHome) ? "attack" : "defense";
-        const pid = set ? set[`${adStr}Pid${i}`] : "";
+        const sourcePid = set ? set[`${adStr}Pid${i}`] : "";
         const pname = set ? set[`${adStr}Pname${i}`] : "";
-        const isFinish = set && pid && pid == set.finishPid;
+        const pid = playerIdsByName[pname] || sourcePid || "";
+        const isFinish = set && pname && (
+            (set.finishPname && pname === set.finishPname) ||
+            (!set.finishPname && set.finishPid && sourcePid === set.finishPid)
+        );
         const star = isFinish ? ` <i class="lar la-star is-size-6"></i>` : "";
         const plink = pid ? `<a href="../player/?pid=${pid}" target="_blank">${pname}${star}</a>` : `${pname}${star}`;
         const fontClass = isFinish ? "has-text-weight-bold" : "";
@@ -237,13 +255,17 @@ function setImageCard(elementId, gid, altSuffix, imgUrl) {
  * @param {*} fault 
  * @param {*} qhPer 
  * @param {*} faPer 
+ * @param {*} opt 
  * @param {*} align 
  * @returns 
  */
-function convertStats(throwCount, qualityHit, fault, qhPer, faPer, align) {
+function convertStats(throwCount, qualityHit, fault, qhPer, faPer, opt, align) {
+    const formattedOpt = Number.isFinite(Number(opt)) ? Number(opt).toFixed(2) : opt;
+
     return `<td class="${MID_TEXT_SIZE}" align="${align}">
         ${throwCount}-<strong class="has-text-success">${qualityHit}</strong>-<strong class="has-text-danger">${fault}</strong><br/>
-        (<strong class="has-text-success">${qhPer}</strong>-<strong class="has-text-danger">${faPer}</strong>)
+        (<strong class="has-text-success">${qhPer}</strong>-<strong class="has-text-danger">${faPer}</strong>)<br/>
+        OPT: <strong class="has-text-primary">${formattedOpt}</strong>
     </td>`;
 }
 
