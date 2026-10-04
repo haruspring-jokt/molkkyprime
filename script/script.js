@@ -288,6 +288,21 @@ $(function () {
 });
 
 /**
+ * Bulmaの背景色クラスから実際の色(rgb)を取得する。Chart.jsなどcanvas描画用
+ * @param {String} className 例: has-background-success
+ * @returns 色文字列
+ */
+function getBulmaBackgroundColor(className) {
+    const el = document.createElement('span');
+    el.className = className;
+    el.style.display = 'none';
+    document.body.appendChild(el);
+    const color = getComputedStyle(el).backgroundColor;
+    document.body.removeChild(el);
+    return color;
+}
+
+/**
  * クラブIDから名称に変換する
  * @param {String} cid クラブID 
  * @returns クラブ名称
@@ -544,3 +559,95 @@ function appendFooter() {
     $("#mkpl-footer").append(footerHtml);
 }
 
+/**
+ * 試合IDからシーズン情報などを取得する
+ * @param {} gid 
+ * @returns 
+ */
+function getSeasonConfig(gid) {
+    const gidMap = [
+        {
+            prefix: "GEC",
+            seasonText: "26-27",
+            season: MolkkyPrimeConstants.season202627SecondDivName,
+            spread: MolkkyPrimeConstants.season202627KaksiSheetUrl,
+            score: MolkkyPrimeConstants.season202627SecondDivScoreUrl,
+            division: 2
+        },
+        {
+            prefix: "GE",
+            seasonText: "26-27",
+            season: MolkkyPrimeConstants.season202627FirstDivName,
+            spread: MolkkyPrimeConstants.season202627YksiSheetUrl,
+            score: MolkkyPrimeConstants.season202627FirstDivScoreUrl,
+            division: 1
+        },
+        {
+            prefix: "GDC",
+            seasonText: "25-26",
+            season: MolkkyPrimeConstants.season202526SecondDivName,
+            spread: MolkkyPrimeConstants.season202526KaksiSheetUrl,
+            score: MolkkyPrimeConstants.season202526SecondDivScoreUrl,
+            division: 2
+        },
+        {
+            prefix: "GD",
+            seasonText: "25-26",
+            season: MolkkyPrimeConstants.season202526FirstDivName,
+            spread: MolkkyPrimeConstants.season202526YksiSheetUrl,
+            score: MolkkyPrimeConstants.season202526FirstDivScoreUrl,
+            division: 1
+        },
+        {
+            prefix: "GCC",
+            seasonText: "24-25",
+            season: MolkkyPrimeConstants.season202425SecondDivName,
+            spread: MolkkyPrimeConstants.season202425SecondDivSheetUrl,
+            score: MolkkyPrimeConstants.season202425SecondDivScoreUrl,
+            division: 2
+        },
+        {
+            prefix: "GC",
+            seasonText: "24-25",
+            season: MolkkyPrimeConstants.season202425FirstDivName,
+            spread: MolkkyPrimeConstants.season202425FirstDivSheetUrl,
+            score: MolkkyPrimeConstants.season202425FirstDivScoreUrl,
+            division: 1
+        },
+        {
+            prefix: "BC",
+            seasonText: "23-24",
+            season: MolkkyPrimeConstants.season202324SecondDivName,
+            spread: MolkkyPrimeConstants.season202324SecondDivSheetUrl,
+            score: MolkkyPrimeConstants.season202324SecondDivScoreUrl,
+            division: 2
+        },
+        {
+            prefix: "B",
+            seasonText: "23-24",
+            season: MolkkyPrimeConstants.season202324FirstDivName,
+            spread: MolkkyPrimeConstants.season202324FirstDivSheetUrl,
+            score: MolkkyPrimeConstants.season202324FirstDivScoreUrl,
+            division: 1
+        },
+        {
+            prefix: "A",
+            seasonText: "23-23",
+            season: MolkkyPrimeConstants.season2023FirstDivName,
+            spread: MolkkyPrimeConstants.season2023FirstDivSheetUrl,
+            score: MolkkyPrimeConstants.season2023FirstDivScoreUrl,
+            division: 1
+        }
+    ];
+    const found = gidMap.find(function (item) {
+        return gid.startsWith(item.prefix);
+    });
+    return {
+        season: found ? found.season : "",
+        seasonText: found ? found.seasonText : "",
+        spread: found ? found.spread : "",
+        scoreSheetLink: found ? found.score : "",
+        division: found ? found.division : 0,
+        isYksi: found && found.division == 1 ? true : false
+    };
+}

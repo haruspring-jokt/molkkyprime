@@ -99,6 +99,7 @@ function appendMatch(data, playerIdsByName) {
             var setRow = set.find(function (item) {
                 return Number(item.set) == i;
             });
+            console.log(setRow);
             points[`hp${i}`] = convertPoint(match[`hs${i}`], match[`s${i}fin`], true, setRow, playerIdsByName);
             points[`ap${i}`] = convertPoint(match[`as${i}`], match[`s${i}fin`], false, setRow, playerIdsByName);
         } else {
@@ -175,14 +176,31 @@ function convertSet(set, win) {
  * @returns 
  */
 function convertPoint(point, fin, isHome, set, playerIdsByName) {
-    console.log(set);
-
     const backClass =
-        Number(point) == 50 ? "has-background-success-90" :
+        Number(point) == 50 ? "has-background-info-90" :
             Number(point) == 0 ? "has-background-danger-90" :
                 point == "" ? "" : "";
     const align = isHome ? "right" : "left";
     const str = `<span class="has-text-weight-bold is-size-5">${point}</span>`;
+
+    // 投てき結果アイコン（内側から QH → フォルト → その他）
+    const isOddSet = set ? set.set % 2 === 1 : false;
+    const side = (isOddSet && isHome) || (!isOddSet && !isHome) ? "attack" : "defense";
+    const icon = (cls, color, n) => `<i class="las ${cls} ${color}"></i>`.repeat(Math.max(n, 0));
+    let throwIcons = "";
+    if (set && set[`${side}Throw`] !== undefined && set[`${side}Throw`] !== "") {
+        const qh = Number(set[`${side}Qh`]) || 0;
+        const fa = Number(set[`${side}Fault`]) || 0;
+        const other = (Number(set[`${side}Throw`]) || 0) - qh - fa;
+        const parts = [
+            icon("la-check-circle", "has-text-success-40", qh),
+            icon("la-slash", "has-text-warning-40", other),
+            icon("la-ban", "has-text-danger", fa),
+        ];
+        // ホームは右寄せのため、点数に近い側が内側になるよう並びを反転する
+        throwIcons = (isHome ? parts.reverse() : parts).join("");
+    }
+    const pointLine = isHome ? `${throwIcons} ${str}` : `${str} ${throwIcons}`;
 
     // Add player details for home team
     let playerDetails = "";
@@ -210,7 +228,7 @@ function convertPoint(point, fin, isHome, set, playerIdsByName) {
     }
 
     return `<td class="${backClass}" align="${align}">
-        ${str}<br/>
+        ${pointLine}<br/>
         ${playerDetails}<br/>
     </td>`;
 }
@@ -249,6 +267,42 @@ function setImageCard(elementId, gid, altSuffix, imgUrl) {
 }
 
 /**
+ * QH・その他・フォルトの100%積み上げ水平棒グラフを描画する
+ */
+function renderStatsChart(canvasId, throwCount, qualityHit, fault, align) {
+    const canvas = document.getElementById(canvasId);
+    if (!canvas || typeof Chart === 'undefined') return;
+    const total = Number(throwCount) || 0;
+    const qh = Number(qualityHit) || 0;
+    const fa = Number(fault) || 0;
+    const other = Math.max(total - qh - fa, 0);
+    const mk = (label, v, color) => ({ label, data: [v], backgroundColor: color, borderWidth: 0 });
+    new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: [''],
+            datasets: [
+                mk('QH', qh, getBulmaBackgroundColor('has-background-success')),
+                mk('その他', other, getBulmaBackgroundColor('has-background-grey-light')),
+                mk('フォルト', fa, getBulmaBackgroundColor('has-background-danger'))
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            layout: { padding: 0 },
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: {
+                x: { stacked: true, display: false, min: 0, max: total || 1, reverse: align === 'right', grid: { display: false } },
+                y: { stacked: true, display: false, grid: { display: false } }
+            }
+        }
+    });
+}
+
+/**
  * クラブ単位情報を作成する
  * @param {*} throwCount 
  * @param {*} qualityHit 
@@ -260,93 +314,20 @@ function setImageCard(elementId, gid, altSuffix, imgUrl) {
  * @returns 
  */
 function convertStats(throwCount, qualityHit, fault, qhPer, faPer, opt, align) {
-    const formattedOpt = Number.isFinite(Number(opt)) ? Number(opt).toFixed(2) : opt;
+    const optNum = opt === null || opt === undefined || String(opt).trim() === '' ? NaN : Number(opt);
+    const formattedOpt = Number.isFinite(optNum) && optNum !== 0 ? optNum.toFixed(2) : '-';
+
+    const normalHit = Math.max((Number(throwCount) || 0) - (Number(qualityHit) || 0) - (Number(fault) || 0), 0);
+
+    const nhPer = Number(throwCount) > 0 ? Math.round(normalHit / Number(throwCount) * 100) + "%" : "-";
+
+    const canvasId = `stats-chart-${align}`;
+    setTimeout(() => renderStatsChart(canvasId, throwCount, qualityHit, fault, align), 0);
 
     return `<td class="${MID_TEXT_SIZE}" align="${align}">
-        ${throwCount}-<strong class="has-text-success">${qualityHit}</strong>-<strong class="has-text-danger">${fault}</strong><br/>
-        (<strong class="has-text-success">${qhPer}</strong>-<strong class="has-text-danger">${faPer}</strong>)<br/>
+        <div style="height:16px;"><canvas id="${canvasId}"></canvas></div>
+        <strong class="has-text-success">QH:${qualityHit}</strong> - <strong class="has-text-grey">NH:${normalHit}</strong> - <strong class="has-text-danger">FA:${fault}</strong><br/>
+        (<span class="has-text-success">${qhPer}</span> - <span class="has-text-grey">${nhPer}</span> - <span class="has-text-danger">${faPer}</span>)<br/>
         OPT: <strong class="has-text-primary">${formattedOpt}</strong>
     </td>`;
-}
-
-/**
- * 試合IDからシーズン情報などを取得する
- * @param {} gid 
- * @returns 
- */
-function getSeasonConfig(gid) {
-    const gidMap = [
-        {
-            prefix: "GEC",
-            season: MolkkyPrimeConstants.season202627SecondDivName,
-            spread: MolkkyPrimeConstants.season202627KaksiSheetUrl,
-            score: MolkkyPrimeConstants.season202627SecondDivScoreUrl,
-            division: 2
-        },
-        {
-            prefix: "GE",
-            season: MolkkyPrimeConstants.season202627FirstDivName,
-            spread: MolkkyPrimeConstants.season202627YksiSheetUrl,
-            score: MolkkyPrimeConstants.season202627FirstDivScoreUrl,
-            division: 1
-        },
-        {
-            prefix: "GDC",
-            season: MolkkyPrimeConstants.season202526SecondDivName,
-            spread: MolkkyPrimeConstants.season202526KaksiSheetUrl,
-            score: MolkkyPrimeConstants.season202526SecondDivScoreUrl,
-            division: 2
-        },
-        {
-            prefix: "GD",
-            season: MolkkyPrimeConstants.season202526FirstDivName,
-            spread: MolkkyPrimeConstants.season202526YksiSheetUrl,
-            score: MolkkyPrimeConstants.season202526FirstDivScoreUrl,
-            division: 1
-        },
-        {
-            prefix: "GCC",
-            season: MolkkyPrimeConstants.season202425SecondDivName,
-            spread: MolkkyPrimeConstants.season202425SecondDivSheetUrl,
-            score: MolkkyPrimeConstants.season202425SecondDivScoreUrl,
-            division: 2
-        },
-        {
-            prefix: "GC",
-            season: MolkkyPrimeConstants.season202425FirstDivName,
-            spread: MolkkyPrimeConstants.season202425FirstDivSheetUrl,
-            score: MolkkyPrimeConstants.season202425FirstDivScoreUrl,
-            division: 1
-        },
-        {
-            prefix: "BC",
-            season: MolkkyPrimeConstants.season202324SecondDivName,
-            spread: MolkkyPrimeConstants.season202324SecondDivSheetUrl,
-            score: MolkkyPrimeConstants.season202324SecondDivScoreUrl,
-            division: 2
-        },
-        {
-            prefix: "B",
-            season: MolkkyPrimeConstants.season202324FirstDivName,
-            spread: MolkkyPrimeConstants.season202324FirstDivSheetUrl,
-            score: MolkkyPrimeConstants.season202324FirstDivScoreUrl,
-            division: 1
-        },
-        {
-            prefix: "A",
-            season: MolkkyPrimeConstants.season2023FirstDivName,
-            spread: MolkkyPrimeConstants.season2023FirstDivSheetUrl,
-            score: MolkkyPrimeConstants.season2023FirstDivScoreUrl,
-            division: 1
-        }
-    ];
-    const found = gidMap.find(function (item) {
-        return gid.startsWith(item.prefix);
-    });
-    return {
-        season: found ? found.season : "",
-        spread: found ? found.spread : "",
-        scoreSheetLink: found ? found.score : "",
-        isYksi: found && found.division == 1 ? true : false
-    };
 }

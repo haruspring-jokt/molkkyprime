@@ -147,6 +147,44 @@ function createClubData(clubs, players, scheduleYksi, scheduleKaksi, cid) {
 }
 
 /**
+ * QH率・その他・フォルト率の100%積み上げ水平棒グラフを描画する
+ * @param {number} qh QH率(0-1)
+ * @param {number} fa フォルト率(0-1)
+ */
+function renderClubQnfChart(qh, fa) {
+    const canvas = document.getElementById('club-qnf-chart');
+    if (!canvas || typeof Chart === 'undefined') return;
+    const old = Chart.getChart(canvas);
+    if (old) old.destroy();
+    if (!Number.isFinite(qh) || !Number.isFinite(fa)) return;
+    const other = Math.max(1 - qh - fa, 0);
+    const mk = (label, v, color) => ({ label, data: [v * 100], backgroundColor: color, borderWidth: 0 });
+    new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: [''],
+            datasets: [
+                mk('QH', qh, getBulmaBackgroundColor('has-background-success')),
+                mk('その他', other, getBulmaBackgroundColor('has-background-grey-light')),
+                mk('フォルト', fa, getBulmaBackgroundColor('has-background-danger'))
+            ]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            layout: { padding: 0 },
+            plugins: { legend: { display: false }, tooltip: { enabled: false } },
+            scales: {
+                x: { stacked: true, display: false, min: 0, max: 100, grid: { display: false } },
+                y: { stacked: true, display: false, grid: { display: false } }
+            }
+        }
+    });
+}
+
+/**
  * クラブ情報の設定
  * @param {json} club クラブ情報
  * @param {string} cid ページで選択中のクラブID
@@ -178,6 +216,7 @@ function appendClub(club, cid, isYksi, isKaksi) {
     $('#club-nopart').html(club['NotParticipatingPlayer']);
     $('#club-qhpar').html(qhPer);
     $('#club-fapar').html(faPer);
+    renderClubQnfChart(isYksi ? Number(club['qhPer']) : NaN, isYksi ? Number(club['faPer']) : NaN);
     $('#club-opt').html(opt);
     $('#club-attackwin').html(attackwin);
     $('#club-defencewin').html(defencewin);

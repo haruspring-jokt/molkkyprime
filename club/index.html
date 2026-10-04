@@ -19,6 +19,7 @@
     <!-- molkkyprime -->
     <link rel="stylesheet" href="../my-bulma-project.css">
     <link rel="stylesheet" href="../style/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="../script/script.js"></script>
     <script src="../script/club/club.js"></script>
     <!-- Google tag (gtag.js) -->
@@ -93,7 +94,11 @@
             <h4 class="title is-size-4">今シーズン</h4>
             <p class="subtitle is-size-6">Current Season</p>
             <div class="table-container" id="club-infomation">
-                <table class="table is-fullwidth is-narrow">
+                <table class="table is-fullwidth is-narrow" style="table-layout: fixed;">
+                    <colgroup>
+                        <col style="width: 8em;">
+                        <col>
+                    </colgroup>
                     <tr>
                         <th class="is-size-7 has-background-primary">暫定順位・成績</th>
                         <td class="is-size-7" id="club-currentrank"></td>
@@ -117,6 +122,10 @@
                     <tr>
                         <th class="is-size-7 has-background-primary">フォルト率</th>
                         <td class="is-size-7" id="club-fapar"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary">Q-N-F</th>
+                        <td class="is-size-7" style="position: relative; overflow: hidden;"><div style="height:16px; position: relative; width: 100%;"><canvas id="club-qnf-chart"></canvas></div></td>
                     </tr>
                     <tr>
                         <th class="is-size-7 has-background-primary">OPT</th>

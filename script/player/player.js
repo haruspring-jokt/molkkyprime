@@ -47,7 +47,78 @@ function initDisplay(playerId) {
         console.log(filteredPlayerData);
         // データ設定
         createPlayerData(filteredPlayerInfo[0], filteredPlayerData);
+        fetchPlayerGames(filteredPlayerInfo[0]);
     });
+}
+
+/**
+ * 出場試合一覧の取得
+ * @param {json} info 選手基本情報
+ */
+function fetchPlayerGames(info) {
+    if (!info) return;
+    $.ajax({
+        url: `https://storage.googleapis.com/molkkyprime-hp/matchPage.json`,
+        type: 'GET',
+        dataType: 'json',
+    }).done(function (datas) {
+        // homeplayers / awayplayers は「、」区切りの選手名
+        const games = (datas.match || []).filter(function (game) {
+            return [game.homeplayers, game.awayplayers].some(function (names) {
+                return String(names || "").split("、").map(function (n) { return n.trim(); }).includes(info.playerName);
+            });
+        });
+        appendPlayerGames(games);
+    }).fail(function () {
+        $("#player-games-progress").empty();
+    });
+}
+
+/**
+ * 出場試合一覧の設定
+ * @param {json} games 出場試合
+ */
+function appendPlayerGames(games) {
+    const seasonOf = (game) => game["season"] ? String(game["season"]) : getSeasonConfig(game["gid"] || "").seasonText;
+    const sorted = games.slice().sort((a, b) => {
+        const bySeason = seasonOf(b).localeCompare(seasonOf(a), undefined, { numeric: true });
+        return bySeason !== 0 ? bySeason : Number(b["sec"]) - Number(a["sec"]);
+    });
+    const rowsHtml = sorted.map((game) => {
+        const division = getSeasonConfig(game["gid"] || "").division;
+        const season = seasonOf(game) + (division === 2 ? " (C)" : "");
+        const video = game["videourl"] ? ` <a href="${game["videourl"]}" target="_blank"> [動画]</a>` : "";
+        let hcn = `<a href="../club/?cid=${game["hcid"]}">${game["hcn"]}</a>`;
+        let acn = `<a href="../club/?cid=${game["acid"]}">${game["acn"]}</a>`;
+        let hcnTdClass = "";
+        let acnTdClass = "";
+
+        if (game["hsn"] !== game["asn"]) {
+            const highlightClass = division === 2 ? "has-background-success-80" : "has-background-primary-80";
+            if (game["hsn"] > game["asn"]) {
+                hcn = `<strong>${hcn}</strong>`;
+                hcnTdClass = highlightClass;
+            } else {
+                acn = `<strong>${acn}</strong>`;
+                acnTdClass = highlightClass;
+            }
+        }
+
+        return `
+            <tr>
+                <td class="${SMALL_TEXT_SIZE}" align="left">${season}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="../match/?gid=${game["gid"]}">${game["sec"]}</a>${video}</td>
+                <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="center">
+                    <a class="has-text-link" href="../match/?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a>
+                </td>
+                <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
+            </tr>
+        `;
+    }).join("");
+
+    $("#player-games-table").append(rowsHtml);
+    $("#player-games-progress").empty();
 }
 
 /**

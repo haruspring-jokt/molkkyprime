@@ -176,27 +176,22 @@
             </div>
         </section>
 
-        <!--
-            <section class="section" id="player-games">
-                <h4 class="title is-size-4">出場試合</h4>
-                <p class="subtitle is-size-6">Player Games</p>
-
-                <div class="table-container player-data-season">
-                    <table class="table is-narrow is-fullwidth">
-                        <thead>
-                            <tr class="is-size-7">
-                                <th class="has-background-primary-80">シーズン</th>
-                                <th class="has-background-primary-80">日付</th>
-                                <th class="has-background-primary-80">HOME</th>
-                                <th class="has-background-primary-80">H/A</th>
-                                <th class="has-background-primary-80">結果</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-            </section>
-        -->
+        <section class="section" id="player-games">
+            <h4 class="title is-size-4">出場試合</h4>
+            <p class="subtitle is-size-6">Player Games</p>
+            <div class="table-container">
+                <table id="player-games-table" class="table is-fullwidth is-narrow">
+                    <tr>
+                        <th class="is-primary is-size-7" align="center">シーズン</th>
+                        <th class="is-primary is-size-7" align="center">節</th>
+                        <th class="is-primary is-size-7" align="center">ホーム</th>
+                        <th class="is-primary is-size-7" align="center">結果</th>
+                        <th class="is-primary is-size-7" align="center">アウェイ</th>
+                    </tr>
+                </table>
+            </div>
+            <div id="player-games-progress"><progress class="progress is-small is-primary" max="100"></progress></div>
+        </section>
     </div>
 
 
