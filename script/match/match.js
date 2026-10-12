@@ -183,12 +183,37 @@ function convertPoint(point, fin, isHome, set, playerIdsByName) {
     const align = isHome ? "right" : "left";
     const str = `<span class="has-text-weight-bold is-size-5">${point}</span>`;
 
-    // 投てき結果アイコン（内側から QH → フォルト → その他）
+    // 投てきごとの獲得点数（投てき順）
     const isOddSet = set ? set.set % 2 === 1 : false;
     const side = (isOddSet && isHome) || (!isOddSet && !isHome) ? "attack" : "defense";
     const icon = (cls, color, n) => `<i class="las ${cls} ${color}"></i>`.repeat(Math.max(n, 0));
-    let throwIcons = "";
-    if (set && set[`${side}Throw`] !== undefined && set[`${side}Throw`] !== "") {
+    let throwResults = "";
+    const pointRowColumn = isHome ? "homePointRow" : "awayPointRow";
+    const qnfColumn = isHome ? "homeQnf" : "awayQnf";
+    if (set && Object.prototype.hasOwnProperty.call(set, pointRowColumn)) {
+        const points = typeof set[pointRowColumn] === "string" ? set[pointRowColumn].split(",").map(value => value.trim()) : [];
+        const outcomes = typeof set[qnfColumn] === "string" ? set[qnfColumn].split(",").map(value => value.trim()) : [];
+        throwResults = points.map((value, index) => {
+            if (outcomes[index] === "Q") {
+                return `<span class="has-text-weight-bold has-text-success">${value}</span>`;
+            }
+            if (outcomes[index] === "F") {
+                return `<i class="las la-ban has-text-danger"></i>`;
+            }
+            return value;
+        }).join("-");
+    } else if (set && Object.prototype.hasOwnProperty.call(set, qnfColumn)) {
+        const resultIcons = {
+            Q: `<i class="las la-check-circle has-text-success-40"></i>`,
+            N: `<i class="las la-slash has-text-warning-40"></i>`,
+            F: `<i class="las la-ban has-text-danger"></i>`,
+        };
+        const outcomes = typeof set[qnfColumn] === "string" ? set[qnfColumn].split(",").map(value => value.trim()) : [];
+        const orderedIcons = outcomes
+            .filter(outcome => Object.prototype.hasOwnProperty.call(resultIcons, outcome))
+            .map(outcome => resultIcons[outcome]);
+        throwResults = orderedIcons.join("");
+    } else if (set && set[`${side}Throw`] !== undefined && set[`${side}Throw`] !== "") {
         const qh = Number(set[`${side}Qh`]) || 0;
         const fa = Number(set[`${side}Fault`]) || 0;
         const other = (Number(set[`${side}Throw`]) || 0) - qh - fa;
@@ -197,10 +222,8 @@ function convertPoint(point, fin, isHome, set, playerIdsByName) {
             icon("la-slash", "has-text-warning-40", other),
             icon("la-ban", "has-text-danger", fa),
         ];
-        // ホームは右寄せのため、点数に近い側が内側になるよう並びを反転する
-        throwIcons = (isHome ? parts.reverse() : parts).join("");
+        throwResults = parts.join("");
     }
-    const pointLine = isHome ? `${throwIcons} ${str}` : `${str} ${throwIcons}`;
 
     // Add player details for home team
     let playerDetails = "";
@@ -228,8 +251,9 @@ function convertPoint(point, fin, isHome, set, playerIdsByName) {
     }
 
     return `<td class="${backClass}" align="${align}">
-        ${pointLine}<br/>
+        ${str}<br/>
         ${playerDetails}<br/>
+        ${throwResults}
     </td>`;
 }
 
