@@ -21,7 +21,6 @@
     <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="../script/script.js"></script>
     <script src="../script/match/match.js"></script>
     <!-- Google tag (gtag.js) -->
@@ -74,36 +73,29 @@
 
                 <div id="match-progress"><progress class="progress is-small is-light" max="100"></progress></div>
 
-                <div class="content" style="text-align: left;">
-                    <small class="is-size-7"><strong class="has-text-primary">HOME</strong></small>
-                    <p id="" class="content is-size-5"><strong id="match-home-cname"></strong><br />
-                        <small class="is-size-7">🎽<strong id="match-home-players"></strong></small>
-                    </p>
-                </div>
-
-                <div class="content" style="text-align: right;">
-                    <small class="is-size-7"><strong class="has-text">AWAY</strong></small>
-                    <p id="" class="content is-size-5"><strong id="match-away-cname"></strong><br />
-                        <small class="is-size-7"><strong id="match-away-players"></strong>🎽</small>
-                    </p>
+                <div class="columns is-mobile is-gapless is-vcentered content">
+                    <div class="column is-5 has-text-left">
+                        <small class="is-size-7"><strong class="has-text-primary">HOME</strong></small>
+                        <p class="is-size-6 my-1"><strong id="match-home-cname"></strong></p>
+                        <small class="is-size-7"><strong id="match-home-players"></strong></small>
+                    </div>
+                    <div class="column is-1 has-text-center">
+                        <strong id="match-home-set-score" class="is-size-4"></strong>
+                    </div>
+                    <div class="column is-1 has-text-center">
+                        <strong id="match-away-set-score" class="is-size-4"></strong>
+                    </div>
+                    <div class="column is-5 has-text-right">
+                        <small class="is-size-7"><strong>AWAY</strong></small>
+                        <p class="is-size-6 my-1"><strong id="match-away-cname"></strong></p>
+                        <small class="is-size-7"><strong id="match-away-players"></strong></small>
+                    </div>
                 </div>
 
                 <div class="table-container content">
-                    <table id="match-result-table"
-                        class="table is-fullwidth is-bordered is-narrow is-table-center match-table">
-                        <tr>
-                            <th id="match-home-ccode" class="has-background-primary-80" align="center"><small
-                                    class="is-size-7">HOME</small><br /></th>
-                            <th></th>
-                            <th id="match-away-ccode" class="has-background-grey-lighter" align="center"><small
-                                    class="is-size-7">AWAY</small><br /></th>
-                        </tr>
-                    </table>
-                    <span class="is-size-7">
-                        <i class="las la-check-circle has-text-success-40"></i> QH <i
-                            class="las la-slash has-text-warning-40"></i> QHでない結果 <i
-                            class="las la-ban has-text-danger"></i>
-                        フォルトを示す。表示順は投てき順ではありません</span>
+                    <div id="match-overview-table"></div>
+                    <div id="match-set-tables"></div>
+                    <div id="match-player-stats"></div>
                 </div>
                 <p id="match-spreadsheet-url" class="is-size-7"></p>
             </div>

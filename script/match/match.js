@@ -1,6 +1,3 @@
-const SMALL_TEXT_SIZE = "is-size-7";
-const MID_TEXT_SIZE = "is-size-6";
-
 $(function () {
     /**
      * ページ個別
@@ -45,6 +42,11 @@ function fetchMatch(gid) {
     });
 }
 
+/**
+ * 試合データを作成し挿入する
+ * @param {json} data 試合情報が含まれるjson
+ * @param {*} playerIdsByName 選手名と選手IDのマップ
+ */
 function appendMatch(data, playerIdsByName) {
     var match = data.match[0];
     var set = data.set;
@@ -64,10 +66,11 @@ function appendMatch(data, playerIdsByName) {
     var hcnfull = `<a href="../club/?cid=${match['hcid']}">${convertClubFromCid(match['hcid'])}</a>`;
     var acnfull = `<a href="../club/?cid=${match['acid']}">${convertClubFromCid(match['acid'])}</a>`;
 
-    //  2025-26 チャレンジ対応: GIDの末尾2文字を数字化し、20以下の場合はグループA、それ以上はグループBとする
+    // TEMP 2025-26 チャレンジ対応: GIDの末尾2文字を数字化し、20以下の場合はグループA、それ以上はグループBとする
     const group = match['gid'].slice(0, 3) == "GDC" && Number(match['gid'].slice(-2)) <= 20 ? "グループA" :
         match['gid'].slice(0, 3) == "GDC" && Number(match['gid'].slice(-2)) > 20 ? "グループB" : "";
 
+    // 試合概要の挿入
     const gid = match['gid'] || "";
     const config = getSeasonConfig(gid);
     const season = config.season;
@@ -79,65 +82,34 @@ function appendMatch(data, playerIdsByName) {
     $("#match-match-name").append(`${group} 第${match['sec']}節 ${date}`);
 
     $('#match-home-cname').append(hcnfull);
-    $('#match-home-players').append(match['homeplayers']);
+    $('#match-home-players').append("🎽" + match['homeplayers']);
     $('#match-away-cname').append(acnfull);
-    $('#match-away-players').append(match['awayplayers']);
+    $('#match-away-players').append("🎽" + match['awayplayers']);
 
-    $('#match-home-ccode').append(match['hcn']);
-    $('#match-away-ccode').append(match['acn']);
+    const homeSetCount = Number(match['hsn']);
+    const awaySetCount = Number(match['asn']);
+    const isHomeSetWinner = homeSetCount > awaySetCount && [4, 5].includes(homeSetCount);
+    const isAwaySetWinner = awaySetCount > homeSetCount && [4, 5].includes(awaySetCount);
+    $('#match-home-set-score').append(match['hsn']).toggleClass('has-text-primary', isHomeSetWinner);
+    $('#match-away-set-score').append(match['asn']).toggleClass('has-text-primary', isAwaySetWinner);
 
-    var hset = convertSet(match['hsn'], match['hr']);
-    var aset = convertSet(match['asn'], match['ar']);
+    var setnum = homeSetCount + awaySetCount;
 
-    var setnum = Number(match['hsn']) + Number(match['asn']);
-    let emptyTd = "<td></td>";
-    let points = {};
-
-    // 初期化（すべて emptyTd）
-    for (let i = 1; i <= 8; i++) {
-        if (i <= setnum) {
-            var setRow = set.find(function (item) {
-                return Number(item.set) == i;
-            });
-            console.log(setRow);
-            points[`hp${i}`] = convertPoint(match[`hs${i}`], match[`s${i}fin`], true, setRow, playerIdsByName);
-            points[`ap${i}`] = convertPoint(match[`as${i}`], match[`s${i}fin`], false, setRow, playerIdsByName);
-        } else {
-            points[`hp${i}`] = emptyTd;
-            points[`ap${i}`] = emptyTd;
-        }
-    }
-    var homeQhPer = typeof match['homeqhper'] === "string" ? match['homeqhper'] : Math.round(match['homeqhper'] * 100) + "%";
-    var homeFaPer = typeof match['homefaper'] === "string" ? match['homefaper'] : Math.round(match['homefaper'] * 100) + "%";
-    var awayQhPer = typeof match['awayqhper'] === "string" ? match['awayqhper'] : Math.round(match['awayqhper'] * 100) + "%";
-    var awayFaPer = typeof match['awayfaper'] === "string" ? match['awayfaper'] : Math.round(match['awayfaper'] * 100) + "%";
-
+    // 試合が完了している場合、結果情報を追加する
     if (match['isdone'] == 1) {
-        // 得点欄を追加する
-        $('#match-result-table').append(`
-            <tr>${hset}<td class="${MID_TEXT_SIZE}">S</td>${aset}</tr>
-            ${(() => {
-                let html = "";
-                for (let i = 1; i <= 8; i++) {
-                    srow = set[i - 1];
-                    if (!srow || srow.isActive != "◯") break;
-                    const turn = srow.finishTurn == 0 ? "-" : srow.finishTurn;
-                    html += `<tr>
-                        ${points[`hp${i}`]}
-                        <td class="${MID_TEXT_SIZE}">${i}<br/><span class="is-size-7">T: ${turn}</span></td>
-                        ${points[`ap${i}`]}
-                    </tr>`;
-                }
-                return html;
-            })()}
-            <tr>
-                ${convertStats(match['homethrow'], match['homeqh'], match['homefault'], homeQhPer, homeFaPer, match['homeopt'], 'right')}
-                <td><i class="las la-chart-bar"></i></td>
-                ${convertStats(match['awaythrow'], match['awayqh'], match['awayfault'], awayQhPer, awayFaPer, match['awayopt'], 'left')}
-            </tr>
-        `);
+        $('#match-overview-table').append(buildSetOverviewTable(match, setnum));
+        const activeSets = set.slice().sort(function (a, b) {
+            return Number(a.set) - Number(b.set);
+        }).filter(function (setRow) {
+            return setRow.isActive === "◯";
+        });
+        $('#match-set-tables').append(activeSets.map(function (setRow) {
+            return buildSetDetailTable(setRow, match, playerIdsByName);
+        }).join(""));
+        $('#match-player-stats').append(`<div class="mt-5">${buildTeamStatsTable(match)}</div>`);
     }
 
+    // 外部リンクの挿入
     $('#match-spreadsheet-url').append(`
         <a href="${spread}" target="_blank">詳細はスプレッドシートへ</a><br/>
         <a href="${scoreSheetLink}" target="_blank">スコアシート画像へ（Googleドライブ）</a>
@@ -153,108 +125,254 @@ function appendMatch(data, playerIdsByName) {
 }
 
 /**
- * セット欄の作成
- * @param {*} set 
- * @param {*} win 
- * @returns 
+ * 試合全体のセット得点表を作成する
  */
-function convertSet(set, win) {
-    if (Number(win) == 3) {
-        return `<th class="has-background-warning-80 is-size-5">${set}</th>`;
-    } else {
-        return `<th class="is-size-5">${set}</th>`;
-    }
+function buildSetOverviewTable(match, setCount) {
+    const displayedSetCount = Math.max(8, setCount);
+    const setColumnWidth = 65 / displayedSetCount;
+    const columns = `
+        <colgroup>
+            <col width="25%">
+            <col width="10%">
+            ${Array.from({ length: displayedSetCount }, () => `<col width="${setColumnWidth}%">`).join("")}
+        </colgroup>`;
+    const setHeaders = Array.from({ length: displayedSetCount }, function (_, index) {
+        return `<th class="is-size-7">${index + 1}</th>`;
+    }).join("");
+    const teams = [
+        { name: match.hcn, total: match.hsn, prefix: "hs", isWinner: Number(match.hsn) > Number(match.asn) },
+        { name: match.acn, total: match.asn, prefix: "as", isWinner: Number(match.asn) > Number(match.hsn) },
+    ];
+    const teamRows = teams.map(function (team) {
+        const scores = Array.from({ length: displayedSetCount }, function (_, index) {
+            const score = match[`${team.prefix}${index + 1}`] ?? "";
+            const scoreClass = Number(score) === 50 ? "has-background-info-90 has-text-weight-bold" : "";
+            return `<td class="${scoreClass} is-size-65">${score}</td>`;
+        }).join("");
+        const totalClass = team.isWinner ? "has-background-info-90 has-text-weight-bold" : "";
+        return `
+            <tr>
+                <th class="is-size-6">${team.name}</th>
+                <th class="${totalClass} is-size-6">${team.total}</th>
+                ${scores}
+            </tr>`;
+    }).join("");
+
+    return `
+        <table class="table is-fullwidth is-bordered is-narrow is-table-center">
+            ${columns}
+            <thead>
+                <tr class="has-background-white-ter">
+                    <th class="is-size-7">CLUB</th>
+                    <th class="is-size-7">計</th>
+                    ${setHeaders}
+                </tr>
+            </thead>
+            <tbody>
+                ${teamRows}
+            </tbody>
+        </table>`;
 }
 
 /**
- * 得点欄の作成
- * @param {*} point 
- * @param {*} fin 
- * @param {*} isHome 
- * @param {*} set 
+ * セット別得点表の作成
+ * @param {*} setRow 
+ * @param {*} match 
  * @param {*} playerIdsByName 
  * @returns 
  */
-function convertPoint(point, fin, isHome, set, playerIdsByName) {
-    const backClass =
-        Number(point) == 50 ? "has-background-info-90" :
-            Number(point) == 0 ? "has-background-danger-90" :
-                point == "" ? "" : "";
-    const align = isHome ? "right" : "left";
-    const str = `<span class="has-text-weight-bold is-size-5">${point}</span>`;
+function buildSetDetailTable(setRow, match, playerIdsByName) {
+    const homePoints = parseCsv(setRow.homePointRow);
+    const awayPoints = parseCsv(setRow.awayPointRow);
+    const homeResults = parseCsv(setRow.homeQnf);
+    const awayResults = parseCsv(setRow.awayQnf);
+    const isHomeAttack = Number(setRow.set) % 2 === 1;
+    const recordedThrowCount = Math.max(
+        homePoints.length,
+        awayPoints.length,
+        homeResults.length,
+        awayResults.length
+    );
+    const finishTurn = Number(setRow.finishTurn);
+    const throwCount = Math.max(10, finishTurn > 0 ? finishTurn : recordedThrowCount); // 完了ターン数
+    const lastNumberedTurn = finishTurn > 0 ? finishTurn : recordedThrowCount; // 完了ターン
+    const columnsHtml = `
+        <colgroup>
+            <col width="17%">
+            <col width="9%">
+            ${Array.from({ length: throwCount }, () => `<col width="${74 / throwCount}%">`).join("")}
+        </colgroup>`;
 
-    // 投てきごとの獲得点数（投てき順）
-    const isOddSet = set ? set.set % 2 === 1 : false;
-    const side = (isOddSet && isHome) || (!isOddSet && !isHome) ? "attack" : "defense";
-    const icon = (cls, color, n) => `<i class="las ${cls} ${color}"></i>`.repeat(Math.max(n, 0));
-    let throwResults = "";
-    const pointRowColumn = isHome ? "homePointRow" : "awayPointRow";
-    const qnfColumn = isHome ? "homeQnf" : "awayQnf";
-    if (set && Object.prototype.hasOwnProperty.call(set, pointRowColumn)) {
-        const points = typeof set[pointRowColumn] === "string" ? set[pointRowColumn].split(",").map(value => value.trim()) : [];
-        const outcomes = typeof set[qnfColumn] === "string" ? set[qnfColumn].split(",").map(value => value.trim()) : [];
-        throwResults = points.map((value, index) => {
-            if (outcomes[index] === "Q") {
-                return `<span class="has-text-weight-bold has-text-success">${value}</span>`;
-            }
-            if (outcomes[index] === "F") {
-                return `<i class="las la-ban has-text-danger"></i>`;
-            }
-            return value;
-        }).join("-");
-    } else if (set && Object.prototype.hasOwnProperty.call(set, qnfColumn)) {
-        const resultIcons = {
-            Q: `<i class="las la-check-circle has-text-success-40"></i>`,
-            N: `<i class="las la-slash has-text-warning-40"></i>`,
-            F: `<i class="las la-ban has-text-danger"></i>`,
-        };
-        const outcomes = typeof set[qnfColumn] === "string" ? set[qnfColumn].split(",").map(value => value.trim()) : [];
-        const orderedIcons = outcomes
-            .filter(outcome => Object.prototype.hasOwnProperty.call(resultIcons, outcome))
-            .map(outcome => resultIcons[outcome]);
-        throwResults = orderedIcons.join("");
-    } else if (set && set[`${side}Throw`] !== undefined && set[`${side}Throw`] !== "") {
-        const qh = Number(set[`${side}Qh`]) || 0;
-        const fa = Number(set[`${side}Fault`]) || 0;
-        const other = (Number(set[`${side}Throw`]) || 0) - qh - fa;
-        const parts = [
-            icon("la-check-circle", "has-text-success-40", qh),
-            icon("la-slash", "has-text-warning-40", other),
-            icon("la-ban", "has-text-danger", fa),
-        ];
-        throwResults = parts.join("");
-    }
+    // セットテーブルのヘッダー作成
+    const turnHeaders = Array.from({ length: throwCount }, function (_, index) {
+        // 完了後のターンのセルは空白で追加する
+        const turnLabel = index + 1 <= lastNumberedTurn ? index + 1 : "";
+        return `<th class="is-size-7 px-1">${turnLabel}</th>`;
+    }).join("");
+    const attackPlayers = getSetPlayers(setRow, true, match, playerIdsByName);
+    const defensePlayers = getSetPlayers(setRow, false, match, playerIdsByName);
 
-    // Add player details for home team
-    let playerDetails = "";
+    // 先攻側選手リスト
+    const attackPlayersRow = `
+        <p class="is-size-7 mb-0">${attackPlayers}</p>`;
+
+    // 先攻、後攻の順に1投ごとの得点を追加
+    const homeTeam = { name: match.hcn, total: setRow.homePoint, points: homePoints, results: homeResults };
+    const awayTeam = { name: match.acn, total: setRow.awayPoint, points: awayPoints, results: awayResults };
+    const teams = isHomeAttack ? [homeTeam, awayTeam] : [awayTeam, homeTeam];
+    const teamRows = teams.map(function (team) {
+        // クラブ名セル、合計点セル
+        // 50点勝利、または0点敗北時の背景色設定
+        const totalClass = Number(team.total) === 50
+            ? "has-background-info-90"
+            : Number(team.total) === 0 ? "has-background-danger-90" : "";
+        const throwCells = Array.from({ length: throwCount }, function (_, index) {
+            // 各投てきセル
+            return `
+                <td class="is-size-65 px-1">
+                    ${formatThrowResult(team.points[index], team.results[index])}
+                </td>`;
+        }).join("");
+        return `
+            <tr>
+                <th class="is-size-6">${team.name}</th>
+                <th class="${totalClass} is-size-6">${team.total}</th>
+                ${throwCells}
+            </tr>`;
+    }).join("");
+
+    // 後攻側の選手リスト
+    const defensePlayersRow = `
+        <p class="is-size-7 mb-1">${defensePlayers}</p>`;
+
+    return `
+        <div class="mt-5">
+            <p class="is-size-65 mb-1"><strong>SET ${setRow.set}</strong></p>
+            ${attackPlayersRow}
+            <div class="table-container mb-0">
+                <table class="table is-fullwidth is-bordered is-narrow is-table-center">
+                    ${columnsHtml}
+                    <thead>
+                        <tr class="has-background-white-ter">
+                            <th class="is-size-7">CLUB</th>
+                            <th class="is-size-7">計</th>
+                            ${turnHeaders}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${teamRows}
+                    </tbody>
+                </table>
+            </div>
+            ${defensePlayersRow}
+        </div>`;
+}
+
+/**
+ * セットに出場した選手一覧を取得
+ * @param {*} setRow 
+ * @param {*} isAttack 
+ * @param {*} playerIdsByName 
+ * @returns 
+ */
+function getSetPlayers(setRow, isAttack, match, playerIdsByName) {
+    const role = isAttack ? "attack" : "defense";
+    const players = [];
     for (let i = 1; i <= 4; i++) {
-        const isOdd = set ? set.set % 2 === 1 : false;
-        const adStr = (isOdd && isHome) || (!isOdd && !isHome) ? "attack" : "defense";
-        const sourcePid = set ? set[`${adStr}Pid${i}`] : "";
-        const pname = set ? set[`${adStr}Pname${i}`] : "";
-        const pid = playerIdsByName[pname] || sourcePid || "";
-        const isFinish = set && pname && (
-            (set.finishPname && pname === set.finishPname) ||
-            (!set.finishPname && set.finishPid && sourcePid === set.finishPid)
-        );
-        const star = isFinish ? ` <i class="lar la-star is-size-6"></i>` : "";
-        const plink = pid ? `<a href="../player/?pid=${pid}" target="_blank">${pname}${star}</a>` : `${pname}${star}`;
-        const fontClass = isFinish ? "has-text-weight-bold" : "";
-        const orderIcon = getOrderIdon(i);
-        if (pname) {
-            playerDetails += `<span class="is-size-65 ${fontClass}">
-                ${orderIcon} ${plink}</span>`;
-        }
-        if (i != 4) {
-            playerDetails += "<br/>";
-        }
+        const name = setRow[`${role}Pname${i}`];
+        if (!name) continue;
+        const pid = playerIdsByName[name] || setRow[`${role}Pid${i}`] || "";
+        // フィニッシュを決めた選手の装飾表示
+        const isFinish = (setRow.finishPname && name === setRow.finishPname) ||
+            (!setRow.finishPname && setRow.finishPid && setRow[`${role}Pid${i}`] === setRow.finishPid);
+        const star = isFinish ? ` <i class="lar la-star" aria-label="フィニッシュ"></i>` : "";
+        const nameClass = isFinish ? "has-text-weight-bold" : "";
+        const linkedName = pid
+            ? `<a class="${nameClass}" href="../player/?pid=${pid}" target="_blank">${name}${star}</a>`
+            : `<span class="${nameClass}">${name}${star}</span>`;
+        players.push(`<span class="mr-2">${getOrderIdon(i)} ${linkedName}</span>`);
     }
+    return `${players.join(" ")}`;
+}
 
-    return `<td class="${backClass}" align="${align}">
-        ${str}<br/>
-        ${playerDetails}<br/>
-        ${throwResults}
-    </td>`;
+function parseCsv(value) {
+    return typeof value === "string" && value !== ""
+        ? value.split(",").map(function (item) { return item.trim(); })
+        : [];
+}
+
+function formatThrowResult(point, result) {
+    if (result === "F") {
+        return `<i class="las la-ban has-text-danger" aria-label="フォルト"></i>`;
+    }
+    if (result === "Q") {
+        return `<span class="has-text-success-40 has-text-weight-bold">${point ?? ""}</span>`;
+    }
+    return point ?? "";
+}
+
+/**
+ * クラブ別スタッツテーブルの作成
+ * @param {*} match 
+ * @returns 
+ */
+function buildTeamStatsTable(match) {
+    const teams = [
+        { name: match.hcn, prefix: "home" },
+        { name: match.acn, prefix: "away" },
+    ];
+    const teamRows = teams.map(function (team) {
+        const throwCount = Number(match[`${team.prefix}throw`]) || 0;
+        const qh = Number(match[`${team.prefix}qh`]) || 0;
+        const fa = Number(match[`${team.prefix}fault`]) || 0;
+        const nh = Math.max(throwCount - qh - fa, 0);
+        const qhPer = formatPercentage(match[`${team.prefix}qhper`], qh, throwCount);
+        const nhPer = formatPercentage(match[`${team.prefix}nhper`], nh, throwCount);
+        const faPer = formatPercentage(match[`${team.prefix}faper`], fa, throwCount);
+        const opt = formatOpt(match[`${team.prefix}opt`]);
+        return `
+            <tr>
+                <th class="is-size-6">${team.name}</th>
+                <td class="is-size-65 has-text-right">${qh} (${qhPer})</td>
+                <td class="is-size-65 has-text-right">${nh} (${nhPer})</td>
+                <td class="is-size-65 has-text-right">${fa} (${faPer})</td>
+                <td class="is-size-65 has-text-right"><span class="has-text-primary">${opt}</span></td>
+            </tr>`;
+    }).join("");
+
+    return `
+        <p class="is-size-7 mb-1"><strong>STATS</strong></p>
+        <table class="table is-bordered is-narrow is-table-center">
+            <thead>
+                <tr class="has-background-white-ter">
+                    <th class="is-size-7">CLUB</th>
+                    <th class="is-size-7"><i class="las la-check-circle has-text-success-40"></i> QH</th>
+                    <th class="is-size-7"><i class="las la-slash has-text-warning-40"></i> NH</th>
+                    <th class="is-size-7"><i class="las la-ban has-text-danger"></i> FA</th>
+                    <th class="is-size-7">OPT</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${teamRows}
+            </tbody>
+        </table>`;
+}
+
+function formatOpt(value) {
+    const opt = value === null || value === undefined || String(value).trim() === ""
+        ? NaN
+        : Number(value);
+    return Number.isFinite(opt) && opt !== 0 ? opt.toFixed(2) : "-";
+}
+
+function formatPercentage(value, count, total) {
+    if (value !== undefined && value !== null && value !== "") {
+        if (typeof value === "string" && value.includes("%")) return value;
+        const percentage = Number(value);
+        if (!Number.isFinite(percentage)) return "-";
+        return `${Math.round(percentage <= 1 ? percentage * 100 : percentage)}%`;
+    }
+    return total > 0 ? `${Math.round(count / total * 100)}%` : "-";
 }
 
 /**
@@ -288,70 +406,4 @@ function setImageCard(elementId, gid, altSuffix, imgUrl) {
             </div>
         `);
     }
-}
-
-/**
- * QH・その他・フォルトの100%積み上げ水平棒グラフを描画する
- */
-function renderStatsChart(canvasId, throwCount, qualityHit, fault, align) {
-    const canvas = document.getElementById(canvasId);
-    if (!canvas || typeof Chart === 'undefined') return;
-    const total = Number(throwCount) || 0;
-    const qh = Number(qualityHit) || 0;
-    const fa = Number(fault) || 0;
-    const other = Math.max(total - qh - fa, 0);
-    const mk = (label, v, color) => ({ label, data: [v], backgroundColor: color, borderWidth: 0 });
-    new Chart(canvas, {
-        type: 'bar',
-        data: {
-            labels: [''],
-            datasets: [
-                mk('QH', qh, getBulmaBackgroundColor('has-background-success')),
-                mk('その他', other, getBulmaBackgroundColor('has-background-grey-light')),
-                mk('フォルト', fa, getBulmaBackgroundColor('has-background-danger'))
-            ]
-        },
-        options: {
-            indexAxis: 'y',
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: false,
-            layout: { padding: 0 },
-            plugins: { legend: { display: false }, tooltip: { enabled: false } },
-            scales: {
-                x: { stacked: true, display: false, min: 0, max: total || 1, reverse: align === 'right', grid: { display: false } },
-                y: { stacked: true, display: false, grid: { display: false } }
-            }
-        }
-    });
-}
-
-/**
- * クラブ単位情報を作成する
- * @param {*} throwCount 
- * @param {*} qualityHit 
- * @param {*} fault 
- * @param {*} qhPer 
- * @param {*} faPer 
- * @param {*} opt 
- * @param {*} align 
- * @returns 
- */
-function convertStats(throwCount, qualityHit, fault, qhPer, faPer, opt, align) {
-    const optNum = opt === null || opt === undefined || String(opt).trim() === '' ? NaN : Number(opt);
-    const formattedOpt = Number.isFinite(optNum) && optNum !== 0 ? optNum.toFixed(2) : '-';
-
-    const normalHit = Math.max((Number(throwCount) || 0) - (Number(qualityHit) || 0) - (Number(fault) || 0), 0);
-
-    const nhPer = Number(throwCount) > 0 ? Math.round(normalHit / Number(throwCount) * 100) + "%" : "-";
-
-    const canvasId = `stats-chart-${align}`;
-    setTimeout(() => renderStatsChart(canvasId, throwCount, qualityHit, fault, align), 0);
-
-    return `<td class="${MID_TEXT_SIZE}" align="${align}">
-        <div style="height:16px;"><canvas id="${canvasId}"></canvas></div>
-        <strong class="has-text-success">QH:${qualityHit}</strong> - <strong class="has-text-grey">NH:${normalHit}</strong> - <strong class="has-text-danger">FA:${fault}</strong><br/>
-        (<span class="has-text-success">${qhPer}</span> - <span class="has-text-grey">${nhPer}</span> - <span class="has-text-danger">${faPer}</span>)<br/>
-        OPT: <strong class="has-text-primary">${formattedOpt}</strong>
-    </td>`;
 }

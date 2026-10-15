@@ -62,13 +62,12 @@ function fetchPlayerGames(info) {
         type: 'GET',
         dataType: 'json',
     }).done(function (datas) {
-        // homeplayers / awayplayers は「、」区切りの選手名
+        // homePlayersId / awayPlayersId はカンマ区切りの選手ID
         const games = (datas.match || []).filter(function (game) {
-            return [game.homeplayers, game.awayplayers].some(function (names) {
-                return String(names || "").split("、").map(function (n) { return n.trim(); }).includes(info.playerName);
-            });
+            return isPlayerInGameTeam(game, "homePlayersId", info.pid)
+                || isPlayerInGameTeam(game, "awayPlayersId", info.pid);
         });
-        appendPlayerGames(games);
+        appendPlayerGames(games, info);
     }).fail(function () {
         $("#player-games-progress").empty();
     });
@@ -78,7 +77,7 @@ function fetchPlayerGames(info) {
  * 出場試合一覧の設定
  * @param {json} games 出場試合
  */
-function appendPlayerGames(games) {
+function appendPlayerGames(games, info) {
     const seasonOf = (game) => game["season"] ? String(game["season"]) : getSeasonConfig(game["gid"] || "").seasonText;
     const sorted = games.slice().sort((a, b) => {
         const bySeason = seasonOf(b).localeCompare(seasonOf(a), undefined, { numeric: true });
@@ -90,35 +89,67 @@ function appendPlayerGames(games) {
         const video = game["videourl"] ? ` <a href="${game["videourl"]}" target="_blank"> [動画]</a>` : "";
         let hcn = `<a href="../club/?cid=${game["hcid"]}">${game["hcn"]}</a>`;
         let acn = `<a href="../club/?cid=${game["acid"]}">${game["acn"]}</a>`;
-        let hcnTdClass = "";
-        let acnTdClass = "";
-
-        if (game["hsn"] !== game["asn"]) {
-            const highlightClass = division === 2 ? "has-background-success-80" : "has-background-primary-80";
-            if (game["hsn"] > game["asn"]) {
-                hcn = `<strong>${hcn}</strong>`;
-                hcnTdClass = highlightClass;
-            } else {
-                acn = `<strong>${acn}</strong>`;
-                acnTdClass = highlightClass;
-            }
+        const isHomePlayer = isPlayerInGameTeam(game, "homePlayersId", info.pid);
+        const playerClubId = isHomePlayer ? game["hcid"] : game["acid"];
+        if (isHomePlayer) {
+            hcn = `<strong>${hcn}</strong>`;
+        } else {
+            acn = `<strong>${acn}</strong>`;
         }
+        const resultClass = getPlayerGameResultClass(game, playerClubId);
 
         return `
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="left">${season}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="../match/?gid=${game["gid"]}">${game["sec"]}</a>${video}</td>
-                <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="center">
+                <td class="${SMALL_TEXT_SIZE}" align="center">${hcn}</td>
+                <td class="${SMALL_TEXT_SIZE} ${resultClass}" align="center">
                     <a class="has-text-link" href="../match/?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a>
                 </td>
-                <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="center">${acn}</td>
             </tr>
         `;
     }).join("");
 
     $("#player-games-table").append(rowsHtml);
     $("#player-games-progress").empty();
+}
+
+/**
+ * 試合のチーム別選手ID一覧に選手IDが含まれるか判定する
+ */
+function isPlayerInGameTeam(game, teamPlayerIdsKey, playerId) {
+    if (playerId == null || playerId === "") {
+        return false;
+    }
+    return String(game[teamPlayerIdsKey] || "")
+        .split(",")
+        .map(function (id) { return id.trim(); })
+        .includes(String(playerId));
+}
+
+/**
+ * クラブページと同じ試合結果クラスを取得する
+ */
+function getPlayerGameResultClass(game, playerClubId) {
+    if (!game["isdone"]) {
+        return "";
+    }
+
+    const homeScore = Number(game["hsn"]);
+    const awayScore = Number(game["asn"]);
+    const isHome = game["hcid"] === playerClubId;
+    if (homeScore === awayScore) {
+        return "has-background-warning-80";
+    }
+    const playerWon = (isHome && homeScore > awayScore) || (!isHome && awayScore > homeScore);
+    if (!playerWon) {
+        return "has-background-danger-80";
+    }
+    if (Math.abs(homeScore - awayScore) > 1) {
+        return "has-background-success-80";
+    }
+    return "has-background-danger-80";
 }
 
 /**

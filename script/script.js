@@ -354,7 +354,7 @@ function convertClubCodeFromCid(cid) {
         ['C15', "BUD"],
         ['C16', "SISU"],
         ['C17', "ZONE"],
-        ['C18', "7S"],
+        ['C18', "7VS"],
         ['C19', "ZNA"],
         ['C20', "IWDP"],
         ['C21', "ASA"],
