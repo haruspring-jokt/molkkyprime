@@ -84,15 +84,16 @@ function appendStandings(datasJson, tableId, progressId, group) {
     datasJson.some(function (rank, i) {
         var ranknum = Number(rank['rank']);
         if (ranknum < 1) { return; }
-        var club = rank['cname'];
-        if (club.length > 20) {
-            // クラブ名が長い場合省略する
-            club = '<abbr title="' + rank['club'] + '">' + club.slice(0, 19) + '...' + '</abbr>';
-        }
+        var clubName = rank['cname'];
+        var mobileClubName = clubName.length <= 16 ? clubName
+            : '<abbr title="' + clubName + '">' + clubName.slice(0, 15) + '...</abbr>';
         $(tableId).append(`
             <tr>
             <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
-            <td class="${SMALL_TEXT_SIZE}"><a href="../club/?cid=${rank['cid']}">${club}</a></td>
+            <td class="${SMALL_TEXT_SIZE}"><a href="../club/?cid=${rank['cid']}">
+                <span class="is-hidden-mobile">${clubName}</span>
+                <span class="standings-club-name-mobile">${mobileClubName}</span>
+            </a></td>
             <td class="${SMALL_TEXT_SIZE}" align="right">${rank['game']}</td>
             <td class="${SMALL_TEXT_SIZE}" align="right">${rank['winpoint']}</td>
             <td class="${SMALL_TEXT_SIZE}" align="right">${rank['win']}</td>
@@ -147,4 +148,3 @@ function appendSchedule(datasJson, tableId, progressId, division) {
     });
     $(progressId).empty();
 }
-

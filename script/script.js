@@ -190,7 +190,7 @@ class MolkkyPrimeConstants {
     }
     /** 試合当日の流れ */
     static get gameDayGuideUrl() {
-        return "https://drive.google.com/file/d/1EeXfzICsEaWqzTh40SunimwuD_1fNBQ4/view";
+        return "https://molkkyprime.notion.site/3fb44c08fead80a39e9ee6d3f8c92758";
     }
 
     // =================================================

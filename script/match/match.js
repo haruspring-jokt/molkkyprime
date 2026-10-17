@@ -321,7 +321,67 @@ function buildTeamStatsTable(match) {
         { name: match.hcn, prefix: "home" },
         { name: match.acn, prefix: "away" },
     ];
+    const finishNames = [];
+    for (let i = 1; i <= 8; i++) {
+        const name = match[`s${i}fin`];
+        if (name) finishNames.push(String(name).trim());
+    }
+    const parseQnfo = function (prefix, i) {
+        let raw = match[`${prefix}Qnfo${i}`] ?? match[`${prefix}qnfo${i}`];
+        if (typeof raw === "string" && raw.trim() !== "") {
+            try { raw = JSON.parse(raw.replace(/'/g, '"').replace(/([{,]\s*)([A-Za-z]+)\s*:/g, '$1"$2":')); } catch (e) { raw = null; }
+        }
+        if (!raw || typeof raw !== "object" || !raw.pid) return null;
+        return {
+            pid: raw.pid,
+            q: Number(raw.q ?? raw.Q) || 0,
+            n: raw.n ?? raw.N ?? 0,
+            f: raw.f ?? raw.F ?? 0,
+            opt: Number(raw.opt ?? raw.OPT) || 0,
+        };
+    };
+    // 両クラブの選手の中での最大QH・最大OPT
+    let maxQ = 0;
+    let maxOpt = 0;
+    teams.forEach(function (team) {
+        for (let i = 1; i <= 8; i++) {
+            const info = parseQnfo(team.prefix, i);
+            if (!info) continue;
+            maxQ = Math.max(maxQ, info.q);
+            maxOpt = Math.max(maxOpt, info.opt);
+        }
+    });
+    const crown = function (colorClass) {
+        return `<i class="las la-crown ${colorClass}"></i> `;
+    };
+
     const teamRows = teams.map(function (team) {
+        const shortPrefix = team.prefix === "home" ? "h" : "a";
+        const names = [];
+        const playerRows = [];
+        for (let i = 1; i <= 8; i++) {
+            const pname = match[`${shortPrefix}player${i}`];
+            if (pname) names.push(String(pname).trim());
+            const info = parseQnfo(team.prefix, i);
+            if (!info) continue;
+            const raw = info;
+            const q = info.q;
+            const n = info.n;
+            const f = info.f;
+            const opt = info.opt;
+            const displayName = pname ? String(pname).trim() : raw.pid;
+            const fin = finishNames.filter(function (name) { return name === displayName; }).length;
+            playerRows.push(`
+            <tr>
+                <td class="is-size-7 has-text-left"><a href="../player/?pid=${raw.pid}" target="_blank">${displayName}</a></td>
+                <td class="is-size-65 has-text-right">${q > 0 && q === maxQ ? crown("has-text-success") : ""}${q}</td>
+                <td class="is-size-65 has-text-right">${n}</td>
+                <td class="is-size-65 has-text-right">${f}</td>
+                <td class="is-size-65 has-text-right"><span class="has-text-primary">${opt > 0 && opt === maxOpt ? crown("has-text-primary") : ""}${formatOpt(opt)}</span></td>
+                <td class="is-size-65 has-text-right">${fin}</td>
+            </tr>`);
+        }
+        const teamFin = finishNames.filter(function (n) { return names.includes(n); }).length;
         const throwCount = Number(match[`${team.prefix}throw`]) || 0;
         const qh = Number(match[`${team.prefix}qh`]) || 0;
         const fa = Number(match[`${team.prefix}fault`]) || 0;
@@ -331,18 +391,25 @@ function buildTeamStatsTable(match) {
         const faPer = formatPercentage(match[`${team.prefix}faper`], fa, throwCount);
         const opt = formatOpt(match[`${team.prefix}opt`]);
         return `
-            <tr>
-                <th class="is-size-6">${team.name}</th>
-                <td class="is-size-65 has-text-right">${qh} (${qhPer})</td>
-                <td class="is-size-65 has-text-right">${nh} (${nhPer})</td>
-                <td class="is-size-65 has-text-right">${fa} (${faPer})</td>
-                <td class="is-size-65 has-text-right"><span class="has-text-primary">${opt}</span></td>
-            </tr>`;
+            <tr class="has-background-white-ter">
+                <td class="is-size-6 has-text-weight-bold has-text-left">${team.name}</th>
+                <td class="is-size-65 has-text-weight-bold has-text-right">${qh} (${qhPer})</td>
+                <td class="is-size-65 has-text-weight-bold has-text-right">${nh} (${nhPer})</td>
+                <td class="is-size-65 has-text-weight-bold has-text-right">${fa} (${faPer})</td>
+                <td class="is-size-65 has-text-weight-bold has-text-right"><span class="has-text-primary">${opt}</span></td>
+                <td class="is-size-65 has-text-weight-bold has-text-right">${teamFin}</td>
+            </tr>${playerRows.join("")}`;
     }).join("");
 
     return `
         <p class="is-size-7 mb-1"><strong>STATS</strong></p>
-        <table class="table is-bordered is-narrow is-table-center">
+        <div class="table-container mb-0">
+        <table class="table is-fullwidth is-bordered is-narrow is-table-center">
+            <colgroup>
+                <col width="22%">
+                <col width="15.6%"><col width="15.6%"><col width="15.6%">
+                <col width="15.6%"><col width="15.6%">
+            </colgroup>
             <thead>
                 <tr class="has-background-white-ter">
                     <th class="is-size-7">CLUB</th>
@@ -350,6 +417,7 @@ function buildTeamStatsTable(match) {
                     <th class="is-size-7"><i class="las la-slash has-text-warning-40"></i> NH</th>
                     <th class="is-size-7"><i class="las la-ban has-text-danger"></i> FA</th>
                     <th class="is-size-7">OPT</th>
+                    <th class="is-size-7">FIN</th>
                 </tr>
             </thead>
             <tbody>

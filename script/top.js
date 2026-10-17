@@ -445,14 +445,18 @@ function appendStandings(datasJson, tableId, progressId, group) {
     const rowsHtml = datasJson.map((rank) => {
         const ranknum = Number(rank["rank"]);
         if (ranknum < 1) { return; }
-        // クラブ名称は長い場合省略する
-        let club = rank['cname'].length <= 16 ? rank["cname"]
-            : `<abbr title="${rank["club"]}">${rank['cname'].slice(0, 15)}...</abbr>`;
+        // クラブ名称はモバイル表示のみ長い場合省略する
+        const clubName = rank["cname"];
+        const mobileClubName = clubName.length <= 16 ? clubName
+            : `<abbr title="${clubName}">${clubName.slice(0, 15)}...</abbr>`;
         return `
             <tr>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
                 <td class="${SMALL_TEXT_SIZE}">
-                    <a href="./club/?cid=${rank["cid"]}">${club}</a>
+                    <a href="./club/?cid=${rank["cid"]}">
+                        <span class="is-hidden-mobile">${clubName}</span>
+                        <span class="standings-club-name-mobile">${mobileClubName}</span>
+                    </a>
                 </td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank["game"]}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${rank["winpoint"]}</td>
