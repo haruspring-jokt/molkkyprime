@@ -165,72 +165,425 @@ function createPlayerData(info, data) {
     const isYksi = divisionName === MolkkyPrimeConstants.firstDivName;
     const isKaksi = divisionName === MolkkyPrimeConstants.secondDivName;
 
-    // シーズン別データの設定
-    const totals = appendSeasonData(info, data, isYksi, isKaksi);
-    appendInfo(info, totals, isYksi, isKaksi);
+    // 各テーブル共通の集計を準備してから、用途別の表を組み立てる
+    const tableData = preparePlayerTableData(data);
+    createSeasonFilterControls(tableData);
+    createSeasonDataTable(tableData);
+    createThrowOrderTable(tableData);
+    createPhaseResultsTable(tableData);
+    bindSeasonFilterEvents(tableData);
+    appendInfo(info, tableData.totals, isYksi, isKaksi);
 }
 
-function appendSeasonData(info, season, isYksi, isKaksi) {
-    let totals = {
-        "gameTotal": 0,
-        "setTotal": 0,
-        "throwTotal": 0,
-    }
-    if (season.length == 0) {
-        return totals;
-    }
-    // テーブルヘッダーを動的に生成
-    const seasonHeader = season.map(se =>
-        `<th class="has-background-primary-80 is-narrow">${se.season}</th>`
-    ).join("");
+// 全テーブルで共有する通算値・シーズン列・フェーズ集計を準備する
+function preparePlayerTableData(seasons) {
+    const totals = aggregatePlayerSeasons(seasons);
+    const seasonColumns = seasons.map((season, index) => ({
+        label: season.season,
+        season,
+        index,
+        phases: {
+            loopTqf1: parseLoopTqf(season.loopTqf1),
+            loopTqf2: parseLoopTqf(season.loopTqf2),
+            loopTqf3: parseLoopTqf(season.loopTqf3),
+        },
+    }));
+    const phases = [
+        { key: "loopTqf1", label: "1巡目" },
+        { key: "loopTqf2", label: "2巡目" },
+        { key: "loopTqf3", label: "3巡目～" },
+    ].map(phase => ({
+        ...phase,
+        total: seasonColumns.reduce((total, column) => {
+            const stats = column.phases[phase.key];
+            total.T += stats.T;
+            total.Q += stats.Q;
+            total.F += stats.F;
+            return total;
+        }, { T: 0, Q: 0, F: 0 }),
+    }));
+
+    return { totals, seasonColumns, phases };
+}
+
+// 通算列とシーズン列を同じ構造で生成し、各表の列定義を共通化する
+function createCareerSeasonColumns(tableData, getTotalValue, getSeasonValue) {
+    return [
+        { label: "通算", value: row => getTotalValue(row, tableData.totals) },
+        ...tableData.seasonColumns.map(column => ({
+            label: column.label,
+            value: row => getSeasonValue(row, column),
+        })),
+    ];
+}
+
+// 列見出しと行データを共通のHTML形式で描画する
+function renderPlayerTable(selector, firstColumnLabel, columns, rows, options = {}) {
     const headerHtml = `
         <tr class="is-size-7 table">
-            <th class="has-background-primary-80 is-narrow">シーズン</th>
-            ${seasonHeader}
+            <th class="has-background-primary-80 is-narrow">${firstColumnLabel}</th>
+            ${columns.map(column => `
+                <th class="has-background-primary-80 is-narrow ${options.boldCareer && column.label === "通算" ? "has-text-weight-bold" : ""}">
+                    ${column.label}
+                </th>
+            `).join("")}
         </tr>
     `;
-    $(".player-data-season > thead").html(headerHtml);
+    $(selector + " > thead").html(headerHtml);
+    $(selector + " > tbody").html(rows.map(row =>
+        makeTr(columns.map(column => column.value(row)), row.label, row.isNumber, {
+            ...row.cellClasses,
+            cellTextByIndex: options.boldCareer
+                ? columns.map(column => column.label === "通算" ? "has-text-weight-bold" : "")
+                : row.cellClasses?.cellTextByIndex,
+        })
+    ).join(""));
+}
 
+// 表示フィルターを作り、初期状態を通算と現シーズンに設定する
+function createSeasonFilterControls(tableData) {
+    const filters = [
+        { id: "all", label: "すべて表示" },
+        { id: "career", label: "通算" },
+        ...tableData.seasonColumns.map((column, index) => ({
+            id: `season-${index}`,
+            label: column.label,
+        })),
+    ];
+    const filterHtml = filters.map(filter => `
+        <div class="field mb-1 is-size-65">
+            <label class="checkbox">
+                <input type="checkbox" data-season-filter="${filter.id}">
+                ${filter.label}
+            </label>
+        </div>
+    `).join("");
+    $("#player-season-filters").html(filterHtml);
+
+    const defaultSeasonIndex = tableData.seasonColumns.length > 0
+        ? getCurrentSeasonIndex(tableData.seasonColumns.map(column => column.season))
+        : -1;
+    tableData.defaultSeasonIndex = defaultSeasonIndex;
+    $('#player-season-filters input[data-season-filter="career"]').prop("checked", true);
+    if (defaultSeasonIndex >= 0) {
+        $(`#player-season-filters input[data-season-filter="season-${defaultSeasonIndex}"]`).prop("checked", true);
+    }
+}
+
+// 選択フィルターに応じてシーズン別成績表だけを更新する
+function createSeasonDataTable(tableData) {
+    const totals = tableData.totals;
     const rows = [
-        ['clubName', 'CLUB', false, season.map(se => getClubNameTd(se.cid, se.clubName, ""))],
-        ['game', 'GM', true, season.map(se => numberFormat(se.game, 0))],
-        ['set', 'SET', true, season.map(se => numberFormat(se.set, 0))],
-        ['setA1', '└A1st', true, season.map(se => numberFormat(se.setA1, 0))],
-        ['setA2', '└A2nd', true, season.map(se => numberFormat(se.setA2, 0))],
-        ['setA3', '└A3rd', true, season.map(se => numberFormat(se.setA3, 0))],
-        ['setA4', '└A4th', true, season.map(se => numberFormat(se.setA4, 0))],
-        ['setD1', '└D1st', true, season.map(se => numberFormat(se.setD1, 0))],
-        ['setD2', '└D2nd', true, season.map(se => numberFormat(se.setD2, 0))],
-        ['setD3', '└D3rd', true, season.map(se => numberFormat(se.setD3, 0))],
-        ['setD4', '└D4th', true, season.map(se => numberFormat(se.setD4, 0))],
-        ['throw', 'TH', true, season.map(se => numberFormat(se.throw, 0))],
-        ['qh', 'QH(%)', true, season.map(se => numberFormat(se.qh, 0) + " " + `(${perNumberFormat(se.qhRaito, 1)}%)`)],
-        ['qhRank', 'QH RANK', true, season.map(se => numberFormat(se.qhRank, 0))],
-        ['fault', 'FAULT(%)', true, season.map(se => numberFormat(se.fault, 0) + " " + `(${perNumberFormat(se.faultRaito, 1)}%)`)],
-        ['faultRank', 'FA RANK', true, season.map(se => numberFormat(se.faultRank, 0))],
-        ['notQh', 'NOTQH(%)', true, season.map(se => numberFormat(se.notQh, 0) + " " + `(${perNumberFormat(se.notQhRaito, 1)}%)`)],
-        ['qhAroundFa', 'QH/FA', true, season.map(se => numberFormat(se.qhAroundFa, 1))],
-        ['finish', 'FINISH', true, season.map(se => numberFormat(se.finish, 0))],
-        ['opt', 'OPT', true, season.map(se => optNumber(se.opt))],
-        ['optRank', 'OPT RANK', true, season.map(se => numberFormat(se.optRank, 0))],
-        ['blake', 'BLK(TH)', true, season.map(se => optNumber(se.blakeAvg) + " (" + numberFormat(se.blake, 0) + ")")],
-        ['rcv', 'RCV(TH)', true, season.map(se => perNumberFormat(se.rcvQhRaito, 0) + "% (" + numberFormat(se.rcv, 0) + ")")],
-        ['o38', 'O38 Q-F', true, season.map(se => overScore(se.o38, se.o38QhRaito, se.o38FaultRaito))],
-        ['o26', 'O26 Q-F', true, season.map(se => overScore(se.o26, se.o26QhRaito, se.o26FaultRaito))]
+        { label: 'クラブ', isNumber: false, format: column => getClubNameTd(column.season.cid, column.season.clubName, ""), total: () => "" },
+        { label: '試合', isNumber: true, format: column => numberFormat(column.season.game, 0), total: () => numberFormat(totals.game, 0) },
+        { label: 'セット', isNumber: true, format: column => numberFormat(column.season.set, 0), total: () => numberFormat(totals.set, 0) },
+        { label: '投てき', isNumber: true, format: column => numberFormat(column.season.throw, 0), total: () => numberFormat(totals.throw, 0) },
+        { label: 'QH(%)', isNumber: true, format: column => `${numberFormat(column.season.qh, 0)} (${perNumberFormat(column.season.qhRaito, 1)}%)`, total: () => `${numberFormat(totals.qh, 0)} (${perNumberFormat(totals.qhRaito, 1)}%)` },
+        { label: 'QH順位', isNumber: true, format: column => numberFormat(column.season.qhRank, 0), total: () => "-" },
+        { label: 'フォルト(%)', isNumber: true, format: column => `${numberFormat(column.season.fault, 0)} (${perNumberFormat(column.season.faultRaito, 1)}%)`, total: () => `${numberFormat(totals.fault, 0)} (${perNumberFormat(totals.faultRaito, 1)}%)` },
+        { label: 'FA順位', isNumber: true, format: column => numberFormat(column.season.faultRank, 0), total: () => "-" },
+        { label: '非QH(%)', isNumber: true, format: column => `${numberFormat(column.season.notQh, 0)} (${perNumberFormat(column.season.notQhRaito, 1)}%)`, total: () => `${numberFormat(totals.notQh, 0)} (${perNumberFormat(totals.notQhRaito, 1)}%)` },
+        { label: 'QH/FA', isNumber: true, format: column => numberFormat(column.season.qhAroundFa, 1), total: () => numberFormat(totals.qhAroundFa, 1) },
+        { label: 'フィニッシュ', isNumber: true, format: column => numberFormat(column.season.finish, 0), total: () => numberFormat(totals.finish, 0) },
+        { label: 'OPT', isNumber: true, format: column => optNumber(column.season.opt), total: () => optNumber(totals.opt) },
+        { label: 'OPT順位', isNumber: true, format: column => numberFormat(column.season.optRank, 0), total: () => "-" },
+        { label: 'ブレーク平均(投)', isNumber: true, format: column => `${optNumber(column.season.blakeAvg)} (${numberFormat(column.season.blake, 0)})`, total: () => `${optNumber(totals.blakeAvg)} (${numberFormat(totals.blake, 0)})` },
+        { label: 'リカバーQH(投)', isNumber: true, format: column => `${perNumberFormat(column.season.rcvQhRaito, 0)}% (${numberFormat(column.season.rcv, 0)})`, total: () => `${perNumberFormat(totals.rcvQhRaito, 0)}% (${numberFormat(totals.rcv, 0)})` },
+        { label: '38点以降QNF', isNumber: true, format: column => qnfScore(column.season.o38, column.season.o38QhRaito, column.season.o38FaultRaito), total: () => qnfScore(totals.o38, totals.o38QhRaito, totals.o38FaultRaito) },
+        { label: '28点以降QNF', isNumber: true, format: column => qnfScore(column.season.o26, column.season.o26QhRaito, column.season.o26FaultRaito), total: () => qnfScore(totals.o26, totals.o26QhRaito, totals.o26FaultRaito) },
     ];
 
-    const allHtml = rows.map(([_, colName, isNumber, dataArray]) =>
-        makeTr(dataArray, colName, isNumber)
-    ).join("");
+    const render = () => {
+        const selected = new Set(
+            $("#player-season-filters input[data-season-filter]:checked")
+                .map((_, input) => input.dataset.seasonFilter)
+                .get()
+        );
+        const columns = [];
+        if (selected.has("career")) {
+            columns.push({ label: "通算", value: row => row.total() });
+        }
+        tableData.seasonColumns.forEach((column, index) => {
+            if (selected.has(`season-${index}`)) {
+                columns.push({ label: column.label, value: row => row.format(column) });
+            }
+        });
+        const shouldScroll = window.matchMedia("(max-width: 768px)").matches && columns.length >= 3;
+        $(".player-data-season")
+            .toggleClass("is-fullwidth", !shouldScroll)
+            .css({ width: shouldScroll ? "max-content" : "100%", minWidth: shouldScroll ? "max-content" : "100%" });
+        renderPlayerTable(".player-data-season", "シーズン", columns, rows);
+    };
+    tableData.renderSeasonData = render;
+    render();
+}
 
-    $(".player-data-season > tbody").append(allHtml);
+// 先攻・後攻と各セットの投てきオーダー成績を表示する
+function createThrowOrderTable(tableData) {
+    const rows = [
+        { label: "先攻", keys: ["setA1", "setA2", "setA3", "setA4"] },
+        { label: "1st", key: "setA1" },
+        { label: "2nd", key: "setA2" },
+        { label: "3rd", key: "setA3" },
+        { label: "4th", key: "setA4" },
+        { label: "後攻", keys: ["setD1", "setD2", "setD3", "setD4"] },
+        { label: "1st", key: "setD1" },
+        { label: "2nd", key: "setD2" },
+        { label: "3rd", key: "setD3" },
+        { label: "4th", key: "setD4" },
+    ].map(row => ({
+        ...row,
+        isNumber: true,
+        cellClasses: row.keys ? {
+            label: "has-background-white-ter",
+            cell: "has-background-white-ter",
+            labelText: "has-text-weight-bold",
+            cellText: "has-text-weight-bold",
+        } : { label: "has-background-primary-90" },
+    }));
+    const orderColumns = createCareerSeasonColumns(
+        tableData,
+        (row, totals) => row.keys
+            ? row.keys.reduce((total, key) => total + (Number(totals[key]) || 0), 0)
+            : totals[row.key],
+        (row, column) => row.keys
+            ? row.keys.reduce((total, key) => total + (Number(column.season[key]) || 0), 0)
+            : column.season[row.key]
+    );
+    renderPlayerTable(
+        ".player-data-order",
+        "シーズン",
+        orderColumns.map(column => ({ label: column.label, value: row => numberFormat(column.value(row), 0) })),
+        rows,
+        { boldCareer: true }
+    );
+}
 
-    totals = {
-        "gameTotal": season.map(se => se.game || 0).reduce((a, b) => a + b, 0),
-        "setTotal": season.map(se => se.set || 0).reduce((a, b) => a + b, 0),
-        "throwTotal": season.map(se => se.throw || 0).reduce((a, b) => a + b, 0),
+// 1巡目以降の投数・QH・非QH・フォルトとQ-N-Fグラフを描画する
+function createPhaseResultsTable(tableData) {
+    const columns = createCareerSeasonColumns(
+        tableData,
+        phase => phase.total,
+        (phase, column) => column.phases[phase.key]
+    );
+    const rows = tableData.phases.flatMap(phase => [
+        { label: `${phase.label} 投数`, format: stats => formatPhaseCount(stats.T), isNumber: true, cellClasses: { label: "has-background-white-ter", cell: "has-background-white-ter" } },
+        { label: "QH", format: stats => formatPhaseCountAndRate(stats.Q, stats.T), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
+        { label: "非QH", format: stats => formatPhaseCountAndRate(stats.T - stats.Q - stats.F, stats.T), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
+        { label: "フォルト", format: stats => formatPhaseCountAndRate(stats.F, stats.T), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
+        { label: "Q-N-F", format: stats => `<canvas class="player-phase-qnf-chart" data-qh="${stats.T > 0 ? stats.Q / stats.T : 0}" data-nqh="${stats.T > 0 ? Math.max(stats.T - stats.Q - stats.F, 0) / stats.T : 0}" data-fault="${stats.T > 0 ? stats.F / stats.T : 0}" width="100" height="16"></canvas>`, isNumber: false, cellClasses: { label: "has-background-primary-90" } },
+    ].map(row => ({ ...row, value: column => row.format(column.value(phase)) })));
+
+    renderPlayerTable(
+        ".player-data-phase",
+        "フェーズ",
+        columns.map(column => ({ label: column.label, value: row => row.value(column) })),
+        rows,
+        { boldCareer: true }
+    );
+    renderPlayerQnfCharts(".player-phase-qnf-chart");
+}
+
+// 「すべて表示」と個別チェックの状態を同期し、表の更新イベントを登録する
+function bindSeasonFilterEvents(tableData) {
+    $("#player-season-filters").off("change", "input[data-season-filter]");
+    $("#player-season-filters").on("change", "input[data-season-filter]", function () {
+        if (this.dataset.seasonFilter === "all") {
+            const showAll = this.checked;
+            $('#player-season-filters input[data-season-filter="career"], #player-season-filters input[data-season-filter^="season-"]')
+                .prop("checked", showAll);
+            if (!showAll) {
+                $('#player-season-filters input[data-season-filter="career"]').prop("checked", true);
+                if (tableData.defaultSeasonIndex >= 0) {
+                    $(`#player-season-filters input[data-season-filter="season-${tableData.defaultSeasonIndex}"]`).prop("checked", true);
+                }
+            }
+        } else {
+            const allSelected = $('#player-season-filters input[data-season-filter]:not([data-season-filter="all"]):not(:checked)').length === 0;
+            $('#player-season-filters input[data-season-filter="all"]').prop("checked", allSelected);
+        }
+        tableData.renderSeasonData();
+    });
+    window.matchMedia("(max-width: 768px)").addEventListener("change", () => tableData.renderSeasonData());
+}
+
+function parseLoopTqf(value) {
+    const totals = { T: 0, Q: 0, F: 0 };
+    const addStats = stats => {
+        if (!stats || typeof stats !== "object") {
+            return;
+        }
+        if (Array.isArray(stats)) {
+            stats.forEach(addStats);
+            return;
+        }
+        for (const key of Object.keys(totals)) {
+            totals[key] += Number(stats[key]) || 0;
+        }
+    };
+
+    if (typeof value === "string") {
+        const matches = [...value.matchAll(/(?:^|[,{]\s*)["']?([TQF])["']?\s*:\s*(-?\d+(?:\.\d+)?)/g)];
+        matches.forEach(([, key, count]) => {
+            totals[key] += Number(count) || 0;
+        });
+    } else {
+        addStats(value);
     }
     return totals;
+}
+
+function aggregateLoopTqf(seasons, key) {
+    return seasons.reduce((total, season) => {
+        const phase = parseLoopTqf(season[key]);
+        total.T += phase.T;
+        total.Q += phase.Q;
+        total.F += phase.F;
+        return total;
+    }, { T: 0, Q: 0, F: 0 });
+}
+
+function renderPlayerQnfCharts(selector) {
+    const canvases = document.querySelectorAll(selector);
+    if (canvases.length > 0 && typeof Chart === "undefined") {
+        throw new Error("Chart.js is required to render player Q-N-F charts.");
+    }
+    canvases.forEach(canvas => {
+        const oldChart = Chart.getChart(canvas);
+        if (oldChart) {
+            oldChart.destroy();
+        }
+        const qh = Number(canvas.dataset.qh);
+        const notQh = Number(canvas.dataset.nqh);
+        const fault = Number(canvas.dataset.fault);
+        const dataset = (label, value, color) => ({
+            label,
+            data: [value * 100],
+            backgroundColor: getBulmaBackgroundColor(color),
+            borderWidth: 0,
+        });
+        new Chart(canvas, {
+            type: "bar",
+            data: {
+                labels: [""],
+                datasets: [
+                    dataset("QH", qh, "has-background-success"),
+                    dataset("その他", notQh, "has-background-grey-light"),
+                    dataset("フォルト", fault, "has-background-danger"),
+                ],
+            },
+            options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                layout: { padding: 0 },
+                plugins: { legend: { display: false }, tooltip: { enabled: false } },
+                scales: {
+                    x: { stacked: true, display: false, min: 0, max: 100, grid: { display: false } },
+                    y: { stacked: true, display: false, grid: { display: false } },
+                },
+            },
+        });
+    });
+}
+
+function formatPhaseCount(count) {
+    return Number.isFinite(count) ? String(Math.floor(count)) : "0";
+}
+
+function formatPhaseCountAndRate(count, total) {
+    const rate = total > 0 ? ` (${(count / total * 100).toFixed(1)}%)` : " (-)";
+    return `${formatPhaseCount(count)}${rate}`;
+}
+
+function qnfScore(throws, qhRate, faultRate) {
+    const qh = Number(qhRate) || 0;
+    const fault = Number(faultRate) || 0;
+    const notQh = Math.max(1 - qh - fault, 0);
+    return `<span class="has-text-success">${Math.round(qh * 100)}</span>-${Math.round(notQh * 100)}-<span class="has-text-danger">${Math.round(fault * 100)}</span> (${numberFormat(throws, 0)})`;
+}
+
+function aggregatePlayerSeasons(seasons) {
+    const sum = key => seasons.reduce((total, item) => total + (Number(item[key]) || 0), 0);
+    const weightedAverage = (valueKey, weightKey) => {
+        const validSeasons = seasons.filter(item =>
+            item[valueKey] !== "" && item[valueKey] !== "-" && Number.isFinite(Number(item[valueKey]))
+        );
+        const weight = validSeasons.reduce((total, item) => total + (Number(item[weightKey]) || 0), 0);
+        return weight > 0
+            ? validSeasons.reduce((total, item) => total + Number(item[valueKey]) * (Number(item[weightKey]) || 0), 0) / weight
+            : "";
+    };
+    const weightedRate = (rateKey, countKey) => {
+        const validSeasons = seasons.filter(item =>
+            item[rateKey] !== "" && item[rateKey] !== "-" && Number.isFinite(Number(item[rateKey]))
+        );
+        const count = validSeasons.reduce((total, item) => total + (Number(item[countKey]) || 0), 0);
+        return count > 0
+            ? validSeasons.reduce((total, item) => total + Number(item[rateKey]) * (Number(item[countKey]) || 0), 0) / count
+            : "";
+    };
+    const throwTotal = sum("throw");
+    const qhTotal = sum("qh");
+    const faultTotal = sum("fault");
+    const notQhTotal = sum("notQh");
+
+    return {
+        game: sum("game"),
+        set: sum("set"),
+        setA1: sum("setA1"),
+        setA2: sum("setA2"),
+        setA3: sum("setA3"),
+        setA4: sum("setA4"),
+        setD1: sum("setD1"),
+        setD2: sum("setD2"),
+        setD3: sum("setD3"),
+        setD4: sum("setD4"),
+        throw: throwTotal,
+        qh: qhTotal,
+        qhRaito: throwTotal > 0 ? qhTotal / throwTotal : "",
+        fault: faultTotal,
+        faultRaito: throwTotal > 0 ? faultTotal / throwTotal : "",
+        notQh: notQhTotal,
+        notQhRaito: throwTotal > 0 ? notQhTotal / throwTotal : "",
+        qhAroundFa: faultTotal > 0 ? qhTotal / faultTotal : "",
+        finish: sum("finish"),
+        opt: weightedAverage("opt", "throw"),
+        blake: sum("blake"),
+        blakeAvg: weightedAverage("blakeAvg", "blake"),
+        rcv: sum("rcv"),
+        rcvQhRaito: weightedRate("rcvQhRaito", "rcv"),
+        o38: sum("o38"),
+        o38QhRaito: weightedRate("o38QhRaito", "o38"),
+        o38FaultRaito: weightedRate("o38FaultRaito", "o38"),
+        o26: sum("o26"),
+        o26QhRaito: weightedRate("o26QhRaito", "o26"),
+        o26FaultRaito: weightedRate("o26FaultRaito", "o26"),
+    };
+}
+
+function getCurrentSeasonIndex(seasons) {
+    if (seasons.length === 0) {
+        return -1;
+    }
+    const seasonName = typeof MolkkyPrimeConstants !== "undefined"
+        ? MolkkyPrimeConstants.curerntSeasonFirstDivName
+        : "";
+    const currentYears = seasonName.match(/(\d{4})-(\d{4})/);
+    if (!currentYears) {
+        return 0;
+    }
+    const currentSeasonValues = [
+        `${currentYears[1]}${currentYears[2]}`,
+        `${currentYears[1]}${currentYears[2].slice(-2)}`,
+        `${currentYears[1].slice(-2)}${currentYears[2].slice(-2)}`,
+    ];
+    const matchedIndex = seasons.findIndex(item => {
+        const seasonValue = String(item.season).replace(/\D/g, "");
+        return currentSeasonValues.some(value => seasonValue.includes(value));
+    });
+    return matchedIndex >= 0 ? matchedIndex : 0;
 }
 
 function appendInfo(info, totals, isYksi, isKaksi) {
@@ -242,30 +595,46 @@ function appendInfo(info, totals, isYksi, isKaksi) {
     $(".player-profile-pid").append(`<span>${info.pid}</span>`);
     $(".player-profile-pname").append(`<span>${info.playerName}</span>`);
     $(".player-profile-prefecture").append(`<span>${info.prefecture}</span>`);
-    $(".player-profile-totalgames").append(`<span>${totals.gameTotal}</span>`);
-    $(".player-profile-totalsets").append(`<span>${totals.setTotal}</span>`);
-    $(".player-profile-totalthrows").append(`<span>${totals.throwTotal}</span>`);
     $(".player-profile-awards").append(`<span>${info.award}</span>`);
     $(".player-profile-team").append(`<span>${info.team}</span>`);
     $(".player-profile-club-history").append(`<span>${info.clubHistory}</span>`);
+
+    const qhRate = totals.throw > 0
+        ? `${(totals.qh / totals.throw * 100).toFixed(1)}%`
+        : "-";
+    const faultRate = totals.throw > 0
+        ? `${(totals.fault / totals.throw * 100).toFixed(1)}%`
+        : "-";
+    $(".player-career-games").append(`<span>${totals.game}</span>`);
+    $(".player-career-sets").append(`<span>${totals.set}</span>`);
+    $(".player-career-throws").append(`<span>${totals.throw}</span>`);
+    $(".player-career-qh").append(`<span>${totals.qh} (${qhRate})</span>`);
+    $(".player-career-faults").append(`<span>${totals.fault} (${faultRate})</span>`);
+    $(".player-career-finishes").append(`<span>${totals.finish}</span>`);
 }
 
-function makeTr(array, colName, isNumber) {
+function makeTr(array, colName, isNumber, cellClasses = {}) {
     const isRight = isNumber ? "is-pulled-right" : "";
-    const isRankColumn = colName.endsWith("RANK");
-    const tds = array.map(ar => {
+    const isRankColumn = ["QH順位", "FA順位", "OPT順位"].includes(colName) || colName.endsWith("RANK");
+    const tds = array.map((ar, index) => {
         const greyClass = isNumber && (ar == 0 || ar == "" || ar == "-" || !ar)
             ? "has-text-grey-lighter" : "";
         const rankClass = isRankColumn && ar >= 1 && ar <= 3 ? "has-text-weight-bold has-text-link"
             : isRankColumn && ar >= 4 && ar <= 10 ? "has-text-weight has-text-info"
             : "";
-        return `<td class="is-narrow">
-            <span class="${isRight} ${greyClass} ${rankClass}">${ar}${isRankColumn ? "位" : ""}</span></td>`;
+        const rankSuffix = isRankColumn && ar !== "" && ar !== "-" && Number.isFinite(Number(ar))
+            ? "位"
+            : "";
+        const isChart = typeof ar === "string" && ar.includes("<canvas");
+        return `<td class="is-narrow ${cellClasses.cell || ""} ${cellClasses.cellByIndex?.[index] || ""}">
+            <span class="${isChart ? "is-block" : ""} ${isRight} ${greyClass} ${rankClass} ${cellClasses.cellText || ""} ${cellClasses.cellTextByIndex?.[index] || ""}">${ar}${rankSuffix}</span></td>`;
     }).join("");
 
     return `
         <tr class="is-size-7 table">
-            <th class="is-narrow has-background-primary-80">${colName}</th>
+            <th class="is-narrow has-background-primary-80 ${cellClasses.label || ""}">
+                <span class="${cellClasses.labelText || ""}">${colName}</span>
+            </th>
             ${tds}
         </tr>
     `;

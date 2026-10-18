@@ -38,6 +38,19 @@ body {
     min-width: 320px !important;
 }
 
+.player-data-season {
+    table-layout: auto !important;
+}
+
+.player-data-season th:first-child {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.player-data-season td {
+    white-space: nowrap;
+}
+
 .mkpl-under-header {
     min-height: 52px !important;
 }

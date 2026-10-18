@@ -21,6 +21,7 @@
     <link rel="stylesheet" href="../style/style.css">
     <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="../script/script.js"></script>
     <script src="../script/player/player.js"></script>
     <!-- Google tag (gtag.js) -->
@@ -68,6 +69,7 @@
                 <div class="menu">
                     <ul class="menu-list" id="club-menu-list">
                         <li><a href="#player-profile" class="has-text-link is-size-6">プロフィール</a></li>
+                        <li><a href="#player-career" class="has-text-link is-size-6">通算記録</a></li>
                         <li><a href="#player-data" class="has-text-link is-size-6">データ</a></li>
                     </ul>
                 </div>
@@ -101,18 +103,6 @@
                         <td class="is-size-7 player-profile-prefecture"></td>
                     </tr>
                     <tr>
-                        <th class="is-size-7 has-background-primary-80">通算試合数</th>
-                        <td class="is-size-7 player-profile-totalgames"></td>
-                    </tr>
-                    <tr>
-                        <th class="is-size-7 has-background-primary-80">通算セット数</th>
-                        <td class="is-size-7 player-profile-totalsets"></td>
-                    </tr>
-                    <tr>
-                        <th class="is-size-7 has-background-primary-80">通算スロー数</th>
-                        <td class="is-size-7 player-profile-totalthrows"></td>
-                    </tr>
-                    <tr>
                         <th class="is-size-7 has-background-primary-80">受賞歴</th>
                         <td class="is-size-7 player-profile-awards"></td>
                     </tr>
@@ -134,9 +124,43 @@
             </div>
         </section>
 
+        <section class="section" id="player-career">
+            <h4 class="title is-size-4">通算記録</h4>
+            <p class="subtitle is-size-6">Career Records</p>
+            <div class="table-container player-profile-table">
+                <table class="table player-profile-table is-fullwidth is-narrow is-bordered">
+                    <tr>
+                        <th class="is-size-7 has-background-primary-80" style="width:120px;">出場試合数</th>
+                        <td class="is-size-7 player-career-games"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary-80">出場セット数</th>
+                        <td class="is-size-7 player-career-sets"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary-80">投てき数</th>
+                        <td class="is-size-7 player-career-throws"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary-80">QH数</th>
+                        <td class="is-size-7 player-career-qh"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary-80">フォルト数</th>
+                        <td class="is-size-7 player-career-faults"></td>
+                    </tr>
+                    <tr>
+                        <th class="is-size-7 has-background-primary-80">フィニッシュ数</th>
+                        <td class="is-size-7 player-career-finishes"></td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
         <section class="section" id="player-data">
             <h4 class="title is-size-4">シーズン別データ</h4>
             <p class="subtitle is-size-6">Total</p>
+            <div id="player-season-filters" class="mb-3"></div>
             <div class="table-container">
                 <table class="table is-narrow is-bordered player-data-season">
                     <thead>
@@ -148,31 +172,61 @@
                     </tbody>
                 </table>
             </div>
-            <div class="">
+            <div class="mb-5">
                 <p class="is-size-7 content">
                     詳細データはプライムリーグユクシ（1部）の記録のみ対象。
                 </p>
                 <p class="is-size-7 content mb-1">項目のみかた</p>
                 <ul class="is-size-7 ml-2">
-                    <li>CLUB：所属クラブ</li>
-                    <li>GM：出場試合数</li>
-                    <li>SET：出場セット数</li>
-                    <li>1st～4th：オーダー別の出場セット数。Aは先攻、Dは後攻セット</li>
-                    <li>TH：スロー数</li>
+                    <li>クラブ：所属クラブ</li>
+                    <li>試合：出場試合数</li>
+                    <li>セット：出場セット数</li>
+                    <li>投てき：スロー数</li>
                     <li>QH：Quality Hit（狙い通りのスロー）。RANKはシーズン規定到達者中の順位</li>
-                    <li>FAULT：フォルト（スロー結果0点）。RANKはシーズン規定到達者中の非フォルト率順位</li>
-                    <li>NOTQH：QHでもフォルトでもないスロー</li>
+                    <li>フォルト：フォルト（スロー結果0点）。RANKはシーズン規定到達者中の非フォルト率順位</li>
+                    <li>非QH：QHでもフォルトでもないスロー</li>
                     <li>QH/FA：FA1回あたりのQH回数</li>
-                    <li>FINISH：セット勝利を決めた回数</li>
+                    <li>フィニッシュ：セット勝利を決めた回数</li>
                     <li>OPT：On Plus Throwing。<code>1投あたりの評価点総合計 / 総投擲数</code>
                     <li class="pl-5"><code>1投あたりの評価点 = {0.1 * ({ターン数} - 1) * [得点] + [得点]}</code>
                         <br />例えば8ターン目に5点を獲得した場合、評価点は<code>0.1 * (8 - 1) * 5 + 5 = 8.50</code>となる。
                     </li>
                     </li>
-                    <li>BLK：ブレーク（セットの先攻1投目）の平均得点。()内は回数</li>
-                    <li>RCV：フォルトが1回以上蓄積している状態でのQH率。()内は回数</li>
-                    <li>O38 Q-F：38点以上ある状態でのQH率・フォルト率。O26は26点以上の場合。()内はスロー回数</li>
+                    <li>ブレーク平均：ブレーク（セットの先攻1投目）の平均得点。()内は回数</li>
+                    <li>リカバーQH：フォルトが1回以上蓄積している状態でのQH率。()内は回数</li>
+                    <li>38点以降 Q-F：38点以上ある状態でのQH率・フォルト率。O26は26点以上の場合。()内はスロー回数</li>
                 </ul>
+            </div>
+
+            <div class="content">
+                <h5 class="title is-size-5 pt-5">投てきオーダー</h5>
+                <p class="subtitle is-size-65">どの投てき順でセットに参加したかを示す。</p>
+                <div class="table-container">
+                    <table class="table is-narrow is-bordered player-data-order">
+                        <thead>
+                            <tr class="is-size-7 table">
+                                <th class="has-background-primary-80 is-narrow">シーズン</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="content">
+                <h5 class="title is-size-5 pt-5">フェーズ別成績</h5>
+                <p class="subtitle is-size-65">1巡目（1-4ターン）、2巡目（5-8ターン）、3巡目（9ターン以降）ごとの投てきデータ。</p>
+                <div class="table-container">
+                    <table class="table is-narrow is-bordered player-data-phase">
+                        <thead>
+                            <tr class="is-size-7 table">
+                                <th class="has-background-primary-80 is-narrow">フェーズ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
