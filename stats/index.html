@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja" data-theme="light">
+
+<head>
+    <!-- meta -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, shrink-to-fit=yes">
+
+    <!-- google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <!-- molkkyprime -->
+    <link rel="stylesheet" href="../my-bulma-project.css">
+    <link rel="stylesheet" href="../style/style.css">
+    <script src="../script/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="../script/stats/stats.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4W483V0S8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-C4W483V0S8');
+    </script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8922718369591652"
+        crossorigin="anonymous"></script>
+
+    <title>スタッツ｜モルック関東プライムリーグ</title>
+</head>
+
+<body>
+    <header id="mkpl-header" class="bd-header">
+    </header>
+
+    <div class="container is-max-desktop">
+
+        <section class="section">
+            <nav class="breadcrumb pt-4 m-0" aria-label="breadcrumbs">
+                <ul class="is-size-6">
+                    <li><a href="../">トップ</a></li>
+                    <li class="is-active"><a href="./" aria-current="page">スタッツ</a></li>
+                </ul>
+            </nav>
+        </section>
+
+        <div class="container">
+            <!-- Title -->
+            <section class="hero is-medium mkpl-bg-cover is-dark">
+                <div class="hero-body mkpl-bg-filter">
+                    <h1 class="title is-size-2 mkpl-title">スタッツ
+                        <p class="subtitle">stats</p>
+                    </h1>
+                </div>
+            </section>
+        </div>
+
+        <div id="stats-progress"><progress class="progress is-small is-primary" max="100"></progress></div>
+
+        <!-- club stats -->
+        <section class="section" id="club-stats">
+            <div class="content">
+                <h3 class="title is-size-3">クラブ別スタッツ</h3>
+                <div class="select is-small is-size-6">
+                    <select id="club-stats-season" aria-label="クラブ別スタッツの集計期間"></select>
+                </div>
+                <div id="club-stats-tables" class="mt-4"></div>
+            </div>
+        </section>
+
+        <!-- player stats -->
+        <section class="section" id="player-stats">
+            <div class="content">
+                <h3 class="title is-size-3">選手別スタッツ</h3>
+                <div class="select is-small is-size-6">
+                    <select id="player-stats-season" aria-label="選手別スタッツの集計期間"></select>
+                </div>
+                <div id="player-stats-tables" class="mt-4"></div>
+                <div id="player-stats-rankings" class="mt-4"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <div class="container footer is-max-desktop">
+        <footer class="footer" id="mkpl-footer">
+        </footer>
+    </div>
+</body>
+
+</html>

@@ -3,6 +3,8 @@ const EMPTY_CID = "CZZ";
 const TH_TAG_FROM = `<th class="is-primary is-size-7" align="center">`;
 const TH_TAG_TO = `</th>`;
 const SMALL_TEXT_SIZE = "is-size-7";
+// playerPage.jsonの最新シーズンのレコード（アシスト数の取得用）
+let latestSeasonPlayerData = [];
 
 (function ($) {
     /**
@@ -16,14 +18,14 @@ const SMALL_TEXT_SIZE = "is-size-7";
         /**
          * ページ個別
          */
-        // 固定リンク設定
-        appendConstLinks();
         // リクエストパラメータにクラブIDがある場合
         let url = new URL(window.location.href);
         let params = url.searchParams;
         // 画面初期表示
         localStorage.clear();
         initDisplay(params.get('cid'));
+        // 固定リンク設定
+        appendConstLinks(params.get('cid'));
 
         // クラブ選択時
         $('select[name="club-data"]').change(function () {
@@ -35,24 +37,59 @@ const SMALL_TEXT_SIZE = "is-size-7";
             }
             var localData = localStorage.getItem('clubPageDataStringify');
             refreshClubData(JSON.parse(localData), param);
+            appendConstLinks(param.cid);
         });
     });
 
 }(window.jQuery));
 
-function appendConstLinks() {
-    $('#club-menu-list').append(`
+function appendConstLinks(cid) {
+    $('#club-menu-list').html(`
+        <li><a href="./#club-data" class="has-text-link is-size-6">クラブデータ</a></li>
         <li><a href="${MolkkyPrimeConstants.clubPlayerSheetUrl}"
         class="has-text-link is-size-7" target="_blank">詳細はスプレッドシートへ</a></li>
     `);
-    $('#club-detail').append(`
-        <a href="${MolkkyPrimeConstants.season202627AllDivSheetUrl}"
-                        target="_blank">詳細はスプレッドシートへ</a>
-    `);
-    $('#player-detail').append(`
-        <a href="${MolkkyPrimeConstants.season202627AllDivSheetUrl}"
-                        target="_blank">詳細はスプレッドシートへ</a>
-    `);
+    let sheetUrl = cid == null ? MolkkyPrimeConstants.curerntSeasonYksiSheetUrl : "";
+    if (cid) {
+        const divisionName = typeof getDivisionCodeFrom === 'function'
+            ? getDivisionCodeFrom(cid)
+            : "";
+        const isYksi = divisionName === MolkkyPrimeConstants.firstDivName;
+        const isKaksi = divisionName === MolkkyPrimeConstants.secondDivName;
+        sheetUrl = !isYksi && !isKaksi ? "" :
+            isYksi ? MolkkyPrimeConstants.curerntSeasonYksiSheetUrl :
+                isKaksi ? MolkkyPrimeConstants.curerntSeasonKaksiSheetUrl : "";
+    }
+    if (sheetUrl != "") {
+        $('#club-detail').html(`
+            <a href="${sheetUrl}"
+                            target="_blank">詳細はスプレッドシートへ</a>
+        `);
+        $('#player-detail').html(`
+            <a href="${sheetUrl}"
+                            target="_blank">詳細はスプレッドシートへ</a>
+        `);
+    } else {
+        $('#club-detail').html("");
+        $('#player-detail').html("");
+    }
+}
+
+/**
+ * playerPage.jsonのplayerDataから最新シーズンのレコードのみを抽出する
+ * @param {json} datas playerPage.json
+ * @returns {Array} 最新シーズンのplayerData
+ */
+function extractLatestSeasonPlayerData(datas) {
+    if (!datas || !Array.isArray(datas.playerData) || datas.playerData.length === 0) {
+        return [];
+    }
+    var latest = datas.playerData
+        .map(function (r) { return r.season.toString(); })
+        .reduce(function (a, b) { return b.localeCompare(a, undefined, { numeric: true }) > 0 ? b : a; });
+    return datas.playerData.filter(function (r) {
+        return r.season.toString() === latest;
+    });
 }
 
 /**
@@ -61,11 +98,24 @@ function appendConstLinks() {
  */
 function initDisplay(cid) {
     var url = `https://storage.googleapis.com/molkkyprime-hp/clubPage.json`;
-    $.ajax({
+    // playerPage.jsonの取得に失敗してもクラブ表示は継続する
+    var playerRequest = $.ajax({
+        url: `https://storage.googleapis.com/molkkyprime-hp/playerPage.json`,
+        type: 'GET',
+        dataType: 'json',
+    }).then(function (datas) {
+        return $.Deferred().resolve(datas).promise();
+    }, function () {
+        return $.Deferred().resolve(null).promise();
+    });
+    var clubRequest = $.ajax({
         url: url,
         type: 'GET',
         dataType: 'json',
-    }).done(function (datas) {
+    });
+    $.when(clubRequest, playerRequest).done(function (clubResult, playerDatas) {
+        var datas = clubResult[0];
+        latestSeasonPlayerData = extractLatestSeasonPlayerData(playerDatas);
         var datasStringify = JSON.stringify(datas);
         localStorage.setItem('clubPageDataStringify', datasStringify);
         var pageData = JSON.parse(datasStringify);
@@ -144,6 +194,134 @@ function createClubData(clubs, players, scheduleYksi, scheduleKaksi, cid) {
     appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi);
     // 選手一覧の設定
     appendPlayers(players, cid, isYksi);
+    renderPlayerScatterChart(cid, isYksi);
+}
+
+/**
+ * 所属選手のOPT×QH率バブルチャート（円の大きさ＝投てき数）。
+ * 最新シーズンのplayerPageデータから、クラブIDが一致するレコードを使う。
+ */
+function renderPlayerScatterChart(cid, isYksi) {
+    const canvas = document.getElementById('player-scatter-chart');
+    if (!canvas || typeof Chart === 'undefined') return;
+    const old = Chart.getChart(canvas);
+    if (old) old.destroy();
+
+    const records = isYksi ? latestSeasonPlayerData.filter(function (r) {
+        return r.cid == cid && Number(r.throw) > 0 && r.opt !== '' && r.opt !== '-' && Number.isFinite(Number(r.opt));
+    }) : [];
+    $('#player-scatter-section').toggle(records.length > 0);
+    if (records.length === 0) return;
+
+    const points = records.map(function (r) {
+        return { name: r.playerName, throws: Number(r.throw), x: Math.round(Number(r.qh) / Number(r.throw) * 1000) / 10, y: Math.round(Number(r.opt) * 100) / 100 };
+    });
+    const maxThrow = Math.max.apply(null, points.map(function (p) { return p.throws; }));
+    // 円の面積が投てき数に比例するよう半径は平方根で求める
+    const radiusOf = function (p) { return Math.max(4, 22 * Math.sqrt(p.throws / maxThrow)); };
+    const color = getBulmaBackgroundColor('has-background-primary');
+
+    const datasets = [{
+        label: '選手',
+        data: points.map(function (p) { return { x: p.x, y: p.y, r: radiusOf(p), name: p.name, throws: p.throws }; }),
+        backgroundColor: color.replace('rgb(', 'rgba(').replace(')', ', 0.6)'),
+        borderColor: color,
+        borderWidth: 1,
+    }];
+
+    // 最小二乗法による相関直線
+    let correlationText = '';
+    if (points.length >= 2) {
+        const n = points.length;
+        const mx = points.reduce(function (s, p) { return s + p.x; }, 0) / n;
+        const my = points.reduce(function (s, p) { return s + p.y; }, 0) / n;
+        const sxx = points.reduce(function (s, p) { return s + Math.pow(p.x - mx, 2); }, 0);
+        const syy = points.reduce(function (s, p) { return s + Math.pow(p.y - my, 2); }, 0);
+        const sxy = points.reduce(function (s, p) { return s + (p.x - mx) * (p.y - my); }, 0);
+        if (sxx > 0) {
+            const slope = sxy / sxx;
+            const intercept = my - slope * mx;
+            const xs = points.map(function (p) { return p.x; });
+            const x1 = Math.min.apply(null, xs), x2 = Math.max.apply(null, xs);
+            datasets.push({
+                type: 'line', label: '相関直線',
+                data: [{ x: x1, y: slope * x1 + intercept }, { x: x2, y: slope * x2 + intercept }],
+                borderColor: '#999999', borderDash: [6, 4], borderWidth: 2, pointRadius: 0, pointHoverRadius: 0, fill: false,
+            });
+            if (syy > 0) correlationText = '相関係数 r = ' + (sxy / Math.sqrt(sxx * syy)).toFixed(2);
+        }
+    }
+    $('#player-scatter-correlation').text(correlationText);
+
+    // クラブ平均: 所属選手の件数を合算して算出（白塗り・黒枠）
+    const totalThrow = records.reduce(function (s, r) { return s + Number(r.throw); }, 0);
+    const totalQh = records.reduce(function (s, r) { return s + Number(r.qh); }, 0);
+    const totalOptSum = records.reduce(function (s, r) { return s + Number(r.opt) * Number(r.throw); }, 0);
+    const avgPoint = {
+        x: Math.round(totalQh / totalThrow * 1000) / 10,
+        y: Math.round(totalOptSum / totalThrow * 100) / 100,
+        r: 8, name: 'クラブ平均', throws: totalThrow,
+    };
+    datasets.push({
+        label: 'クラブ平均', data: [avgPoint],
+        backgroundColor: '#ffffff', borderColor: '#363636', borderWidth: 2,
+    });
+
+    // 軸範囲は選手とクラブ平均の最小・最大から自動で決める（余白つき）
+    const allX = points.map(function (p) { return p.x; }).concat(avgPoint.x);
+    const allY = points.map(function (p) { return p.y; }).concat(avgPoint.y);
+    const xStep = 5, yStep = 0.25;
+    const xMin = Math.max(0, Math.floor((Math.min.apply(null, allX) - 2) / xStep) * xStep);
+    const xMax = Math.min(100, Math.ceil((Math.max.apply(null, allX) + 2) / xStep) * xStep);
+    const yMin = Math.floor((Math.min.apply(null, allY) - 0.1) / yStep) * yStep;
+    const yMax = Math.ceil((Math.max.apply(null, allY) + 0.1) / yStep) * yStep;
+
+    // 円の中心付近に選手名を描画する
+    const nameLabelPlugin = {
+        id: 'playerNameLabel',
+        afterDatasetsDraw: function (chart) {
+            const ctx = chart.ctx;
+            const meta = chart.getDatasetMeta(0);
+            ctx.save();
+            ctx.font = '11px sans-serif';
+            ctx.fillStyle = '#363636';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            meta.data.forEach(function (el, i) {
+                const d = chart.data.datasets[0].data[i];
+                ctx.fillText(d.name, el.x, el.y - d.r - 2);
+            });
+            ctx.restore();
+        }
+    };
+
+    new Chart(canvas, {
+        type: 'bubble',
+        data: { datasets: datasets },
+        plugins: [nameLabelPlugin],
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    filter: function (item) { return item.dataset.label !== '相関直線'; },
+                    callbacks: {
+                        label: function (ctx) {
+                            const d = ctx.raw;
+                            return d.name + ': QH ' + d.x + '% / OPT ' + d.y.toFixed(2) + ' (' + d.throws + '投)';
+                        }
+                    }
+                },
+            },
+            scales: {
+                x: { min: xMin, max: xMax, title: { display: true, text: 'QH率 (%)' }, ticks: { stepSize: xStep, callback: function (v) { return v + '%'; } } },
+                y: { min: yMin, max: yMax, title: { display: true, text: 'OPT' }, ticks: { stepSize: yStep, callback: function (v) { return v.toFixed(2); } } },
+            },
+            layout: { padding: { top: 24, right: 24 } },
+        },
+    });
 }
 
 /**
@@ -305,9 +483,9 @@ function appendPlayers(players, cid, isYksi) {
             ${TH_TAG_FROM}GM${TH_TAG_TO}
             ${TH_TAG_FROM}SE${TH_TAG_TO}
             ${TH_TAG_FROM}MOR${TH_TAG_TO}
-            ${TH_TAG_FROM}Q-N-F${TH_TAG_TO}
+            ${TH_TAG_FROM}Q-N-F OPT${TH_TAG_TO}
             ${TH_TAG_FROM}FIN${TH_TAG_TO}
-            ${TH_TAG_FROM}OPT${TH_TAG_TO}
+            ${TH_TAG_FROM}AST${TH_TAG_TO}
             ${TH_TAG_FROM}ABL${TH_TAG_TO}
         </tr>
     `);
@@ -335,13 +513,18 @@ function appendPlayers(players, cid, isYksi) {
         var qhpro = (isYksi && player['qhPro'] != '-') ? Math.round(player['qhPro'] * 1 * 100) / 1 + "" : "";
         var nhpro = (isYksi && player['qhPro'] != '-') ? Math.round(player['nhPro'] * 1 * 100) / 1 + "" : "";
         var fapro = (isYksi && player['qhPro'] != '-') ? Math.round(player['fauPro'] * 1 * 100) / 1 + "" : "";
-        var qhf = isYksi ? `
-                <strong class="has-text-success">${qhpro}</strong>
-                / ${nhpro} /
-                <strong class="has-text-danger">${fapro}</strong>
-            ` : "";
         var fin = isYksi ? player['fin'] : "";
-        var popt = isYksi ? (Math.round(player['opt'] * 100) / 100).toFixed(2) : "";
+        var assistRecord = latestSeasonPlayerData.find(function (r) {
+            return r.cid == cid && r.pid == player.pid;
+        });
+        var assist = (isYksi && assistRecord) ? assistRecord['assist'] : "";
+        var optValue = isYksi ? Number(player['opt']) : NaN;
+        var optClass = optValue < 7 ? "has-text-grey-light" : optValue < 8 ? "has-text-grey" : optValue >= 9 ? "has-text-primary-45 has-text-weight-bold" : "has-text-primary";
+        var optText = isNaN(optValue) ? "" : ` <span class="${optClass}">(${optValue.toFixed(2)})</span>`;
+        var pad = function (v) { return String(v).padStart(2, "_"); };
+        var qhf = (isYksi && qhpro !== "") ? `<span class="has-text-success">${pad(qhpro)}</span>-`
+            + `<span class="has-text-grey-light">${pad(nhpro)}</span>-`
+            + `<span class="has-text-danger">${pad(fapro)}</span>${optText}` : "";
         var averageBlakePoint = (isYksi && player['averageBlakePoint'] != "-")
             ? (Math.round(player['averageBlakePoint'] * 10) / 10).toFixed(1) + "" : "";
         $('#player-table').append(`
@@ -350,9 +533,9 @@ function appendPlayers(players, cid, isYksi) {
                 <td class="${SMALL_TEXT_SIZE}" align="right">${game}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${set}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="left">${mainOrder}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">${qhf}</td>
+                <td class="${SMALL_TEXT_SIZE} is-family-monospace" align="left">${qhf}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${fin}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${popt}</td>
+                <td class="${SMALL_TEXT_SIZE}" align="right">${assist}</td>
                 <td class="${SMALL_TEXT_SIZE}" align="right">${averageBlakePoint}</td>
             </tr>
         `);

@@ -67,8 +67,6 @@
                 <div class="menu">
                     <ul class="menu-list" id="club-menu-list">
                         <li><a href="./#club-data" class="has-text-link is-size-6">クラブデータ</a></li>
-                        <li><a href="./#transfer" class="has-text-link is-size-6">公示</a></li>
-                        <li><a href="./#fa-hero" class="has-text-link is-size-6">FA選手一覧</a></li>
                     </ul>
                 </div>
             </div>
@@ -205,14 +203,22 @@
                     SE：出場セット数<br />
                     MOR：最も投擲数が多い番手<br />
                     Q-N-F：QH（狙い通り）、NH（狙っていないがフォルトでない）、FA（フォルト）の割合<br />
-                    FIN：ラストスロー成功数<br />
                     OPT：On Plus Throwing。<code>1投あたりの評価点総合計 / 総投擲数</code><br />
+                    FIN：ラストスロー成功数<br />
                     <code>1投あたりの評価点 = {0.1 * ({ターン数} - 1) * [得点] + [得点]}</code><br />
                     例えば8ターン目に5点を獲得した場合、評価点は<code>0.1 * (8 - 1) * 5 + 5 = 8.50</code>となる。<br />
                     ABL：平均ブレーク点数
                 </p>
                 <p class="is-size-7 content">*Sはスタッフ登録（非選手）</p>
                 <p class="is-size-7 content" id="player-detail"></p>
+            </div>
+
+            <!-- player scatter chart -->
+            <div id="player-scatter-section" style="display: none;">
+                <h4 class="title is-size-5 content">OPTとQH率</h4>
+                <p class="is-size-7 content">円の大きさは投てき数。白丸はクラブ平均、破線は相関直線。軸の範囲は選手のデータに合わせて自動調整されます。</p>
+                <div style="position:relative;height:360px"><canvas id="player-scatter-chart"></canvas></div>
+                <p class="is-size-7 has-text-grey" id="player-scatter-correlation"></p>
             </div>
         </section>
 

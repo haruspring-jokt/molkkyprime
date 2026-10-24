@@ -189,19 +189,26 @@ function preparePlayerTableData(seasons) {
         },
     }));
     const phases = [
-        { key: "loopTqf1", label: "1巡目" },
-        { key: "loopTqf2", label: "2巡目" },
-        { key: "loopTqf3", label: "3巡目～" },
-    ].map(phase => ({
-        ...phase,
-        total: seasonColumns.reduce((total, column) => {
-            const stats = column.phases[phase.key];
-            total.T += stats.T;
-            total.Q += stats.Q;
-            total.F += stats.F;
-            return total;
-        }, { T: 0, Q: 0, F: 0 }),
-    }));
+        { key: "loopTqf1", label: "1巡目", turns: [1, 4] },
+        { key: "loopTqf2", label: "2巡目", turns: [5, 8] },
+        { key: "loopTqf3", label: "3巡目～", turns: [9, 13] },
+    ].map(phase => {
+        // 各シーズンの turnNOpt を合算してOPT合計(O)を持たせる
+        seasonColumns.forEach(column => {
+            column.phases[phase.key].O = sumTurnOpt(column.season, phase.turns[0], phase.turns[1]);
+        });
+        return {
+            ...phase,
+            total: seasonColumns.reduce((total, column) => {
+                const stats = column.phases[phase.key];
+                total.T += stats.T;
+                total.Q += stats.Q;
+                total.F += stats.F;
+                total.O += stats.O;
+                return total;
+            }, { T: 0, Q: 0, F: 0, O: 0 }),
+        };
+    });
 
     return { totals, seasonColumns, phases };
 }
@@ -285,12 +292,17 @@ function createSeasonDataTable(tableData) {
         { label: '非QH(%)', isNumber: true, format: column => `${numberFormat(column.season.notQh, 0)} (${perNumberFormat(column.season.notQhRaito, 1)}%)`, total: () => `${numberFormat(totals.notQh, 0)} (${perNumberFormat(totals.notQhRaito, 1)}%)` },
         { label: 'QH/FA', isNumber: true, format: column => numberFormat(column.season.qhAroundFa, 1), total: () => numberFormat(totals.qhAroundFa, 1) },
         { label: 'フィニッシュ', isNumber: true, format: column => numberFormat(column.season.finish, 0), total: () => numberFormat(totals.finish, 0) },
+        { label: 'アシスト', isNumber: true, format: column => numberFormat(column.season.assist, 0), total: () => numberFormat(totals.assist, 0) },
         { label: 'OPT', isNumber: true, format: column => optNumber(column.season.opt), total: () => optNumber(totals.opt) },
         { label: 'OPT順位', isNumber: true, format: column => numberFormat(column.season.optRank, 0), total: () => "-" },
         { label: 'ブレーク平均(投)', isNumber: true, format: column => `${optNumber(column.season.blakeAvg)} (${numberFormat(column.season.blake, 0)})`, total: () => `${optNumber(totals.blakeAvg)} (${numberFormat(totals.blake, 0)})` },
         { label: 'リカバーQH(投)', isNumber: true, format: column => `${perNumberFormat(column.season.rcvQhRaito, 0)}% (${numberFormat(column.season.rcv, 0)})`, total: () => `${perNumberFormat(totals.rcvQhRaito, 0)}% (${numberFormat(totals.rcv, 0)})` },
-        { label: '38点以降QNF', isNumber: true, format: column => qnfScore(column.season.o38, column.season.o38QhRaito, column.season.o38FaultRaito), total: () => qnfScore(totals.o38, totals.o38QhRaito, totals.o38FaultRaito) },
-        { label: '28点以降QNF', isNumber: true, format: column => qnfScore(column.season.o26, column.season.o26QhRaito, column.season.o26FaultRaito), total: () => qnfScore(totals.o26, totals.o26QhRaito, totals.o26FaultRaito) },
+        { label: '14点以降QNF', isNumber: true, format: column => qnfScore(column.season.o14, column.season.o14Qh, column.season.o14Fault), total: () => qnfScore(totals.o14, totals.o14Qh, totals.o14Fault) },
+        { label: '14点以降OPT', isNumber: true, format: column => ratioOpt(column.season.o14Opt, column.season.o14), total: () => ratioOpt(totals.o14Opt, totals.o14) },
+        { label: '26点以降QNF', isNumber: true, format: column => qnfScore(column.season.o26, column.season.o26Qh, column.season.o26Fault), total: () => qnfScore(totals.o26, totals.o26Qh, totals.o26Fault) },
+        { label: '26点以降OPT', isNumber: true, format: column => ratioOpt(column.season.o26Opt, column.season.o26), total: () => ratioOpt(totals.o26Opt, totals.o26) },
+        { label: '38点以降QNF', isNumber: true, format: column => qnfScore(column.season.o38, column.season.o38Qh, column.season.o38Fault), total: () => qnfScore(totals.o38, totals.o38Qh, totals.o38Fault) },
+        { label: '38点以降OPT', isNumber: true, format: column => ratioOpt(column.season.o38Opt, column.season.o38), total: () => ratioOpt(totals.o38Opt, totals.o38) },
     ];
 
     const render = () => {
@@ -372,6 +384,7 @@ function createPhaseResultsTable(tableData) {
         { label: "非QH", format: stats => formatPhaseCountAndRate(stats.T - stats.Q - stats.F, stats.T), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
         { label: "フォルト", format: stats => formatPhaseCountAndRate(stats.F, stats.T), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
         { label: "Q-N-F", format: stats => `<canvas class="player-phase-qnf-chart" data-qh="${stats.T > 0 ? stats.Q / stats.T : 0}" data-nqh="${stats.T > 0 ? Math.max(stats.T - stats.Q - stats.F, 0) / stats.T : 0}" data-fault="${stats.T > 0 ? stats.F / stats.T : 0}" width="100" height="16"></canvas>`, isNumber: false, cellClasses: { label: "has-background-primary-90" } },
+        { label: "OPT", format: stats => formatPhaseOpt(stats), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
     ].map(row => ({ ...row, value: column => row.format(column.value(phase)) })));
 
     renderPlayerTable(
@@ -431,6 +444,18 @@ function parseLoopTqf(value) {
         addStats(value);
     }
     return totals;
+}
+
+function sumTurnOpt(season, from, to) {
+    let sum = 0;
+    for (let i = from; i <= to; i++) {
+        sum += Number(season[`turn${i}Opt`]) || 0;
+    }
+    return sum;
+}
+
+function formatPhaseOpt(stats) {
+    return stats.T > 0 ? (stats.O / stats.T).toFixed(2) : "-";
 }
 
 function aggregateLoopTqf(seasons, key) {
@@ -497,9 +522,10 @@ function formatPhaseCountAndRate(count, total) {
     return `${formatPhaseCount(count)}${rate}`;
 }
 
-function qnfScore(throws, qhRate, faultRate) {
-    const qh = Number(qhRate) || 0;
-    const fault = Number(faultRate) || 0;
+function qnfScore(throws, qhCount, faultCount) {
+    const total = Number(throws) || 0;
+    const qh = total > 0 ? (Number(qhCount) || 0) / total : 0;
+    const fault = total > 0 ? (Number(faultCount) || 0) / total : 0;
     const notQh = Math.max(1 - qh - fault, 0);
     return `<span class="has-text-success">${Math.round(qh * 100)}</span>-${Math.round(notQh * 100)}-<span class="has-text-danger">${Math.round(fault * 100)}</span> (${numberFormat(throws, 0)})`;
 }
@@ -549,17 +575,24 @@ function aggregatePlayerSeasons(seasons) {
         notQhRaito: throwTotal > 0 ? notQhTotal / throwTotal : "",
         qhAroundFa: faultTotal > 0 ? qhTotal / faultTotal : "",
         finish: sum("finish"),
+        assist: sum("assist"),
         opt: weightedAverage("opt", "throw"),
         blake: sum("blake"),
         blakeAvg: weightedAverage("blakeAvg", "blake"),
         rcv: sum("rcv"),
         rcvQhRaito: weightedRate("rcvQhRaito", "rcv"),
         o38: sum("o38"),
-        o38QhRaito: weightedRate("o38QhRaito", "o38"),
-        o38FaultRaito: weightedRate("o38FaultRaito", "o38"),
+        o38Qh: sum("o38Qh"),
+        o38Fault: sum("o38Fault"),
         o26: sum("o26"),
-        o26QhRaito: weightedRate("o26QhRaito", "o26"),
-        o26FaultRaito: weightedRate("o26FaultRaito", "o26"),
+        o26Qh: sum("o26Qh"),
+        o26Fault: sum("o26Fault"),
+        o14: sum("o14"),
+        o14Qh: sum("o14Qh"),
+        o14Fault: sum("o14Fault"),
+        o14Opt: sum("o14Opt"),
+        o26Opt: sum("o26Opt"),
+        o38Opt: sum("o38Opt"),
     };
 }
 
@@ -611,6 +644,7 @@ function appendInfo(info, totals, isYksi, isKaksi) {
     $(".player-career-qh").append(`<span>${totals.qh} (${qhRate})</span>`);
     $(".player-career-faults").append(`<span>${totals.fault} (${faultRate})</span>`);
     $(".player-career-finishes").append(`<span>${totals.finish}</span>`);
+    $(".player-career-assists").append(`<span>${totals.assist}</span>`);
 }
 
 function makeTr(array, colName, isNumber, cellClasses = {}) {
@@ -621,7 +655,7 @@ function makeTr(array, colName, isNumber, cellClasses = {}) {
             ? "has-text-grey-lighter" : "";
         const rankClass = isRankColumn && ar >= 1 && ar <= 3 ? "has-text-weight-bold has-text-link"
             : isRankColumn && ar >= 4 && ar <= 10 ? "has-text-weight has-text-info"
-            : "";
+                : "";
         const rankSuffix = isRankColumn && ar !== "" && ar !== "-" && Number.isFinite(Number(ar))
             ? "位"
             : "";
@@ -655,6 +689,11 @@ function perNumberFormat(num, di) {
         return "-";
     }
     return (num * 100).toFixed(di)
+}
+
+function ratioOpt(optSum, count) {
+    const n = Number(count);
+    return n > 0 ? optNumber(Number(optSum) / n) : "-";
 }
 
 function optNumber(opt) {

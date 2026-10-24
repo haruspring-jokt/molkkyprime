@@ -76,6 +76,12 @@ class MolkkyPrimeConstants {
     // シーズンシート管理
     // =================================================
 
+    static get curerntSeasonYksiSheetUrl() {
+        return this.season202627YksiSheetUrl;
+    }
+    static get curerntSeasonKaksiSheetUrl() {
+        return this.season202627KaksiSheetUrl;
+    }
     /** 2627 */
     static get season202627YksiSheetUrl() {
         return "https://docs.google.com/spreadsheets/d/1o62hc3H1IgFDS78jO8V1Sc9U-cLM63cdOAKpPL8tnhs/htmlview";
@@ -411,6 +417,7 @@ function appendHeader() {
         logo: "./asset/logo.png",
         schedule: "./schedule/",
         club: "./club/",
+        stats: "./stats/",
         transfer: "./transfer/",
         news: MolkkyPrimeConstants.newsLinks,
         entry: "./entry/",
@@ -454,17 +461,16 @@ function appendHeader() {
                 <div class="navbar-start">
                     <a class="navbar-item" href="${links.schedule}">日程・結果・順位表</a>
                     <a class="navbar-item" href="${links.club}">クラブ・選手</a>
-                    <a class="navbar-item" href="${links.transfer}">公示</a>
-                    <a class="navbar-item" href="${links.entry}">エントリー・FA申請</a>
-                    <a class="navbar-item" href="${links.files}">参加者向け資料</a>
+                    <a class="navbar-item" href="${links.stats}">スタッツ</a>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">More</a>
                         <div class="navbar-dropdown">
                             <a class="navbar-item" href="${links.news}" target="_blank">
-                                ニュース<small class="is-size-7">（外部サイトへ）</small>
-                            </a>
+                                ニュース<small class="is-size-7">（外部サイトへ）</small></a>
+                            <a class="navbar-item" href="${links.entry}">エントリー・FA</a>
                             <a class="navbar-item" href="${links.regulation}">ルール</a>
-                            <a class="navbar-item">データ <strong>*Coming Soon*</strong></a>
+                            <a class="navbar-item" href="${links.transfer}">公示</a>
+                            <a class="navbar-item" href="${links.files}">参加者向け資料</a>
                             <a class="navbar-link">過去のシーズン</a>
                             <a class="navbar-item" href="${links.past202526}">シーズン2025-26</a>
                             <a class="navbar-item" href="${links.past202425}">シーズン2024-25</a>
@@ -538,7 +544,7 @@ function appendFooter() {
                 <li><a class="content ${TEXT_SIZE}" href="${links.entry}">エントリー・FA申請</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="${links.files}">参加者向け資料</a></li>
                 <li><a class="content ${TEXT_SIZE}" href="${links.regulation}">ルール</a></li>
-                <li><a class="content ${TEXT_SIZE}" href="">データ *coming soon*</a></li>
+                <li><a class="content ${TEXT_SIZE}" href="${links.stats}">スタッツ</a></li>
             </ul>
             <ul class="content column">過去のシーズン
             <li><a class="content ${TEXT_SIZE}" href="${links.past202526}">シーズン2025-2026</a></li>
@@ -557,6 +563,18 @@ function appendFooter() {
 
     // フッターに追加
     $("#mkpl-footer").append(footerHtml);
+}
+
+/**
+ * スタッツページ用JSONを取得する
+ * @returns {JQuery.jqXHR} jQuery Ajax Promise
+ */
+function fetchStatsPageJson() {
+    return $.ajax({
+        url: `https://storage.googleapis.com/molkkyprime-hp/statsPage.json`,
+        type: 'GET',
+        dataType: 'json',
+    });
 }
 
 /**
