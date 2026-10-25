@@ -1,6 +1,7 @@
 // データ取得先スプレッドシートAPIURL
 const EMPTY_CID = "CZZ";
-const TH_TAG_FROM = `<th class="is-primary is-size-7" align="center">`;
+const TH_TAG_FROM = `<th class="is-primary is-size-7 has-text-centered">`;
+const TH_TAG_NARROW_FROM = `<th class="is-primary is-size-7 has-text-centered is-narrow">`;
 const TH_TAG_TO = `</th>`;
 const SMALL_TEXT_SIZE = "is-size-7";
 // playerPage.jsonの最新シーズンのレコード（アシスト数の取得用）
@@ -435,11 +436,11 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
     // ヘッダー
     $("#club-games").html(`
         <tr class="is-primary">
-            ${TH_TAG_FROM}節${TH_TAG_TO}
-            ${TH_TAG_FROM}日程${TH_TAG_TO}
-            ${TH_TAG_FROM}ホーム${TH_TAG_TO}
-            ${TH_TAG_FROM}結果${TH_TAG_TO}
-            ${TH_TAG_FROM}アウェイ${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}節${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}日程${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}ホーム${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}結果${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}アウェイ${TH_TAG_TO}
         </tr>
     `);
     // レコード
@@ -455,11 +456,11 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
         var acnTdClass = "";
         $("#club-games").append(`
             <tr>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left"><a class="" href="../match/?gid=${game['gid']}">${gamedate}</a>${video}</td>
-                <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
-                <td class="${SMALL_TEXT_SIZE} ${resultClass}" align="center">${result}</td>
-                <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">${game['sec']}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered"><a class="" href="../match/?gid=${game['gid']}">${gamedate}</a>${video}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${hcnTdClass}">${hcn}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${resultClass}">${result}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${acnTdClass}">${acn}</td>
             </tr>
         `);
     });
@@ -480,13 +481,13 @@ function appendPlayers(players, cid, isYksi) {
     $('#player-table').html(`
         <tr class="is-primary">
             ${TH_TAG_FROM}選手${TH_TAG_TO}
-            ${TH_TAG_FROM}GM${TH_TAG_TO}
-            ${TH_TAG_FROM}SE${TH_TAG_TO}
-            ${TH_TAG_FROM}MOR${TH_TAG_TO}
-            ${TH_TAG_FROM}Q-N-F OPT${TH_TAG_TO}
-            ${TH_TAG_FROM}FIN${TH_TAG_TO}
-            ${TH_TAG_FROM}AST${TH_TAG_TO}
-            ${TH_TAG_FROM}ABL${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}GM${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}SE${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}MOR${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}Q-N-F OPT${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}FIN${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}AST${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}ABL${TH_TAG_TO}
         </tr>
     `);
     ps.some(function (player, i) {
@@ -495,14 +496,14 @@ function appendPlayers(players, cid, isYksi) {
         if (isStaff) {
             $('#player-table').append(`
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">${playerName}</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">-</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">-</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">-</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">-</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">-</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">-</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">-</td>
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">${playerName}</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">-</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">-</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left">-</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left">-</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">-</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">-</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">-</td>
                 </tr>
             `);
             return;
@@ -528,15 +529,15 @@ function appendPlayers(players, cid, isYksi) {
         var averageBlakePoint = (isYksi && player['averageBlakePoint'] != "-")
             ? (Math.round(player['averageBlakePoint'] * 10) / 10).toFixed(1) + "" : "";
         $('#player-table').append(`
-            <tr>s
-                <td class="${SMALL_TEXT_SIZE}" align="left"><a href="../player/?pid=${player.pid}">${playerName}</a></td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${game}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${set}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left">${mainOrder}</td>
-                <td class="${SMALL_TEXT_SIZE} is-family-monospace" align="left">${qhf}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${fin}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${assist}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${averageBlakePoint}</td>
+            <tr>
+                <td class="${SMALL_TEXT_SIZE} has-text-left"><a href="../player/?pid=${player.pid}">${playerName}</a></td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${game}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${set}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left">${mainOrder}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow is-family-monospace has-text-left">${qhf}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${fin}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${assist}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${averageBlakePoint}</td>
             </tr>
         `);
     });

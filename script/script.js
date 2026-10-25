@@ -73,6 +73,31 @@ class MolkkyPrimeConstants {
     }
 
     // =================================================
+    // 競技ルール・統計定数
+    // =================================================
+
+    // 個人賞 表示選手数の制限
+    static get playerRankingLimit() {
+        return 10;
+    }
+    // シーズン26-27の規定セット数
+    static get season2627RequiredSet() {
+        return 41;
+    }
+    // シーズン26-27の実施月数
+    static get season2627Months() {
+        return 9;
+    }
+    // シーズン26－27の開始月
+    static get season2627StartMonth() {
+        return 9;
+    }
+    // 通算記録ランキングに必要な投てき数
+    static get allSeasonsRequiredThrow() {
+        return 60;
+    }
+
+    // =================================================
     // シーズンシート管理
     // =================================================
 

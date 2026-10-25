@@ -85,21 +85,16 @@ function appendStandings(datasJson, tableId, progressId, group) {
         var ranknum = Number(rank['rank']);
         if (ranknum < 1) { return; }
         var clubName = rank['cname'];
-        var mobileClubName = clubName.length <= 16 ? clubName
-            : '<abbr title="' + clubName + '">' + clubName.slice(0, 15) + '...</abbr>';
         $(tableId).append(`
             <tr>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
-            <td class="${SMALL_TEXT_SIZE}"><a href="../club/?cid=${rank['cid']}">
-                <span class="is-hidden-mobile">${clubName}</span>
-                <span class="standings-club-name-mobile">${mobileClubName}</span>
-            </a></td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['game']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['winpoint']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['win']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['lose']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${rank['draw']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${(Math.round(rank['setper'] * 100) / 100).toFixed(2)}</td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${ranknum}</td>
+            <td class="${SMALL_TEXT_SIZE}"><a href="../club/?cid=${rank['cid']}">${clubName}</a></td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['game']}</td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['winpoint']}</td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['win']}</td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['lose']}</td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['draw']}</td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${(Math.round(rank['setper'] * 100) / 100).toFixed(2)}</td>
             </tr>
         `);
     });
@@ -137,11 +132,11 @@ function appendSchedule(datasJson, tableId, progressId, division) {
         $(tableId).append(
             `
             <tr>
-            <td class="${SMALL_TEXT_SIZE}" align="right">${game['sec']}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="../match/?gid=${game['gid']}">${gamedate}</a>${video}</td>
-            <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
-            <td class="${SMALL_TEXT_SIZE}" align="center"><a class="has-text-link" href="../match/?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
-            <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">${game['sec']}</td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered"><a class="has-text-link" href="../match/?gid=${game['gid']}">${gamedate}</a>${video}</td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${hcnTdClass}">${hcn}</td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered"><a class="has-text-link" href="../match/?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
+            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${acnTdClass}">${acn}</td>
             </tr>
             `
         );

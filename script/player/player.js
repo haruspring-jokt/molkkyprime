@@ -100,13 +100,13 @@ function appendPlayerGames(games, info) {
 
         return `
             <tr>
-                <td class="${SMALL_TEXT_SIZE}" align="left">${season}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="../match/?gid=${game["gid"]}">${game["sec"]}</a>${video}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="center">${hcn}</td>
-                <td class="${SMALL_TEXT_SIZE} ${resultClass}" align="center">
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left">${season}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered"><a class="has-text-link" href="../match/?gid=${game["gid"]}">${game["sec"]}</a>${video}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">${hcn}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${resultClass}">
                     <a class="has-text-link" href="../match/?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a>
                 </td>
-                <td class="${SMALL_TEXT_SIZE}" align="center">${acn}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">${acn}</td>
             </tr>
         `;
     }).join("");

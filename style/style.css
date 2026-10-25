@@ -65,56 +65,6 @@ body {
     align-content: center !important;
 }
 
-.match-table {
-    table-layout: fixed !important;
-}
-
-.match-table th:nth-child(1),
-.match-table td:nth-child(1) {
-    width: 7%;
-}
-
-.match-table th:nth-child(2),
-.match-table td:nth-child(2) {
-    width: 22%;
-}
-
-.match-table th:nth-child(3),
-.match-table td:nth-child(3),
-.match-table th:nth-child(5),
-.match-table td:nth-child(5) {
-    width: 25%;
-}
-
-.match-table th:nth-child(4),
-.match-table td:nth-child(4) {
-    width: 20%;
-}
-
-.standings-table {
-    table-layout: fixed !important;
-}
-
-.standings-table th:nth-child(1),
-.standings-table td:nth-child(1) {
-    width: 7%;
-}
-
-.standings-table th:nth-child(2),
-.standings-table td:nth-child(2) {
-    width: 28%;
-}
-
-.standings-table th:nth-child(n + 3):nth-child(-n + 7),
-.standings-table td:nth-child(n + 3):nth-child(-n + 7) {
-    width: 10%;
-}
-
-.standings-table th:nth-child(8),
-.standings-table td:nth-child(8) {
-    width: 15%;
-}
-
 .standings-club-name-mobile {
     display: none;
 }
@@ -125,33 +75,3 @@ body {
     }
 }
 
-.award-table {
-    table-layout: fixed !important;
-}
-
-.award-table th:nth-child(1),
-.award-table td:nth-child(1) {
-    width: 7%;
-}
-
-.award-table th:nth-child(2),
-.award-table td:nth-child(2) {
-    width: 40%;
-}
-
-.award-table th:nth-child(3),
-.award-table td:nth-child(3) {
-    width: 20%;
-}
-
-.award-table th:nth-child(4),
-.award-table td:nth-child(4),
-.award-table th:nth-child(5),
-.award-table td:nth-child(5) {
-    width: 15%;
-}
-
-.award-table-fin th:nth-child(4),
-.award-table-fin td:nth-child(4) {
-    width: 30%;
-}

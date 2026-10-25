@@ -598,12 +598,12 @@ function buildClubFirstFaultTable(records) {
 }
 
 // 選手別ランキングの対象人数（同順位は10位を超えても全員表示する）
-const PLAYER_RANKING_LIMIT = 10;
+const PLAYER_RANKING_LIMIT = MolkkyPrimeConstants.playerRankingLimit;
 // 26-27シーズンの規定セット数と、シーズン開始月（9月）・シーズン月数
-const SEASON_2627_REQUIRED_SET = 41;
-const SEASON_2627_MONTHS = 9;
-const SEASON_2627_START_MONTH = 9;
-const ALL_SEASONS_REQUIRED_THROW = 60;
+const SEASON_2627_REQUIRED_SET = MolkkyPrimeConstants.season2627RequiredSet;
+const SEASON_2627_MONTHS = MolkkyPrimeConstants.season2627Months;
+const SEASON_2627_START_MONTH = MolkkyPrimeConstants.season2627StartMonth;
+const ALL_SEASONS_REQUIRED_THROW = MolkkyPrimeConstants.allSeasonsRequiredThrow;
 
 // シーズン別の規定。通算は最も緩い23-23の規定投数で判定する
 function isQualifiedPlayer(season, rec) {
@@ -614,11 +614,11 @@ function isQualifiedPlayer(season, rec) {
         case "24-25":
         case "25-26": return rec.set >= 32;
         case "26-27": {
-            // 消化月数に応じて規定セット数を按分する
+            // 9月開始のシーズンでは、当月を含めて月数を数える
             const now = new Date();
-            const consumed = Math.min(SEASON_2627_MONTHS, Math.max(0,
-                (now.getFullYear() - 2026) * 12 + (now.getMonth() + 1) - SEASON_2627_START_MONTH));
-            return rec.set > SEASON_2627_REQUIRED_SET / SEASON_2627_MONTHS * consumed;
+            const elapsedMonths = (now.getFullYear() - 2026) * 12 + (now.getMonth() + 1) - SEASON_2627_START_MONTH;
+            const consumed = Math.min(SEASON_2627_MONTHS, Math.max(0, elapsedMonths + 1));
+            return rec.set > (SEASON_2627_REQUIRED_SET / SEASON_2627_MONTHS) * consumed;
         }
         default: return rec.set >= 32;
     }
@@ -658,7 +658,7 @@ function getPlayerRecords(rows, season) {
 
 /**
  * ランキング表を作る。同値は同順位で、上位limit位までのタイは全員表示する。
- * columns: [{ head, align, cell(rec) }]
+ * columns: [{ head, flexible, cell(rec) }]
  */
 function buildPlayerRankingTable(title, note, items, order, valueOf, columns) {
     const sorted = items.slice().sort((a, b) => order === "asc" ? valueOf(a) - valueOf(b) : valueOf(b) - valueOf(a));
@@ -671,25 +671,20 @@ function buildPlayerRankingTable(title, note, items, order, valueOf, columns) {
     return buildRankingTableHtml(title, note, rows, columns);
 }
 
-// 固定幅は順位・選手・クラブのみ。実データのカラムは残り幅を均等に伸縮させる
-const RANKING_RANK_WIDTH = 2;
-
+// 選手・クラブ以外のカラムはis-narrowで内容幅に固定し、選手・クラブが残り幅を吸収する
 function buildRankingTableHtml(title, note, rows, columns) {
-    const cols = `<col style="width: ${RANKING_RANK_WIDTH}em;">`
-        + columns.map(c => c.width ? `<col style="width: ${c.width};">` : "<col>").join("");
-    const head = [""].concat(columns.map(c => c.head))
-        .map(h => `<th class="${STATS_TH_CLASS}">${h}</th>`).join("");
+    const head = `<th class="${STATS_TH_CLASS} is-narrow"></th>`
+        + columns.map(c => `<th class="${STATS_TH_CLASS}${c.flexible ? "" : " is-narrow"}">${c.head}</th>`).join("");
     const body = rows.length === 0
         ? `<tr><td class="is-size-7" colspan="${columns.length + 1}">該当なし</td></tr>`
-        : rows.map(({ rank, rec }) => `<tr><td class="is-size-7" align="right">${rank}</td>`
-            + columns.map(c => `<td class="is-size-7" align="${c.align || "right"}">${c.cell(rec)}</td>`).join("")
+        : rows.map(({ rank, rec }) => `<tr><td class="is-size-7 is-narrow has-text-right">${rank}</td>`
+            + columns.map(c => `<td class="is-size-7${c.flexible ? " has-text-left" : " is-narrow has-text-right"}">${c.cell(rec)}</td>`).join("")
             + `</tr>`).join("");
     return `
         <h5 class="is-size-5 content">${title}
             ${note ? `<p class="subtitle is-size-65">${note}</p>` : ""}</h5>
-        <div class="table-container">
-            <table class="table is-narrow is-fullwidth award-table" style="table-layout: fixed;">
-                <colgroup>${cols}</colgroup>
+        <div class="table-container container is-max-tablet">
+            <table class="table is-narrow is-fullwidth">
                 <tr class="is-primary">${head}</tr>
                 ${body}
             </table>
@@ -699,8 +694,8 @@ function buildRankingTableHtml(title, note, rows, columns) {
 const playerLink = r => `<a href="../player/?pid=${encodeURIComponent(r.pid)}">${escapeHtml(r.playerName)}</a>`;
 const clubLink = r => `<a href="../club/?cid=${encodeURIComponent(r.cid)}">${escapeHtml(r.clubName)}</a>`;
 const PLAYER_BASE_COLUMNS = [
-    { head: "選手", align: "left", width: "6.5em", cell: playerLink },
-    { head: "クラブ", align: "left", width: "5em", cell: clubLink },
+    { head: "選手", flexible: true, cell: playerLink },
+    { head: "クラブ", flexible: true, cell: clubLink },
 ];
 
 // 各クラブでブレーク回数の多い2名（タイは全員）を抽出し、ブレーク平均の降順で並べる

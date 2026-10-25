@@ -308,13 +308,13 @@ function appendAward(datasJson, division) {
             }
             return `
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank}</td>
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">
                         <a href="./club/?cid=${row['cid']}">${row['cname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${qhpro}</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${qhByThrow}</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${qhpro}</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${qhByThrow}</td>
                 </tr>
             `;
         }).join("");
@@ -345,13 +345,13 @@ function appendAward(datasJson, division) {
             }
             return `
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank}</td>
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">
                         <a href="./club/?cid=${row['cid']}">${row['cname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${fapro}</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${fapro}</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${throws}</td>
                 </tr>
             `;
         }).join("");
@@ -381,13 +381,13 @@ function appendAward(datasJson, division) {
             }
             return `
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank}</td>
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">
                         <a href="./club/?cid=${row["cid"]}">${row["cname"]}</a></td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${opt}</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${throws}</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${opt}</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${throws}</td>
                 </tr>
             `;
         }).join("");
@@ -415,12 +415,12 @@ function appendAward(datasJson, division) {
             if (rank > 10) { return };
             return `
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${rank}</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank}</td>
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">
                         <a href="./club/?cid=${row['cid']}">${row['cname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE}" align="right">${finish}</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${finish}</td>
                 </tr>
             `;
         }).join("");
@@ -445,25 +445,19 @@ function appendStandings(datasJson, tableId, progressId, group) {
     const rowsHtml = datasJson.map((rank) => {
         const ranknum = Number(rank["rank"]);
         if (ranknum < 1) { return; }
-        // クラブ名称はモバイル表示のみ長い場合省略する
         const clubName = rank["cname"];
-        const mobileClubName = clubName.length <= 16 ? clubName
-            : `<abbr title="${clubName}">${clubName.slice(0, 15)}...</abbr>`;
         return `
             <tr>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${ranknum}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${ranknum}</td>
                 <td class="${SMALL_TEXT_SIZE}">
-                    <a href="./club/?cid=${rank["cid"]}">
-                        <span class="is-hidden-mobile">${clubName}</span>
-                        <span class="standings-club-name-mobile">${mobileClubName}</span>
-                    </a>
+                    <a href="./club/?cid=${rank["cid"]}">${clubName}</a>
                 </td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["game"]}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["winpoint"]}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["win"]}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["lose"]}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["draw"]}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${rank["setper"] ? rank["setper"].toFixed(2) : ""}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["game"]}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["winpoint"]}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["win"]}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["lose"]}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["draw"]}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["setper"] ? rank["setper"].toFixed(2) : ""}</td>
             </tr>
         `;
     }).join("");
@@ -511,13 +505,13 @@ function appendSchedule(datasJson, tableId, progressId, division) {
 
         return `
             <tr>
-                <td class="${SMALL_TEXT_SIZE}" align="right">${game["sec"]}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="left"><a class="has-text-link" href="./match/?gid=${game["gid"]}">${gamedate}</a>${video}</td>
-                <td class="${SMALL_TEXT_SIZE} ${hcnTdClass}" align="center">${hcn}</td>
-                <td class="${SMALL_TEXT_SIZE}" align="center">
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">${game["sec"]}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered"><a class="has-text-link" href="./match/?gid=${game["gid"]}">${gamedate}</a>${video}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${hcnTdClass}">${hcn}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">
                     <a class="has-text-link" href="./match/?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a>
                 </td>
-                <td class="${SMALL_TEXT_SIZE} ${acnTdClass}" align="center">${acn}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${acnTdClass}">${acn}</td>
             </tr>
         `;
     }).join("");

@@ -93,9 +93,9 @@ function appendTransfer(datasJson, tableId, progressId) {
             $(tableId).append(`
                 <tr class="mkpl-player-row-1">
                     <input type="hidden" name="transfer-id" value="${tf['id']}" /> 
-                    <td class="${SMALL_TEXT_SIZE}" align="left">${tfDate}</td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left"><strong class="${color}">${division}</strong></td>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left">${tfDate}</td>
+                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left"><strong class="${color}">${division}</strong></td>
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">
                         ${fromCname} ▶ ${toCname}<br/>
                         ${tf['title']}
                     </td>
@@ -115,10 +115,10 @@ function appendTransfer(datasJson, tableId, progressId) {
 function appendFreeAgents(datasJson, tableId, progressId) {
     var appendStr = "";
     appendStr = appendStr + `
-            <div class="table-container" id="">
+            <div class="table-container container is-max-tablet" id="">
                 <table class="table is-fullwidth is-narrow">
                 <tr>
-                    <th class="is-light" ${SMALL_TEXT_SIZE}">選手</th>
+                    <th class="is-light ${SMALL_TEXT_SIZE}">選手</th>
                 </tr>
         `;
     datasJson.some(function (fa, i) {
@@ -137,10 +137,10 @@ function appendFreeAgents(datasJson, tableId, progressId) {
         }
         appendStr = appendStr + `
                 <tr class="mkpl-player-row-2">
-                    <td class="is-size-6" align="left"><strong>${fa['pname']}</strong></td>
+                    <td class="is-size-6 has-text-left"><strong>${fa['pname']}</strong></td>
                 </tr>
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE}" align="left">${profile}</td>
+                    <td class="${SMALL_TEXT_SIZE} has-text-left">${profile}</td>
                 </tr>
             `;
     });
