@@ -81,10 +81,16 @@ function appendMatch(data, playerIdsByName) {
     var date = (match['date']) ? new Date(match['date']).toLocaleDateString() : "";
     $("#match-match-name").append(`${group} 第${match['sec']}節 ${date}`);
 
+    const homeplayers = match['homeplayers'].split('、').map(function (name) {
+        return `<span>${name}</span><br/>`;
+    }).join('');
+    const awayplayers = match['awayplayers'].split('、').map(function (name) {
+        return `<span>${name}</span><br/>`;
+    }).join('');
     $('#match-home-cname').append(hcnfull);
-    $('#match-home-players').append("🎽" + match['homeplayers']);
+    $('#match-home-players').append("🎽 " + homeplayers);
     $('#match-away-cname').append(acnfull);
-    $('#match-away-players').append("🎽" + match['awayplayers']);
+    $('#match-away-players').append("🎽 " + awayplayers);
 
     const homeSetCount = Number(match['hsn']);
     const awaySetCount = Number(match['asn']);
@@ -146,13 +152,13 @@ function buildSetOverviewTable(match, setCount) {
     const teamRows = teams.map(function (team) {
         const scores = Array.from({ length: displayedSetCount }, function (_, index) {
             const score = match[`${team.prefix}${index + 1}`] ?? "";
-            const scoreClass = Number(score) === 50 ? "has-background-info-90 has-text-weight-bold" : "";
+            const scoreClass = Number(score) === 50 ? "has-background-primary-90 has-text-weight-bold" : "";
             return `<td class="${scoreClass} is-size-65">${score}</td>`;
         }).join("");
-        const totalClass = team.isWinner ? "has-background-info-90 has-text-weight-bold" : "";
+        const totalClass = team.isWinner ? "has-background-primary-90 has-text-weight-bold has-text-primary-30" : "";
         return `
             <tr>
-                <th class="is-size-6">${team.name}</th>
+                <th class="${totalClass} is-size-6">${team.name}</th>
                 <th class="${totalClass} is-size-6">${team.total}</th>
                 ${scores}
             </tr>`;
@@ -207,7 +213,7 @@ function buildSetDetailTable(setRow, match, playerIdsByName) {
     const turnHeaders = Array.from({ length: throwCount }, function (_, index) {
         // 完了後のターンのセルは空白で追加する
         const turnLabel = index + 1 <= lastNumberedTurn ? index + 1 : "";
-        return `<th class="is-size-7 px-1">${turnLabel}</th>`;
+        return `<th class="is-size-7 is-narrow">${turnLabel}</th>`;
     }).join("");
     const attackPlayers = getSetPlayers(setRow, true, match, playerIdsByName);
     const defensePlayers = getSetPlayers(setRow, false, match, playerIdsByName);
@@ -217,28 +223,85 @@ function buildSetDetailTable(setRow, match, playerIdsByName) {
         <p class="is-size-7 mb-0">${attackPlayers}</p>`;
 
     // 先攻、後攻の順に1投ごとの得点を追加
-    const homeTeam = { name: match.hcn, total: setRow.homePoint, points: homePoints, results: homeResults };
-    const awayTeam = { name: match.acn, total: setRow.awayPoint, points: awayPoints, results: awayResults };
+    const homeTeam = { name: match.hcn, total: setRow.homePoint, points: homePoints, results: homeResults, isAttack: isHomeAttack };
+    const awayTeam = { name: match.acn, total: setRow.awayPoint, points: awayPoints, results: awayResults, isAttack: !isHomeAttack };
     const teams = isHomeAttack ? [homeTeam, awayTeam] : [awayTeam, homeTeam];
     const teamRows = teams.map(function (team) {
         // クラブ名セル、合計点セル
         // 50点勝利、または0点敗北時の背景色設定
         const totalClass = Number(team.total) === 50
-            ? "has-background-info-90"
-            : Number(team.total) === 0 ? "has-background-danger-90" : "";
-        const throwCells = Array.from({ length: throwCount }, function (_, index) {
-            // 各投てきセル
+            ? "has-text-primary-20 has-background-primary-90" : "has-text-grey";
+
+        // 暫定の合計点推移
+        let overScoreTurns = [];
+        const cumulativeTotals = [];
+        let provisionalTotal = 0;
+        team.points.forEach(function (pointValue, index) {
+            const numericPoint = Number.parseInt(String(pointValue).trim(), 10);
+            if (!Number.isNaN(numericPoint)) {
+                if (provisionalTotal === "(25)") {
+                    provisionalTotal = 25 + numericPoint;
+                } else {
+                    provisionalTotal += numericPoint;
+                }
+                if (provisionalTotal > 50) {
+                    // 51点以上はオーバースコア処理
+                    overScoreTurns.push(index);
+                    provisionalTotal = "(25)";
+                }
+            }
+            cumulativeTotals.push(provisionalTotal);
+        });
+        // 3フォルト敗北の処理
+        if (Number(team.total) === 0 && cumulativeTotals.length > 0) {
+            cumulativeTotals[cumulativeTotals.length - 1] = 0;
+        }
+
+        const totalCells = Array.from({ length: throwCount }, function (_, index) {
+            const cumulativeTotal = cumulativeTotals[index];
+            const totalMarkup = typeof cumulativeTotal === "number"
+                ? `<span class="is-size-7">${cumulativeTotal}</span>`
+                : cumulativeTotal === "(25)"
+                    ? `<span class="is-size-7 has-text-warning-40">${cumulativeTotal}</span>` : "";
             return `
-                <td class="is-size-65 px-1">
-                    ${formatThrowResult(team.points[index], team.results[index])}
+                <td class="is-size-65 has-text-grey-light is-narrow py-0 px-0">
+                    <div class="is-flex is-flex-direction-column">
+                        ${totalMarkup}
+                    </div>
                 </td>`;
         }).join("");
+
+        const throwCells = Array.from({ length: throwCount }, function (_, index) {
+            const point = team.points[index];
+            const result = team.results[index];
+            const isOverScoreClass = overScoreTurns.includes(index) ? "has-text-warning-40" : "";
+            const scoreMarkup = `
+                <span class="is-size-65 ${isOverScoreClass}">${formatThrowResult(point, result)}</span>`;
+            // 各投てきセル
+            return `
+                <td class="is-size-65 is-narrow">
+                    <div class="is-flex is-flex-direction-column">
+                        ${scoreMarkup}
+                    </div>
+                </td>`;
+        }).join("");
+
+        const teamInfoTh = `
+            <th class="${totalClass} is-size-6 is-narrow is-vcentered py-0" rowspan="2">${team.name}</th>
+            <th class="${totalClass} is-size-5 is-narrow is-vcentered py-0 px-0" rowspan="2">${team.total}</th>
+            `;
+
+        const resultRows = team.isAttack
+            ? `
+                <tr>${teamInfoTh}${totalCells}</tr>
+                <tr>${throwCells}</tr>
+            ` : `
+                <tr>${teamInfoTh}${throwCells}</tr>
+                <tr>${totalCells}</tr>
+            `;
+
         return `
-            <tr>
-                <th class="is-size-6">${team.name}</th>
-                <th class="${totalClass} is-size-6">${team.total}</th>
-                ${throwCells}
-            </tr>`;
+            <tr>${resultRows}</tr>`;
     }).join("");
 
     // 後攻側の選手リスト
@@ -308,7 +371,7 @@ function formatThrowResult(point, result) {
     if (result === "Q") {
         return `<span class="has-text-success-40 has-text-weight-bold">${point ?? ""}</span>`;
     }
-    return point ?? "";
+    return point ?? `<span class="">${point ?? ""}</span>`;
 }
 
 /**
