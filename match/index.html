@@ -73,23 +73,31 @@
 
                 <div id="match-progress"><progress class="progress is-small is-light" max="100"></progress></div>
 
-                <div class="columns is-mobile is-gapless is-align-items-flex-start content">
-                    <div class="column is-5 has-text-left">
+                <div class="columns is-mobile is-gapless is-centered content">
+                    <div class="column is-6 has-text-left">
                         <small class="is-size-7"><strong class="has-text-primary">HOME</strong></small>
                         <p class="is-size-5 my-1"><strong id="match-home-cname"></strong></p>
                         <small class="is-size-65"><strong id="match-home-players"></strong></small>
                     </div>
-                    <div class="column is-1 has-text-center">
-                        <strong id="match-home-set-score" class="is-size-3"></strong>
-                    </div>
-                    <div class="column is-1 has-text-center">
-                        <strong id="match-away-set-score" class="is-size-3"></strong>
-                    </div>
-                    <div class="column is-5 has-text-right">
+
+                    <div class="column is-6 has-text-right">
                         <small class="is-size-7"><strong>AWAY</strong></small>
                         <p class="is-size-5 my-1"><strong id="match-away-cname"></strong></p>
                         <small class="is-size-65"><strong id="match-away-players"></strong></small>
                     </div>
+                </div>
+
+                <div class="columns is-mobile is-gapless is-centered content">
+                    <div class="column is-3 has-text-centered">
+                        <strong id="match-home-set-score" class="is-size-2"></strong>
+                    </div>
+                    <div class="column is-3 has-text-centered">
+                        <strong id="match-away-set-score" class="is-size-2"></strong>
+                    </div>
+                </div>
+
+                <div id="match-total-winlose" class="content">
+
                 </div>
 
                 <div class="table-container content">

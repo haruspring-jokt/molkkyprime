@@ -18,6 +18,7 @@ function fetchMatch(gid) {
         var datasStringify = JSON.stringify(datas);
         var datasJson = JSON.parse(datasStringify);
         var match = {
+            totalMatch: datasJson['totalMatch'] || [],
             match: datasJson['match'].filter(function (item) {
                 return item.gid === gid;
             }),
@@ -99,6 +100,26 @@ function appendMatch(data, playerIdsByName) {
     $('#match-home-set-score').append(match['hsn']).toggleClass('has-text-primary', isHomeSetWinner);
     $('#match-away-set-score').append(match['asn']).toggleClass('has-text-primary', isAwaySetWinner);
 
+    // 両クラブの通算対戦成績を取得する
+    const totalMatch = Array.isArray(data.totalMatch) ? data.totalMatch : [];
+    const filteredTotalMatches = totalMatch.filter(function (matchRow) {
+        return String(matchRow.clubId) === String(match.hcid)
+            && String(matchRow.rivalClubId) === String(match.acid);
+    });
+    if (filteredTotalMatches.length > 0 && filteredTotalMatches[0].totalMatch > 0) {
+        const filteredTotalMatch = filteredTotalMatches[0];
+        const totalWin = filteredTotalMatch.totalWin ?? 0;
+        const totalLose = filteredTotalMatch.totalLose ?? 0;
+        const totalDraw = filteredTotalMatch.totalEven ?? 0;
+        if (totalWin !== "" && totalLose !== "" && totalDraw !== "") {
+            $('#match-total-winlose').append(`
+                <p class="is-size-6 has-text-centered">
+                    通算成績（ホーム）: ${totalWin}勝 ${totalLose}敗 ${totalDraw}分
+                </p>
+            `)
+        }
+    }
+
     var setnum = homeSetCount + awaySetCount;
 
     // 試合が完了している場合、結果情報を追加する
@@ -158,8 +179,8 @@ function buildSetOverviewTable(match, setCount) {
         const totalClass = team.isWinner ? "has-background-primary-90 has-text-weight-bold has-text-primary-30" : "";
         return `
             <tr>
-                <th class="${totalClass} is-size-6">${team.name}</th>
-                <th class="${totalClass} is-size-6 border-right-black">${team.total}</th>
+                <th class="${totalClass} is-size-65">${team.name}</th>
+                <th class="${totalClass} is-size-65 border-right-black">${team.total}</th>
                 ${scores}
             </tr>`;
     }).join("");
@@ -287,8 +308,8 @@ function buildSetDetailTable(setRow, match, playerIdsByName) {
         }).join("");
 
         const teamInfoTh = `
-            <th class="${totalClass} is-size-6 is-narrow is-vcentered py-0" rowspan="2">${team.name}</th>
-            <th class="${totalClass} is-size-6 is-narrow is-vcentered py-0 px-0 border-right-black" rowspan="2">${team.total}</th>
+            <th class="${totalClass} is-size-65 is-narrow is-vcentered py-0" rowspan="2">${team.name}</th>
+            <th class="${totalClass} is-size-65 is-narrow is-vcentered py-0 px-0 border-right-black" rowspan="2">${team.total}</th>
             `;
 
         const resultRows = team.isAttack
@@ -455,7 +476,7 @@ function buildTeamStatsTable(match) {
         const opt = formatOpt(match[`${team.prefix}opt`]);
         return `
             <tr class="has-background-white-ter">
-                <td class="is-size-6 has-text-weight-bold has-text-left">${team.name}</th>
+                <td class="is-size-65 has-text-weight-bold has-text-left">${team.name}</th>
                 <td class="is-size-65 has-text-weight-bold has-text-right">${qh} (${qhPer})</td>
                 <td class="is-size-65 has-text-weight-bold has-text-right">${nh} (${nhPer})</td>
                 <td class="is-size-65 has-text-weight-bold has-text-right">${fa} (${faPer})</td>
