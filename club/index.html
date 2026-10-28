@@ -19,6 +19,8 @@
     <!-- molkkyprime -->
     <link rel="stylesheet" href="../my-bulma-project.css">
     <link rel="stylesheet" href="../style/style.css">
+    <link rel="stylesheet"
+        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="../script/script.js"></script>
     <script src="../script/club/club.js"></script>
@@ -210,11 +212,18 @@
             </div>
 
             <!-- player scatter chart -->
-            <div id="player-scatter-section" style="display: none;">
+            <div id="player-scatter-section" class="content" style="display: none;">
                 <h4 class="title is-size-5 content">OPTとQH率</h4>
                 <p class="is-size-7 content">円の大きさは投てき数。白丸はクラブ平均、破線は相関直線。軸の範囲は選手のデータに合わせて自動調整されます。</p>
                 <div style="position:relative;height:360px"><canvas id="player-scatter-chart"></canvas></div>
                 <p class="is-size-7 has-text-grey" id="player-scatter-correlation"></p>
+            </div>
+
+            <div id="club-total-match-section" class="content">
+                <h4 class="title is-size-5 content">通算対戦成績</h4>
+                <div class="table-container container is-max-tablet">
+                    <table id="club-total-match-table" class="table is-fullwidth is-narrow"></table>
+                </div>
             </div>
         </section>
 

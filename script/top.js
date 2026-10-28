@@ -453,7 +453,7 @@ function appendStandings(datasJson, tableId, progressId, group) {
                     <a href="./club/?cid=${rank["cid"]}">${clubName}</a>
                 </td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["game"]}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["winpoint"]}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right has-text-weight-bold">${rank["winpoint"]}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["win"]}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["lose"]}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["draw"]}</td>

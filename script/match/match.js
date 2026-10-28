@@ -159,7 +159,7 @@ function buildSetOverviewTable(match, setCount) {
         return `
             <tr>
                 <th class="${totalClass} is-size-6">${team.name}</th>
-                <th class="${totalClass} is-size-6">${team.total}</th>
+                <th class="${totalClass} is-size-6 border-right-black">${team.total}</th>
                 ${scores}
             </tr>`;
     }).join("");
@@ -170,7 +170,7 @@ function buildSetOverviewTable(match, setCount) {
             <thead>
                 <tr class="has-background-white-ter">
                     <th class="is-size-7">CLUB</th>
-                    <th class="is-size-7">計</th>
+                    <th class="is-size-7 border-right-black">計</th>
                     ${setHeaders}
                 </tr>
             </thead>
@@ -288,7 +288,7 @@ function buildSetDetailTable(setRow, match, playerIdsByName) {
 
         const teamInfoTh = `
             <th class="${totalClass} is-size-6 is-narrow is-vcentered py-0" rowspan="2">${team.name}</th>
-            <th class="${totalClass} is-size-6 is-narrow is-vcentered py-0 px-0" rowspan="2">${team.total}</th>
+            <th class="${totalClass} is-size-6 is-narrow is-vcentered py-0 px-0 border-right-black" rowspan="2">${team.total}</th>
             `;
 
         const resultRows = team.isAttack
@@ -318,7 +318,7 @@ function buildSetDetailTable(setRow, match, playerIdsByName) {
                     <thead>
                         <tr class="has-background-white-ter">
                             <th class="is-size-7">CLUB</th>
-                            <th class="is-size-7">計</th>
+                            <th class="is-size-7 border-right-black">計</th>
                             ${turnHeaders}
                         </tr>
                     </thead>

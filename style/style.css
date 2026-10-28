@@ -75,3 +75,7 @@ body {
     }
 }
 
+td.border-right-black,
+th.border-right-black {
+    border-right: solid 2px #abb1bf !important;
+}

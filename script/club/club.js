@@ -127,7 +127,7 @@ function initDisplay(cid) {
 
         // データ設定
         createClubData(
-            pageData['clubs'], pageData['players'], pageData['scheduleYksi'], pageData['scheduleKaksi'], defaultCid);
+            pageData['clubs'], pageData['players'], pageData['scheduleYksi'], pageData['scheduleKaksi'], pageData['totalMatch'], defaultCid);
 
         // プログレスバーの初期化
         $('#club-progress').html("");
@@ -142,7 +142,7 @@ function initDisplay(cid) {
 function refreshClubData(pageData, param) {
     var cid = param['cid'];
     createClubData(
-        pageData['clubs'], pageData['players'], pageData['scheduleYksi'], pageData['scheduleKaksi'], cid);
+        pageData['clubs'], pageData['players'], pageData['scheduleYksi'], pageData['scheduleKaksi'], pageData['totalMatch'], cid);
 }
 
 /**
@@ -179,7 +179,7 @@ function createClubSelectBox(clubs, cid) {
  * @param {json} scheduleKaksi チャレンジ試合情報
  * @param {string} cid クラブID
  */
-function createClubData(clubs, players, scheduleYksi, scheduleKaksi, cid) {
+function createClubData(clubs, players, scheduleYksi, scheduleKaksi, totalMatch, cid) {
     // クラブをフィルターする
     var club = clubs.filter(function (j) {
         return j.cid == cid;
@@ -195,6 +195,7 @@ function createClubData(clubs, players, scheduleYksi, scheduleKaksi, cid) {
     appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi);
     // 選手一覧の設定
     appendPlayers(players, cid, isYksi);
+    appendTotalMatchTable(totalMatch, cid);
     renderPlayerScatterChart(cid, isYksi);
 }
 
@@ -467,6 +468,58 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
 }
 
 /**
+ * 通算対戦成績の設定
+ * @param {Array} totalMatch 通算対戦成績一覧
+ * @param {string} cid 選択中のクラブID
+ */
+function appendTotalMatchTable(totalMatch, cid) {
+    var rows = Array.isArray(totalMatch) ? totalMatch.filter(function (match) {
+        return match['clubId'] == cid;
+    }) : [];
+    $("#club-total-match-table").html(`
+        <tr class="is-primary">
+            ${TH_TAG_NARROW_FROM}クラブ${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}勝利${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}敗北${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}引分${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}ホーム${TH_TAG_TO}
+            ${TH_TAG_NARROW_FROM}アウェイ${TH_TAG_TO}
+        </tr>
+    `);
+
+    if (rows.length === 0) {
+        $("#club-total-match-table").append(`
+            <tr>
+                <td class="${SMALL_TEXT_SIZE} has-text-centered" colspan="6">データなし</td>
+            </tr>
+        `);
+        return;
+    }
+
+    var formatMatchResult = function (win, lose, even) {
+        return `<span class="has-text-success">${win}W</span>
+            -<span class="has-text-danger">${lose}L</span>
+            -<span class="has-text-grey-light">${even}D</span>`;
+    };
+
+    rows.some(function (match) {
+        var rivalClubId = match['rivalClubId'];
+        var rivalName = match['rivalClubShortName'] || match['rivalClubName'] || "-";
+        var rivalLink = rivalClubId ? `<a href="../club/?cid=${rivalClubId}">${rivalName}</a>` : rivalName;
+        $("#club-total-match-table").append(`
+            <tr>
+                <td class="${SMALL_TEXT_SIZE} has-text-left">${rivalLink}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${match['totalWin'] || 0}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${match['totalLose'] || 0}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${match['totalEven'] || 0}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${formatMatchResult(match['homeWin'] || 0, match['homeLose'] || 0, match['homeEven'] || 0)}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${formatMatchResult(match['awayWin'] || 0, match['awayLose'] || 0, match['awayEven'] || 0)}</td>
+            </tr>
+        `);
+    });
+}
+
+/**
  * 
  * @param {json} players 選手一覧
  * @param {string} cid 選択中のクラブID
@@ -474,9 +527,12 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
  */
 function appendPlayers(players, cid, isYksi) {
     // 自クラブの選手のみにフィルター
+    // 試合数でソートする
     var ps = players.filter(function (p) {
         return p.cid == cid;
-    })
+    }).sort(function (a, b) {
+        return (b['game'] || 0) - (a['game'] || 0);
+    });
     // ヘッダーの設定
     $('#player-table').html(`
         <tr class="is-primary">
@@ -510,7 +566,7 @@ function appendPlayers(players, cid, isYksi) {
         }
         var game = isYksi ? player['game'] : "";
         var set = isYksi ? player['set'] : "";
-        var mainOrder = isYksi ? player['mainOrder'] : "";
+        var mainOrder = isYksi ? convertMainOrder(player['mainOrder']) : "";
         var qhpro = (isYksi && player['qhPro'] != '-') ? Math.round(player['qhPro'] * 1 * 100) / 1 + "" : "";
         var nhpro = (isYksi && player['qhPro'] != '-') ? Math.round(player['nhPro'] * 1 * 100) / 1 + "" : "";
         var fapro = (isYksi && player['qhPro'] != '-') ? Math.round(player['fauPro'] * 1 * 100) / 1 + "" : "";
@@ -533,14 +589,28 @@ function appendPlayers(players, cid, isYksi) {
                 <td class="${SMALL_TEXT_SIZE} has-text-left"><a href="../player/?pid=${player.pid}">${playerName}</a></td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${game}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${set}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left">${mainOrder}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow is-family-monospace has-text-left">${qhf}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered px-0 py-0">${mainOrder}</td>
+                <td class="${SMALL_TEXT_SIZE} is-narrow is-family-monospace has-text-right">${qhf}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${fin}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${assist}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${averageBlakePoint}</td>
             </tr>
         `);
     });
+}
+
+function convertMainOrder(mainOrder) {
+    // メインオーダーをアイコン付きで表示するためのHTMLを返す
+    if (!mainOrder) {
+        return "";
+    }
+    switch (mainOrder) {
+        case "1st": return `<span class="has-text-grey is-size-5"><i class="las la-dice-one"></i></span>`;
+        case "2nd": return `<span class="has-text-grey is-size-5"><i class="las la-dice-two"></i></span>`;
+        case "3rd": return `<span class="has-text-grey is-size-5"><i class="las la-dice-three"></i></span>`;
+        case "4th": return `<span class="has-text-grey is-size-5"><i class="las la-dice-four"></i></span>`;
+        default: return mainOrder;
+    }
 }
 
 /**
