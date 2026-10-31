@@ -422,6 +422,34 @@ const getDivisionCodeFrom = (cid) => {
     return divisionMap.get(cid) || "";
 };
 
+const getClubMapFromId = (cid) => {
+    const clubMap = new Map([
+        ['C01', { cid: 'C01', code: 'NKL', miniIcon: 'nkl', shortName: '北関東L' }],
+        ['C02', { cid: 'C02', code: 'SLP', miniIcon: 'slaps', shortName: 'SLAPS' }],
+        ['C03', { cid: 'C03', code: 'JJP', miniIcon: 'jaja', shortName: 'jaja' }],
+        ['C04', { cid: 'C04', code: 'SUGI', miniIcon: 'sugi', shortName: 'スギモル' }],
+        ['C05', { cid: 'C05', code: 'FWH', miniIcon: 'fwh', shortName: 'Fuchu-möl' }],
+        ['C06', { cid: 'C06', code: 'LUD', miniIcon: 'lowuud', shortName: 'löwUUD' }],
+        ['C07', { cid: 'C07', code: 'KES', miniIcon: 'kestaa', shortName: 'Kestää' }],
+        ['C08', { cid: 'C08', code: 'NXG', miniIcon: 'nxg', shortName: 'NXG' }],
+        ['C09', { cid: 'C09', code: 'TMR', miniIcon: 'tamusho', shortName: 'たむ小' }],
+        ['C10', { cid: 'C10', code: 'MSN', miniIcon: 'musashino', shortName: '武蔵野' }],
+        ['C11', { cid: 'C11', code: 'STM', miniIcon: 'tmaz', shortName: 'たまぁず' }],
+        ['C12', { cid: 'C12', code: 'NRC', miniIcon: 'nirakare', shortName: 'にらカレー' }],
+        ['C13', { cid: 'C13', code: 'BKS', miniIcon: 'bks', shortName: 'BKS' }],
+        ['C14', { cid: 'C14', code: 'CBR', miniIcon: 'cobra', shortName: 'コブラ団＋' }],
+        ['C15', { cid: 'C15', code: 'BUD', miniIcon: 'buddies', shortName: 'Buddies' }],
+        ['C16', { cid: 'C16', code: 'SISU', miniIcon: 'sisu', shortName: 'SISU' }],
+        ['C17', { cid: 'C17', code: 'ZONE', miniIcon: 'zone', shortName: 'Z-ÖNE' }],
+        ['C18', { cid: 'C18', code: '7VS', miniIcon: '7s', shortName: 'SEVEN\'S' }],
+        ['C19', { cid: 'C19', code: 'ZNA', miniIcon: 'zna', shortName: '禅那' }],
+        ['C20', { cid: 'C20', code: 'IWDP', miniIcon: 'iwdp', shortName: 'IWDP' }],
+        ['C21', { cid: 'C21', code: 'ASA', miniIcon: 'asa', shortName: 'ASA' }],
+        ['C22', { cid: 'C22', code: 'YRT', miniIcon: 'yrt', shortName: 'Yritän' }],
+    ]);
+    return clubMap.get(cid) || null;
+};
+
 /**
  * 改行文字を変換する 
  * @param {string} text 変換対象

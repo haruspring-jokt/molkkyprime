@@ -446,18 +446,41 @@ function appendStandings(datasJson, tableId, progressId, group) {
         const ranknum = Number(rank["rank"]);
         if (ranknum < 1) { return; }
         const clubName = rank["cname"];
+        const clubInfo = getClubMapFromId(rank["cid"]);
+        const shortClubName = clubInfo && clubInfo.shortName ? clubInfo.shortName : clubName;
+        const relativeRoot = location.pathname.startsWith("/schedule/") ? "../" : "./";
+        const clubIcon = clubInfo && clubInfo.miniIcon ?
+            `<img src="${relativeRoot}asset/club/mini/${clubInfo.miniIcon}_mini.png" alt="${clubName}" width="20" height="20" class="mr-1" />` : "";
+        const clubLink = `${relativeRoot}club/?cid=${rank["cid"]}`;
+        const recentCellHtml = `<td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered is-hidden-mobile">${rank["recent"] ?? ""}</td>`;
+        const fullClubNameCell = `
+            <td class="${SMALL_TEXT_SIZE} is-hidden-mobile">
+                <div class="is-flex is-align-items-center">
+                    ${clubIcon}
+                    <a href="${clubLink}">${clubName}</a>
+                </div>
+            </td>
+        `;
+        const shortClubNameCell = `
+            <td class="${SMALL_TEXT_SIZE} is-hidden-tablet">
+                <div class="is-flex is-align-items-center">
+                    ${clubIcon}
+                    <a href="${clubLink}">${shortClubName}</a>
+                </div>
+            </td>
+        `;
         return `
             <tr>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${ranknum}</td>
-                <td class="${SMALL_TEXT_SIZE}">
-                    <a href="./club/?cid=${rank["cid"]}">${clubName}</a>
-                </td>
+                ${fullClubNameCell}
+                ${shortClubNameCell}
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["game"]}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right has-text-weight-bold">${rank["winpoint"]}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["win"]}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["lose"]}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["draw"]}</td>
                 <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["setper"] ? rank["setper"].toFixed(2) : ""}</td>
+                ${recentCellHtml}
             </tr>
         `;
     }).join("");

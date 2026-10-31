@@ -85,16 +85,42 @@ function appendStandings(datasJson, tableId, progressId, group) {
         var ranknum = Number(rank['rank']);
         if (ranknum < 1) { return; }
         var clubName = rank['cname'];
+        var clubInfo = getClubMapFromId(rank['cid']);
+        var shortClubName = (clubInfo && clubInfo.shortName) ? clubInfo.shortName : clubName;
+        var relativeRoot = location.pathname.startsWith('/schedule/') ? '../' : './';
+        var clubIcon = (clubInfo && clubInfo.miniIcon)
+            ? `<img src="${relativeRoot}asset/club/mini/${clubInfo.miniIcon}_mini.png" alt="${clubName}" width="20" height="20" class="mr-1" />`
+            : '';
+        var clubLink = `${relativeRoot}club/?cid=${rank['cid']}`;
+        var recentCellHtml = `<td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered is-hidden-mobile">${rank['recent'] ?? ''}</td>`;
+        var fullClubNameCell = `
+            <td class="${SMALL_TEXT_SIZE} is-hidden-mobile">
+                <div class="is-flex is-align-items-center">
+                    ${clubIcon}
+                    <a href="${clubLink}">${clubName}</a>
+                </div>
+            </td>
+        `;
+        var shortClubNameCell = `
+            <td class="${SMALL_TEXT_SIZE} is-hidden-tablet">
+                <div class="is-flex is-align-items-center">
+                    ${clubIcon}
+                    <a href="${clubLink}">${shortClubName}</a>
+                </div>
+            </td>
+        `;
         $(tableId).append(`
             <tr>
             <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${ranknum}</td>
-            <td class="${SMALL_TEXT_SIZE}"><a href="../club/?cid=${rank['cid']}">${clubName}</a></td>
+            ${fullClubNameCell}
+            ${shortClubNameCell}
             <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['game']}</td>
             <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right has-text-weight-bold">${rank['winpoint']}</td>
             <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['win']}</td>
             <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['lose']}</td>
             <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['draw']}</td>
             <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${(Math.round(rank['setper'] * 100) / 100).toFixed(2)}</td>
+            ${recentCellHtml}
             </tr>
         `);
     });

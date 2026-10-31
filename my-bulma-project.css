@@ -21624,5 +21624,76 @@ table th {
     font-size: 0.65rem !important;
   }
 }
+body {
+  font-family: "Noto Sans JP", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.mkpl-bg-cover {
+  background-image: url("./style/background/cover.jpg");
+  background-color: transparent;
+  background-size: cover;
+  background-position: center;
+}
+
+.mkpl-bg-filter {
+  backdrop-filter: brightness(0.8) contrast(0.8) blur(4px);
+}
+
+.mkpl-title {
+  text-shadow: #222222 1px 1px 20px;
+}
+
+.is-size-7 {
+  font-size: 0.8em !important;
+}
+
+.is-size-6 {
+  font-size: 0.9em !important;
+}
+
+.table td {
+  vertical-align: middle !important;
+}
+
+.table th {
+  text-align: center !important;
+}
+
+.table {
+  min-width: 320px !important;
+}
+
+.player-data-season {
+  table-layout: auto !important;
+}
+
+.player-data-season th:first-child {
+  width: 1%;
+  white-space: nowrap;
+}
+
+.player-data-season td {
+  white-space: nowrap;
+}
+
+.mkpl-under-header {
+  min-height: 52px !important;
+}
+
+.image.is-360x360 {
+  height: 360px;
+  width: 360px;
+}
+
+.is-table-center {
+  text-align: center !important;
+  align-content: center !important;
+}
+
+td.border-right-black,
+th.border-right-black {
+  border-right: solid 2px #abb1bf !important;
+}
 
 /*# sourceMappingURL=my-bulma-project.css.map */
