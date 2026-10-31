@@ -77,15 +77,20 @@ function appendPlayerGames(games, info) {
         const division = getSeasonConfig(game["gid"] || "").division;
         const season = seasonOf(game) + (division === 2 ? " (C)" : "");
         const video = game["videourl"] ? ` <a href="${game["videourl"]}" target="_blank"> [動画]</a>` : "";
-        let hcn = `<a href="../club/?cid=${game["hcid"]}">${game["hcn"]}</a>`;
-        let acn = `<a href="../club/?cid=${game["acid"]}">${game["acn"]}</a>`;
+        const renderClubCell = (cid, clubName, isPlayerClub) => {
+            const clubIcon = getClubMiniIconHtml(cid, "../");
+            const clubNameHtml = isPlayerClub ? `<strong><a href="../club/?cid=${cid}">${clubName}</a></strong>` : `<a href="../club/?cid=${cid}">${clubName}</a>`;
+            return `
+                <div class="is-flex is-align-items-center is-justify-content-flex-start">
+                    ${clubIcon}
+                    ${clubNameHtml}
+                </div>
+            `;
+        };
         const isHomePlayer = isPlayerInGameTeam(game, "homePlayersId", info.pid);
         const playerClubId = isHomePlayer ? game["hcid"] : game["acid"];
-        if (isHomePlayer) {
-            hcn = `<strong>${hcn}</strong>`;
-        } else {
-            acn = `<strong>${acn}</strong>`;
-        }
+        const hcn = renderClubCell(game["hcid"], game["hcn"], isHomePlayer);
+        const acn = renderClubCell(game["acid"], game["acn"], !isHomePlayer);
         const resultClass = getPlayerGameResultClass(game, playerClubId);
 
         return `
@@ -275,18 +280,18 @@ function createSeasonDataTable(tableData) {
         { label: '試合', isNumber: true, format: column => numberFormat(column.season.game, 0), total: () => numberFormat(totals.game, 0) },
         { label: 'セット', isNumber: true, format: column => numberFormat(column.season.set, 0), total: () => numberFormat(totals.set, 0) },
         { label: '投てき', isNumber: true, format: column => numberFormat(column.season.throw, 0), total: () => numberFormat(totals.throw, 0) },
-        { label: 'QH(%)', isNumber: true, format: column => `${numberFormat(column.season.qh, 0)} (${perNumberFormat(column.season.qhRaito, 1)}%)`, total: () => `${numberFormat(totals.qh, 0)} (${perNumberFormat(totals.qhRaito, 1)}%)` },
+        { label: 'QH(%)', isNumber: true, format: column => formatQhCountAndRate(column.season.qh, column.season.qhRaito), total: () => formatQhCountAndRate(totals.qh, totals.qhRaito) },
         { label: 'QH順位', isNumber: true, format: column => numberFormat(column.season.qhRank, 0), total: () => "-" },
-        { label: 'フォルト(%)', isNumber: true, format: column => `${numberFormat(column.season.fault, 0)} (${perNumberFormat(column.season.faultRaito, 1)}%)`, total: () => `${numberFormat(totals.fault, 0)} (${perNumberFormat(totals.faultRaito, 1)}%)` },
+        { label: 'フォルト(%)', isNumber: true, format: column => formatFaultCountAndRate(column.season.fault, column.season.faultRaito), total: () => formatFaultCountAndRate(totals.fault, totals.faultRaito) },
         { label: 'FA順位', isNumber: true, format: column => numberFormat(column.season.faultRank, 0), total: () => "-" },
-        { label: '非QH(%)', isNumber: true, format: column => `${numberFormat(column.season.notQh, 0)} (${perNumberFormat(column.season.notQhRaito, 1)}%)`, total: () => `${numberFormat(totals.notQh, 0)} (${perNumberFormat(totals.notQhRaito, 1)}%)` },
+        { label: '非QH(%)', isNumber: true, format: column => `${numberFormat(column.season.notQh, 0)} (${formatPercentWithGrey(column.season.notQhRaito * 100, 1)})`, total: () => `${numberFormat(totals.notQh, 0)} (${formatPercentWithGrey(totals.notQhRaito * 100, 1)})` },
         { label: 'QH/FA', isNumber: true, format: column => numberFormat(column.season.qhAroundFa, 1), total: () => numberFormat(totals.qhAroundFa, 1) },
         { label: 'フィニッシュ', isNumber: true, format: column => numberFormat(column.season.finish, 0), total: () => numberFormat(totals.finish, 0) },
         { label: 'アシスト', isNumber: true, format: column => numberFormat(column.season.assist, 0), total: () => numberFormat(totals.assist, 0) },
-        { label: 'OPT', isNumber: true, format: column => optNumber(column.season.opt), total: () => optNumber(totals.opt) },
+        { label: 'OPT', isNumber: true, format: column => formatOptValue(column.season.opt), total: () => formatOptValue(totals.opt) },
         { label: 'OPT順位', isNumber: true, format: column => numberFormat(column.season.optRank, 0), total: () => "-" },
         { label: 'ブレーク平均(投)', isNumber: true, format: column => `${optNumber(column.season.blakeAvg)} (${numberFormat(column.season.blake, 0)})`, total: () => `${optNumber(totals.blakeAvg)} (${numberFormat(totals.blake, 0)})` },
-        { label: 'リカバーQH(投)', isNumber: true, format: column => `${perNumberFormat(column.season.rcvQhRaito, 0)}% (${numberFormat(column.season.rcv, 0)})`, total: () => `${perNumberFormat(totals.rcvQhRaito, 0)}% (${numberFormat(totals.rcv, 0)})` },
+        { label: 'リカバーQH(投)', isNumber: true, format: column => `${formatPercentWithGrey(perNumberFormat(column.season.rcvQhRaito, 0), 0)} (${numberFormat(column.season.rcv, 0)})`, total: () => `${formatPercentWithGrey(perNumberFormat(totals.rcvQhRaito, 0), 0)} (${numberFormat(totals.rcv, 0)})` },
         { label: '14点以降QNF', isNumber: true, format: column => qnfScore(column.season.o14, column.season.o14Qh, column.season.o14Fault), total: () => qnfScore(totals.o14, totals.o14Qh, totals.o14Fault) },
         { label: '14点以降OPT', isNumber: true, format: column => ratioOpt(column.season.o14Opt, column.season.o14), total: () => ratioOpt(totals.o14Opt, totals.o14) },
         { label: '26点以降QNF', isNumber: true, format: column => qnfScore(column.season.o26, column.season.o26Qh, column.season.o26Fault), total: () => qnfScore(totals.o26, totals.o26Qh, totals.o26Fault) },
@@ -370,9 +375,9 @@ function createPhaseResultsTable(tableData) {
     );
     const rows = tableData.phases.flatMap(phase => [
         { label: `${phase.label} 投数`, format: stats => formatPhaseCount(stats.T), isNumber: true, cellClasses: { label: "has-background-white-ter", cell: "has-background-white-ter" } },
-        { label: "QH", format: stats => formatPhaseCountAndRate(stats.Q, stats.T), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
+        { label: "QH", format: stats => formatPhaseCountAndRate(stats.Q, stats.T, "has-text-success"), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
         { label: "非QH", format: stats => formatPhaseCountAndRate(stats.T - stats.Q - stats.F, stats.T), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
-        { label: "フォルト", format: stats => formatPhaseCountAndRate(stats.F, stats.T), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
+        { label: "フォルト", format: stats => formatPhaseCountAndRate(stats.F, stats.T, "has-text-danger"), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
         { label: "Q-N-F", format: stats => `<canvas class="player-phase-qnf-chart" data-qh="${stats.T > 0 ? stats.Q / stats.T : 0}" data-nqh="${stats.T > 0 ? Math.max(stats.T - stats.Q - stats.F, 0) / stats.T : 0}" data-fault="${stats.T > 0 ? stats.F / stats.T : 0}" width="100" height="16"></canvas>`, isNumber: false, cellClasses: { label: "has-background-primary-90" } },
         { label: "OPT", format: stats => formatPhaseOpt(stats), isNumber: true, cellClasses: { label: "has-background-primary-90" } },
     ].map(row => ({ ...row, value: column => row.format(column.value(phase)) })));
@@ -444,8 +449,13 @@ function sumTurnOpt(season, from, to) {
     return sum;
 }
 
+function formatOptValue(value) {
+    const text = optNumber(value);
+    return text === "-" ? "-" : `<span class="has-text-primary">${text}</span>`;
+}
+
 function formatPhaseOpt(stats) {
-    return stats.T > 0 ? (stats.O / stats.T).toFixed(2) : "-";
+    return stats.T > 0 ? `<span class="has-text-primary">${(stats.O / stats.T).toFixed(2)}</span>` : "-";
 }
 
 function aggregateLoopTqf(seasons, key) {
@@ -507,9 +517,30 @@ function formatPhaseCount(count) {
     return Number.isFinite(count) ? String(Math.floor(count)) : "0";
 }
 
-function formatPhaseCountAndRate(count, total) {
-    const rate = total > 0 ? ` (${(count / total * 100).toFixed(1)}%)` : " (-)";
-    return `${formatPhaseCount(count)}${rate}`;
+function formatPercentWithGrey(value, digits = 1) {
+    if (value === "" || value === "-" || value == null || Number.isNaN(Number(value))) {
+        return "-";
+    }
+    const numericValue = Number(value);
+    return `${numericValue.toFixed(digits)}<span class="has-text-grey-light is-size-8">%</span>`;
+}
+
+function formatQhCountAndRate(count, rate, className = "has-text-success") {
+    const countText = numberFormat(count, 0);
+    const rateText = formatPercentWithGrey((Number(rate) || 0) * 100, 1);
+    return `<span class="${className}">${countText} (${rateText})</span>`;
+}
+
+function formatFaultCountAndRate(count, rate, className = "has-text-danger") {
+    const countText = numberFormat(count, 0);
+    const rateText = formatPercentWithGrey((Number(rate) || 0) * 100, 1);
+    return `<span class="${className}">${countText} (${rateText})</span>`;
+}
+
+function formatPhaseCountAndRate(count, total, colorClass = "") {
+    const rate = total > 0 ? ` (${formatPercentWithGrey((count / total * 100), 1)})` : " (-)";
+    const valueText = `${formatPhaseCount(count)}${rate}`;
+    return colorClass ? `<span class="${colorClass}">${valueText}</span>` : valueText;
 }
 
 function qnfScore(throws, qhCount, faultCount) {
@@ -623,10 +654,10 @@ function appendInfo(info, totals, isYksi, isKaksi) {
     $(".player-profile-club-history").append(`<span>${info.clubHistory}</span>`);
 
     const qhRate = totals.throw > 0
-        ? `${(totals.qh / totals.throw * 100).toFixed(1)}%`
+        ? formatPercentWithGrey((totals.qh / totals.throw * 100), 1)
         : "-";
     const faultRate = totals.throw > 0
-        ? `${(totals.fault / totals.throw * 100).toFixed(1)}%`
+        ? formatPercentWithGrey((totals.fault / totals.throw * 100), 1)
         : "-";
     $(".player-career-games").append(`<span>${totals.game}</span>`);
     $(".player-career-sets").append(`<span>${totals.set}</span>`);
@@ -665,10 +696,12 @@ function makeTr(array, colName, isNumber, cellClasses = {}) {
 }
 
 function overScore(throws, qhRaito, faultRaito) {
-    const qh = qhRaito == 0 || qhRaito == "" || qhRaito == "|" ? `<span class="has-text-success">0%</span>`
-        : `<span class="has-text-success">${perNumberFormat(qhRaito, 0)}%</span>`;
-    const fault = faultRaito == 0 || faultRaito == "" || faultRaito == "|" ? `<span class="has-text-danger">0%</span>`
-        : `<span class="has-text-danger">${perNumberFormat(faultRaito, 0)}%</span>`;
+    const qh = qhRaito == 0 || qhRaito == "" || qhRaito == "|"
+        ? `<span class="has-text-success">0<span class="has-text-grey-light is-size-8">%</span></span>`
+        : `<span class="has-text-success">${perNumberFormat(qhRaito, 0)}<span class="has-text-grey-light is-size-8">%</span></span>`;
+    const fault = faultRaito == 0 || faultRaito == "" || faultRaito == "|"
+        ? `<span class="has-text-danger">0<span class="has-text-grey-light is-size-8">%</span></span>`
+        : `<span class="has-text-danger">${perNumberFormat(faultRaito, 0)}<span class="has-text-grey-light is-size-8">%</span></span>`;
     return `
         ${qh}-${fault} (${numberFormat(throws, 0)})
     `;
@@ -708,9 +741,15 @@ function numberFormat(num, di) {
  * @returns 
  */
 function getClubNameTd(cid, cname, selectedCid) {
-    if (cid == selectedCid) {
-        return cname;
-    } else {
-        return `<a href="../club/?cid=${cid}">${cname}</a>`;
-    }
+    const clubIcon = typeof getClubMiniIconHtml === "function" ? getClubMiniIconHtml(cid, "../") : "";
+    const clubNameHtml = (cid == selectedCid)
+        ? cname
+        : `<a href="../club/?cid=${cid}">${cname}</a>`;
+
+    return `
+        <div class="is-flex is-align-items-center is-justify-content-flex-start">
+            ${clubIcon}
+            ${clubNameHtml}
+        </div>
+    `;
 }

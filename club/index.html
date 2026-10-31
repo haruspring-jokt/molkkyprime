@@ -17,7 +17,8 @@
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     <!-- molkkyprime -->
-    <link rel="stylesheet" href="../my-bulma-project.css"><link rel="stylesheet"
+    <link rel="stylesheet" href="../my-bulma-project.css">
+    <link rel="stylesheet"
         href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
     <script src="../script/mkplConstants.js"></script>
@@ -121,7 +122,10 @@
                     </tr>
                     <tr>
                         <th class="is-size-7 has-background-primary is-narrow">Q-N-F</th>
-                        <td class="is-size-7" style="position: relative; overflow: hidden;"><div style="height:16px; position: relative; width: 100%;"><canvas id="club-qnf-chart"></canvas></div></td>
+                        <td class="is-size-7" style="position: relative; overflow: hidden;">
+                            <div style="height:16px; position: relative; width: 100%;"><canvas
+                                    id="club-qnf-chart"></canvas></div>
+                        </td>
                     </tr>
                     <tr>
                         <th class="is-size-7 has-background-primary is-narrow">OPT</th>
@@ -192,9 +196,11 @@
             <!-- player of club info -->
             <h4 class="title is-size-4 content">所属選手</h4>
             <p class="subtitle is-size-6">Player</p>
-            <div class="table-container container is-max-tablet" id="player-of-club">
+            <div class="table-container container is-max-tablet player-table-scroll" id="player-of-club">
                 <table class="table is-fullwidth is-narrow" id="player-table">
                 </table>
+            </div>
+            <div class="content">
                 <p class="is-size-7 content">
                     項目のみかた<br />
                     GM：出場試合数<br />

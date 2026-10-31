@@ -188,7 +188,7 @@ function appendAward(datasJson, division) {
             const hasValidValues = Number.isFinite(qhproValue) && Number.isFinite(qhValue) && Number.isFinite(throwValue);
             if (!hasValidValues) return "";
 
-            const qhpro = `${(qhproValue * 100).toFixed(2)}%`;
+            const qhpro = formatPercentHtml(qhproValue * 100, 2);
             const qhByThrow = `${Math.floor(qhValue)}/${Math.floor(throwValue)}`;
             if (i > 0 && (qhproValue < qhDatas[i - 1]['qhpro'])) {
                 rank += tie;
@@ -200,9 +200,9 @@ function appendAward(datasJson, division) {
             return `
                 <tr>
                     <td class="is-size-7 is-narrow has-text-right">${rank}</td>
-                    <td class="is-size-7 has-text-left">
+                    <td class="is-size-7 has-text-left has-text-weight-medium">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
-                    <td class="is-size-7 has-text-left">
+                    <td class="is-size-7 has-text-left ">
                         <div class="is-flex is-align-items-center is-justify-content-flex-start">
                             ${clubIcon}
                             <a href="./club/?cid=${row['cid']}">${row['cname']}</a>
@@ -230,7 +230,7 @@ function appendAward(datasJson, division) {
             const hasValidValues = Number.isFinite(faproValue) && Number.isFinite(faultValue) && Number.isFinite(throwValue);
             if (!hasValidValues) return "";
 
-            const fapro = `${(faproValue * 100).toFixed(2)}%`;
+            const fapro = formatPercentHtml(faproValue * 100, 2);
             const throws = `${Math.floor(faultValue)}/${Math.floor(throwValue)}`;
             if (i > 0 && (faproValue > faDatas[i - 1]['faupro'])) {
                 rank += tie;
@@ -242,7 +242,7 @@ function appendAward(datasJson, division) {
             return `
                 <tr>
                     <td class="is-size-7 is-narrow has-text-right">${rank}</td>
-                    <td class="is-size-7 has-text-left">
+                    <td class="is-size-7 has-text-left has-text-weight-medium">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="is-size-7 has-text-left">
                         <div class="is-flex is-align-items-center is-justify-content-flex-start">
@@ -283,7 +283,7 @@ function appendAward(datasJson, division) {
             return `
                 <tr>
                     <td class="is-size-7 is-narrow has-text-right">${rank}</td>
-                    <td class="is-size-7 has-text-left">
+                    <td class="is-size-7 has-text-left has-text-weight-medium">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="is-size-7 has-text-left">
                         <div class="is-flex is-align-items-center is-justify-content-flex-start">
@@ -322,7 +322,7 @@ function appendAward(datasJson, division) {
             return `
                 <tr>
                     <td class="is-size-7 is-narrow has-text-right">${rank}</td>
-                    <td class="is-size-7 has-text-left">
+                    <td class="is-size-7 has-text-left has-text-weight-medium">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="is-size-7 has-text-left">
                         <div class="is-flex is-align-items-center is-justify-content-flex-start">

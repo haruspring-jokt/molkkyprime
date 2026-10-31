@@ -361,7 +361,8 @@ function buildClubOtherStatsTable(records) {
     const bestQ = pick(valid(items, x => roundRate(x.rec.Q, x.rec.T)), Math.max);
     const bestF = pick(valid(items, x => roundRate(x.rec.F, x.rec.T)), Math.min);
     const cellOf = (v, text, isBest) => v === null ? "-" : isBest ? `<span class="has-text-info has-text-weight-bold">${text}</span>` : text;
-    const rowOf = (labelHtml, x, withBest) => `<tr><td class="is-size-7">${labelHtml}</td>`
+    const rowOf = (labelHtml, x, withBest) => `
+        <tr><td class="is-size-7 has-text-weight-medium">${labelHtml}</td>`
         + `<td class="is-size-7 has-text-right">${cellOf(x.avg, x.avg === null ? "" : x.avg.toFixed(2), withBest && x.avg === bestAvg)}</td>`
         + `<td class="is-size-7 has-text-right">${cellOf(x.fa, x.fa === null ? "" : formatPercentCell(x.fa), withBest && x.fa === bestFa)}</td>`
         + `<td class="is-size-7 has-text-right is-family-monospace">${buildQnfText(x.rec,
@@ -395,7 +396,7 @@ function buildClubQnfTable(records, groups, title) {
             const boldF = withBest && roundRate(s.F, s.T) === best[i].f;
             return `<td class="is-size-7 has-text-right is-family-monospace"${optBackgroundClass(s)}>${buildQnfText(s, boldQ, boldF)}</td>`;
         }).join("");
-        return `<tr><td class="is-size-7">${labelHtml}</td>${cells}</tr>`;
+        return `<tr><td class="is-size-7 has-text-weight-medium">${labelHtml}</td>${cells}</tr>`;
     };
     const rows = records.map((r, i) => rowOf(
         `<a href="../club/?cid=${encodeURIComponent(r.clubId)}">${escapeHtml(r.clubShortName)}</a>`, stats[i], true)).join("");
@@ -461,8 +462,10 @@ function roundOpt(value) {
     return value === "" || value == null || isNaN(n) ? null : Math.round(n * 100) / 100;
 }
 
-const formatPercentCell = v => `${v.toFixed(1)}%`;
-const formatIntPercentCell = v => `${v}%`;
+const formatPercentCell = v => formatPercentHtml(v, 1);
+const formatIntPercentCell = v => formatPercentHtml(v, 0);
+const formatPercentCellGrey = v => formatPercentHtml(Math.round(v), 0);
+const formatIntPercentCellGrey = v => formatPercentHtml(Math.round(v), 0);
 const formatOptCell = v => v.toFixed(2);
 
 function escapeHtml(text) {
@@ -478,8 +481,8 @@ function buildClubMainStatsTable(records, season) {
         { head: "ｾｯﾄ率", value: r => intPct(r.setWinNum, r.setNum), format: formatIntPercentCell, best: "max" },
         { head: "先攻", value: r => intPct(r.attackSetWinNum, r.attackSetNum), format: formatIntPercentCell, best: "max" },
         { head: "後攻", value: r => intPct(r.defenseSetWinNum, r.defenseSetNum), format: formatIntPercentCell, best: "max" },
-        { head: "QH", value: r => pct(r.qhNum, r.throwNum), format: formatPercentCell, best: "max" },
-        { head: "FA", value: r => pct(r.faultNum, r.throwNum), format: formatPercentCell, best: "min" },
+        { head: "QH", value: r => pct(r.qhNum, r.throwNum), format: formatPercentCellGrey, best: "max" },
+        { head: "FA", value: r => pct(r.faultNum, r.throwNum), format: formatPercentCellGrey, best: "min" },
     ];
     // OPT = 各巡のOPT合計 / 投てき数（通算・リーグ平均にも対応）
     columns.push({
@@ -507,7 +510,8 @@ function buildClubMainStatsTable(records, season) {
         }).join("");
         return `
         <tr>
-            <td class="is-size-7"><a href="../club/?cid=${encodeURIComponent(r.clubId)}">${escapeHtml(r.clubShortName)}</a></td>
+            <td class="is-size-7 has-text-weight-medium">
+                <a href="../club/?cid=${encodeURIComponent(r.clubId)}">${escapeHtml(r.clubShortName)}</a></td>
             ${cells}
         </tr>`;
     }).join("");
@@ -544,12 +548,12 @@ function buildClubMainStatsTable(records, season) {
 function buildClubFirstFaultTable(records) {
     const pct = (n, d) => roundPercent(ratio(n, d));
     const columns = [
-        { head: "FF率", value: r => pct(r.firstFaultSetNum, r.setNum), best: "min" },
-        { head: "(相手)", value: r => pct(r.enemyFirstFaultSetNum, r.setNum), best: "max" },
-        { head: "先攻FF", value: r => pct(r.attackFirstFaultSetNum, r.attackSetNum), best: "min" },
-        { head: "(相手)", value: r => pct(r.attackEnemyFirstFaultSetNum, r.attackSetNum), best: "max" },
-        { head: "後攻FF", value: r => pct(r.defenseFirstFaultSetNum, r.defenseSetNum), best: "min" },
-        { head: "(相手)", value: r => pct(r.defenseEnemyFirstFaultSetNum, r.defenseSetNum), best: "max" },
+        { head: "FF率", value: r => pct(r.firstFaultSetNum, r.setNum), format: formatPercentCellGrey, best: "min" },
+        { head: "(相手)", value: r => pct(r.enemyFirstFaultSetNum, r.setNum), format: formatPercentCellGrey, best: "max" },
+        { head: "先攻FF", value: r => pct(r.attackFirstFaultSetNum, r.attackSetNum), format: formatPercentCellGrey, best: "min" },
+        { head: "(相手)", value: r => pct(r.attackEnemyFirstFaultSetNum, r.attackSetNum), format: formatPercentCellGrey, best: "max" },
+        { head: "後攻FF", value: r => pct(r.defenseFirstFaultSetNum, r.defenseSetNum), format: formatPercentCellGrey, best: "min" },
+        { head: "(相手)", value: r => pct(r.defenseEnemyFirstFaultSetNum, r.defenseSetNum), format: formatPercentCellGrey, best: "max" },
     ];
     const bestValues = columns.map(col => {
         const vals = records.map(col.value).filter(v => v !== null);
@@ -559,11 +563,13 @@ function buildClubFirstFaultTable(records) {
         const cells = columns.map((col, i) => {
             const v = col.value(r);
             const cls = v !== null && v === bestValues[i] ? " has-text-info has-text-weight-bold" : "";
-            return `<td class="is-size-7 has-text-right${cls}">${v === null ? "-" : formatPercentCell(v)}</td>`;
+            const format = col.format || formatPercentCellGrey;
+            return `<td class="is-size-7 has-text-right${cls}">${v === null ? "-" : format(v)}</td>`;
         }).join("");
         return `
         <tr>
-            <td class="is-size-7"><a href="../club/?cid=${encodeURIComponent(r.clubId)}">${escapeHtml(r.clubShortName)}</a></td>
+            <td class="is-size-7 has-text-weight-medium">
+                <a href="../club/?cid=${encodeURIComponent(r.clubId)}">${escapeHtml(r.clubShortName)}</a></td>
             ${cells}
         </tr>`;
     }).join("");
@@ -574,7 +580,8 @@ function buildClubFirstFaultTable(records) {
             <td class="is-size-7">リーグ平均</td>
             ${columns.map(col => {
         const v = col.value(total);
-        return `<td class="is-size-7 has-text-right">${v === null ? "-" : formatPercentCell(v)}</td>`;
+        const format = col.format || formatPercentCellGrey;
+        return `<td class="is-size-7 has-text-right">${v === null ? "-" : format(v)}</td>`;
     }).join("")}
         </tr>` : "";
     return `
@@ -674,7 +681,11 @@ function buildRankingTableHtml(title, note, rows, columns) {
     const body = rows.length === 0
         ? `<tr><td class="is-size-7" colspan="${columns.length + 1}">該当なし</td></tr>`
         : rows.map(({ rank, rec }) => `<tr><td class="is-size-7 is-narrow has-text-right">${rank}</td>`
-            + columns.map(c => `<td class="is-size-7${c.flexible ? " has-text-left" : " is-narrow has-text-right"}">${c.cell(rec)}</td>`).join("")
+            + columns.map(c => {
+                const isPlayerOrClubColumn = c.head === "選手" || c.head === "クラブ";
+                const weightClass = isPlayerOrClubColumn ? " has-text-weight-medium" : "";
+                return `<td class="is-size-7${weightClass} ${c.flexible ? " has-text-left" : " is-narrow has-text-right"}">${c.cell(rec)}</td>`;
+            }).join("")
             + `</tr>`).join("");
     return `
         <h5 class="is-size-5 content">${title}
@@ -688,7 +699,11 @@ function buildRankingTableHtml(title, note, rows, columns) {
 }
 
 const playerLink = r => `<a href="../player/?pid=${encodeURIComponent(r.pid)}">${escapeHtml(r.playerName)}</a>`;
-const clubLink = r => `<a href="../club/?cid=${encodeURIComponent(r.cid)}">${escapeHtml(r.clubName)}</a>`;
+const clubLink = r => `
+    <div class="is-flex is-align-items-center is-justify-content-flex-start">
+        ${getClubMiniIconHtml(r.cid, "../")}
+        <a href="../club/?cid=${encodeURIComponent(r.cid)}">${escapeHtml(r.clubName)}</a>
+    </div>`;
 const PLAYER_BASE_COLUMNS = [
     { head: "選手", flexible: true, cell: playerLink },
     { head: "クラブ", flexible: true, cell: clubLink },
@@ -740,7 +755,7 @@ function renderPlayerSection() {
                 detailed.add(sorted[i - 1].pid);
             }
         });
-        return r => `${(rate(r) * 100).toFixed(detailed.has(r.pid) ? 2 : 1)}%`;
+        return r => formatPercentHtml(rate(r) * 100, detailed.has(r.pid) ? 2 : 1);
     };
     const qhRate = r => r.qh / r.throw;
     const faultRate = r => r.fault / r.throw;

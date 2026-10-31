@@ -65,6 +65,20 @@ function getClubMiniIconHtml(cid, relativeRoot = "./", size = 20) {
 }
 
 /**
+ * 率を表示用に整形する。数値と % の文字色・サイズを分けて表示する。
+ * @param {number|string} value
+ * @param {number} digits
+ * @returns {string}
+ */
+function formatPercentHtml(value, digits = 1) {
+    const numericValue = Number(value);
+    if (!Number.isFinite(numericValue)) {
+        return "-";
+    }
+    return `${numericValue.toFixed(digits)}<span class="has-text-grey-light is-size-8">%</span>`;
+}
+
+/**
  * ヘッダー追加
  */
 function appendHeader() {
@@ -220,14 +234,6 @@ function appendFooter() {
 
     // フッターに追加
     $("#mkpl-footer").append(footerHtml);
-}
-
-/**
- * スタッツページ用JSONを取得する
- * @returns {JQuery.jqXHR} jQuery Ajax Promise
- */
-function fetchStatsPageJson() {
-    return JsonRepository.fetchStatsPageJson();
 }
 
 /**

@@ -83,10 +83,10 @@ function appendStandings(datasJson, tableId, progressId, group) {
         const relativeRoot = getStandingsRelativeRoot();
         const clubIcon = getClubMiniIconHtml(rank["cid"], relativeRoot);
         const clubLink = `${relativeRoot}club/?cid=${rank["cid"]}`;
-        const recentCellHtml = `<td class="${textSize} is-narrow has-text-centered" data-standings-column="recent">${rank["recent"] ?? ""}</td>`;
+        const recentCellHtml = `<td class="is-size-8 is-narrow has-text-centered" data-standings-column="recent">${rank["recent"] ?? ""}</td>`;
         const tiebreakCell = `<td class="${textSize} is-narrow has-text-right${shouldShowTiebreak ? "" : " is-hidden"}" data-standings-column="tiebreak">${rank["tiebreak"] ?? ""}</td>`;
-        const pointDiffCell = `<td class="${textSize} is-narrow has-text-right" data-standings-column="pointdiff">${rank["pointdiff"] ?? ""}</td>`;
-        const fourCountCell = `<td class="${textSize} is-narrow has-text-right${showFourCount ? "" : " is-hidden"}" data-standings-column="fourcount">${rank["fourcount"] ?? ""}</td>`;
+        const pointDiffCell = `<td class="is-size-8 is-narrow has-text-right" data-standings-column="pointdiff">${rank["pointdiff"] ?? ""}</td>`;
+        const fourCountCell = `<td class="is-size-8 is-narrow has-text-right${showFourCount ? "" : " is-hidden"}" data-standings-column="fourcount">${rank["fourcount"] ?? ""}</td>`;
         const fullClubNameCell = `
             <td class="${textSize} is-hidden-mobile">
                 <div class="is-flex is-align-items-center has-text-weight-medium">

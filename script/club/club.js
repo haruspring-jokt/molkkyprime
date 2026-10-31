@@ -542,7 +542,7 @@ function appendPlayers(players, cid, isYksi) {
         if (isStaff) {
             $('#player-table').append(`
                 <tr>
-                    <td class="is-size-7 has-text-left">${playerName}</td>
+                    <td class="is-size-7 has-text-left has-text-weight-medium">${playerName}</td>
                     <td class="is-size-7 is-narrow has-text-right">-</td>
                     <td class="is-size-7 is-narrow has-text-right">-</td>
                     <td class="is-size-7 is-narrow has-text-left">-</td>
@@ -631,9 +631,15 @@ function getResultClass(game, cid) {
  * @returns 
  */
 function getClubNameTd(cid, cname, selectedCid) {
-    if (cid == selectedCid) {
-        return cname;
-    } else {
-        return `<a href="../club/?cid=${cid}">${cname}</a>`;
-    }
+    const clubIcon = typeof getClubMiniIconHtml === "function" ? getClubMiniIconHtml(cid, "../") : "";
+    const clubNameHtml = (cid == selectedCid)
+        ? cname
+        : `<a href="../club/?cid=${cid}">${cname}</a>`;
+
+    return `
+        <div class="is-flex is-align-items-center is-justify-content-flex-start">
+            ${clubIcon}
+            ${clubNameHtml}
+        </div>
+    `;
 }
