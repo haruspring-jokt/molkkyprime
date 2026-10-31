@@ -9,12 +9,7 @@ $(function () {
 });
 
 function fetchMatch(gid) {
-    var url = `https://storage.googleapis.com/molkkyprime-hp/matchPage.json`;
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
+    JsonRepository.fetchMatchPageJson().done(function (datas) {
         var datasStringify = JSON.stringify(datas);
         var datasJson = JSON.parse(datasStringify);
         var match = {
@@ -27,11 +22,7 @@ function fetchMatch(gid) {
             })
         };
 
-        $.ajax({
-            url: `https://storage.googleapis.com/molkkyprime-hp/playerPage.json`,
-            type: 'GET',
-            dataType: 'json',
-        }).done(function (playerDatas) {
+        JsonRepository.fetchPlayerPageJson().done(function (playerDatas) {
             const playerIdsByName = (playerDatas.playerInfo || []).reduce(function (ids, player) {
                 ids[player.playerName] = player.pid;
                 return ids;
@@ -64,8 +55,8 @@ function appendMatch(data, playerIdsByName) {
         `);
     }
 
-    var hcnfull = `<a href="../club/?cid=${match['hcid']}">${convertClubFromCid(match['hcid'])}</a>`;
-    var acnfull = `<a href="../club/?cid=${match['acid']}">${convertClubFromCid(match['acid'])}</a>`;
+    var hcnfull = `<a href="../club/?cid=${match['hcid']}">${MkplConstants.clubNameMapById.get(match['hcid']) || ""}</a>`;
+    var acnfull = `<a href="../club/?cid=${match['acid']}">${MkplConstants.clubNameMapById.get(match['acid']) || ""}</a>`;
 
     // TEMP 2025-26 チャレンジ対応: GIDの末尾2文字を数字化し、20以下の場合はグループA、それ以上はグループBとする
     const group = match['gid'].slice(0, 3) == "GDC" && Number(match['gid'].slice(-2)) <= 20 ? "グループA" :
@@ -97,8 +88,32 @@ function appendMatch(data, playerIdsByName) {
     const awaySetCount = Number(match['asn']);
     const isHomeSetWinner = homeSetCount > awaySetCount && [4, 5].includes(homeSetCount);
     const isAwaySetWinner = awaySetCount > homeSetCount && [4, 5].includes(awaySetCount);
-    $('#match-home-set-score').append(match['hsn']).toggleClass('has-text-primary', isHomeSetWinner);
-    $('#match-away-set-score').append(match['asn']).toggleClass('has-text-primary', isAwaySetWinner);
+    const homeScoreHtml = `${getClubMiniIconHtml(match['hcid'], '../', 50)}<span>${match['hsn']}</span>`;
+    const awayScoreHtml = `<span>${match['asn']}</span>${getClubMiniIconHtml(match['acid'], '../', 50)}`;
+
+    $('#match-home-set-score')
+        .html(homeScoreHtml)
+        .css({
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            lineHeight: '1',
+            verticalAlign: 'middle'
+        })
+        .toggleClass('has-text-primary', isHomeSetWinner);
+
+    $('#match-away-set-score')
+        .html(awayScoreHtml)
+        .css({
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            lineHeight: '1',
+            verticalAlign: 'middle'
+        })
+        .toggleClass('has-text-primary', isAwaySetWinner);
 
     // 両クラブの通算対戦成績を取得する
     const totalMatch = Array.isArray(data.totalMatch) ? data.totalMatch : [];

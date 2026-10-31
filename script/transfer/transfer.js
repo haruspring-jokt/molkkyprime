@@ -1,6 +1,5 @@
 // データ取得先スプレッドシートAPIURL
 const EMPTY_CID = "CZZ";
-const SMALL_TEXT_SIZE = "is-size-7";
 
 (function ($) {
     /**
@@ -25,7 +24,7 @@ const SMALL_TEXT_SIZE = "is-size-7";
 
 function appendConstLinks() {
     $('#club-menu-list').append(`
-        <li><a href="${MolkkyPrimeConstants.clubPlayerSheetUrl}"
+        <li><a href="${MkplConstants.clubPlayerSheetUrl}"
         class="has-text-link is-size-7" target="_blank">詳細はスプレッドシートへ</a></li>
     `);
 }
@@ -35,12 +34,7 @@ function appendConstLinks() {
  * @param {string} cid クラブID
  */
 function initDisplay(cid) {
-    var url = `https://storage.googleapis.com/molkkyprime-hp/clubPage.json`;
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
+    JsonRepository.fetchClubPageJson().done(function (datas) {
         var datasStringify = JSON.stringify(datas);
         localStorage.setItem('clubPageDataStringify', datasStringify);
         var pageData = JSON.parse(datasStringify);
@@ -78,7 +72,7 @@ function getClubNameTd(cid, cname, selectedCid) {
 function appendTransfer(datasJson, tableId, progressId) {
     datasJson.some(function (tf, i) {
         if (tf['isEnable']) {
-            var division = (tf['division'] == "YKSI") ? MolkkyPrimeConstants.firstDivShortName : MolkkyPrimeConstants.secondDivShortName;
+            var division = (tf['division'] == "YKSI") ? MkplConstants.firstDivShortName : MkplConstants.secondDivShortName;
             var color = (tf['division'] == "YKSI") ? "has-text-primary" : "has-text-success-40";
             var tfDate = new Date(tf['date']).toLocaleDateString();
             var fromCname = tf['fromCname'] != "" ? tf['fromCname'] : "無所属";
@@ -93,9 +87,9 @@ function appendTransfer(datasJson, tableId, progressId) {
             $(tableId).append(`
                 <tr class="mkpl-player-row-1">
                     <input type="hidden" name="transfer-id" value="${tf['id']}" /> 
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left">${tfDate}</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left"><strong class="${color}">${division}</strong></td>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">
+                    <td class="is-size-7 is-narrow has-text-left">${tfDate}</td>
+                    <td class="is-size-7 is-narrow has-text-left"><strong class="${color}">${division}</strong></td>
+                    <td class="is-size-7 has-text-left">
                         ${fromCname} ▶ ${toCname}<br/>
                         ${tf['title']}
                     </td>
@@ -118,7 +112,7 @@ function appendFreeAgents(datasJson, tableId, progressId) {
             <div class="table-container container is-max-tablet" id="">
                 <table class="table is-fullwidth is-narrow">
                 <tr>
-                    <th class="is-light ${SMALL_TEXT_SIZE}">選手</th>
+                    <th class="is-light is-size-7">選手</th>
                 </tr>
         `;
     datasJson.some(function (fa, i) {
@@ -140,7 +134,7 @@ function appendFreeAgents(datasJson, tableId, progressId) {
                     <td class="is-size-6 has-text-left"><strong>${fa['pname']}</strong></td>
                 </tr>
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">${profile}</td>
+                    <td class="is-size-7 has-text-left">${profile}</td>
                 </tr>
             `;
     });

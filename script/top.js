@@ -1,5 +1,3 @@
-const SMALL_TEXT_SIZE = "is-size-7";
-
 $(document).ready(() => {
     /**
      * ページ個別
@@ -35,12 +33,7 @@ const loadData = () => {
  * データ取得
  */
 const fetchData = () => {
-    const url = `https://storage.googleapis.com/molkkyprime-hp/topPage.json`;
-    return $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    });
+    return JsonRepository.fetchTopPageJson();
 };
 
 /**
@@ -50,114 +43,11 @@ const processFetchedData = (datasJson) => {
     appendNews(datasJson['news']);
     appendStandings(datasJson['rankYksi'], "#yksi-standings", "#yksi-standings-progress", "");
     const monthYksiFiltered = filterMonthEntries(datasJson['monthYksi']);
-    appendSchedule(monthYksiFiltered, '#yksi-monthly-schedule', "#yksi-schedule-progress", MolkkyPrimeConstants.firstDivName);
+    appendSchedule(monthYksiFiltered, '#yksi-monthly-schedule', "#yksi-schedule-progress", MkplConstants.firstDivName);
     appendAward(datasJson['award'], "yksi");
     appendStandings(datasJson['rankKaksi'], "#kaksi-standings", "#kaksi-standings-progress", "");
     const monthKaksiFiltered = filterMonthEntries(datasJson['monthKaksi']);
-    appendSchedule(monthKaksiFiltered, '#kaksi-monthly-schedule', "#kaksi-schedule-progress", MolkkyPrimeConstants.secondDivName);
-};
-
-/**
- * 月別データのフィルター
- * - 月 (month) が現在の月と一致する
- * - OR 年月( year + month ) が現在の年月より前 かつ isdonenumber !== 1
- * - OR リーグ開幕前の場合は最初の月のデータを含める
- * - OR フィルタ結果が空の場合は最新月のデータを含める
- */
-const filterMonthEntries = (monthEntries = []) => {
-    if (!Array.isArray(monthEntries)) return [];
-
-    const today = new Date();
-    const currentYear = today.getFullYear();
-    const currentMonth = today.getMonth() + 1;
-    const currentYm = currentYear * 100 + currentMonth;
-
-    const getMonthKey = (year, month) => year * 100 + month;
-
-    const validEntries = monthEntries.filter(entry => {
-        const year = Number(entry?.year);
-        const month = Number(entry?.month);
-        return Number.isFinite(year) && Number.isFinite(month);
-    });
-
-    if (validEntries.length === 0) return [];
-
-    const earliestEntry = validEntries.reduce((earliest, entry) => {
-        const earliestYm = getMonthKey(Number(earliest.year), Number(earliest.month));
-        const entryYm = getMonthKey(Number(entry.year), Number(entry.month));
-        return entryYm < earliestYm ? entry : earliest;
-    }, validEntries[0]);
-
-    const latestEntry = validEntries.reduce((latest, entry) => {
-        const latestYm = getMonthKey(Number(latest.year), Number(latest.month));
-        const entryYm = getMonthKey(Number(entry.year), Number(entry.month));
-        return entryYm > latestYm ? entry : latest;
-    }, validEntries[0]);
-
-    const earliestYm = getMonthKey(Number(earliestEntry.year), Number(earliestEntry.month));
-    const latestYm = getMonthKey(Number(latestEntry.year), Number(latestEntry.month));
-
-    // フィルタ
-    const filtered = validEntries.filter(entry => {
-        const year = Number(entry?.year);
-        const month = Number(entry?.month);
-        const isDoneNumber = Number(entry?.isdonenumber);
-
-        const entryYm = getMonthKey(year, month);
-        const isCurrentMonth = (year === currentYear && month === currentMonth);
-        const isPastAndNotDone = (entryYm < currentYm && isDoneNumber !== 1);
-        const isBeforeOpeningMonth = currentYm < earliestYm && entryYm === earliestYm;
-
-        // TODO entry.date が現在月の範囲内のものもreturnのOR条件に追加する
-        const entryDate = entry?.date ? new Date(entry.date) : null;
-        const isWithinCurrentMonth = entryDate && entryDate.getFullYear() === currentYear && entryDate.getMonth() + 1 === currentMonth;
-
-        return isCurrentMonth || isPastAndNotDone || isWithinCurrentMonth || isBeforeOpeningMonth;
-    });
-
-    const fallbackEntries = validEntries.filter(entry => {
-        const entryYm = getMonthKey(Number(entry.year), Number(entry.month));
-        return entryYm === latestYm;
-    });
-
-    const resultEntries = filtered.length > 0 ? filtered : fallbackEntries;
-
-    // ソート
-    return resultEntries.sort((a, b) => {
-        const aHasDate = !!a?.date;
-        const bHasDate = !!b?.date;
-
-        // date 未設定は先頭
-        if (!aHasDate && bHasDate) return -1;
-        if (aHasDate && !bHasDate) return 1;
-
-        // 両方 date 未設定: gid で比較（無ければ等価）
-        if (!aHasDate && !bHasDate) {
-            const agid = a?.gid ?? "";
-            const bgid = b?.gid ?? "";
-            return agid.localeCompare(bgid, undefined, { numeric: true });
-        }
-
-        // 両方 date 設定: 日付比較（昇順）
-        const atime = Date.parse(a.date);
-        const btime = Date.parse(b.date);
-
-        if (Number.isNaN(atime) && Number.isNaN(btime)) {
-            // どちらも無効な日付→gidで比較
-            const agid = a?.gid ?? "";
-            const bgid = b?.gid ?? "";
-            return agid.localeCompare(bgid, undefined, { numeric: true });
-        }
-        if (Number.isNaN(atime)) return -1; // 無効日付は先に（要件に合わせるならここを1に変更）
-        if (Number.isNaN(btime)) return 1;
-
-        if (atime !== btime) return atime - btime;
-
-        // 同じ日付の場合は gid 昇順
-        const agid = a?.gid ?? "";
-        const bgid = b?.gid ?? "";
-        return agid.localeCompare(bgid, undefined, { numeric: true });
-    });
+    appendSchedule(monthKaksiFiltered, '#kaksi-monthly-schedule', "#kaksi-schedule-progress", MkplConstants.secondDivName);
 };
 
 /**
@@ -195,30 +85,30 @@ const createImageHtml = (src, alt) => `
 const setupLinks = () => {
     const commonLinks = [
         { href: "./regulation/", text: "規約" },
-        // { href: MolkkyPrimeConstants.scoreSheetTemplateUrl, text: "推奨スコアシート（PDF）" },
-        // { href: MolkkyPrimeConstants.gameDayGuideUrl, text: "当日の流れガイド（PDF）" },
-        // { href: MolkkyPrimeConstants.season202425FirstDivScoreUrl, text: "提出済みスコアシート保存フォルダ（Googleドライブ）" },
-        { href: MolkkyPrimeConstants.clubPlayerSheetUrl, text: "選手・クラブリスト（Googleスプレッドシート）" }
+        // { href: MkplConstants.scoreSheetTemplateUrl, text: "推奨スコアシート（PDF）" },
+        // { href: MkplConstants.gameDayGuideUrl, text: "当日の流れガイド（PDF）" },
+        // { href: MkplConstants.season202425FirstDivScoreUrl, text: "提出済みスコアシート保存フォルダ（Googleドライブ）" },
+        { href: MkplConstants.clubPlayerSheetUrl, text: "選手・クラブリスト（Googleスプレッドシート）" }
     ];
     // appendLinks('#mkpl-top-common-links', commonLinks);
 
     const yksiLinks = [
-        { href: MolkkyPrimeConstants.season202627YksiSheetUrl, text: "日程・結果・順位表スプレッドシート" },
-        // { href: MolkkyPrimeConstants.currentSeasonFirstDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
-        { href: MolkkyPrimeConstants.allSeasonStatsSheetUrl, text: "リーグ通算成績（Googleスプレッドシート）" },
-        { href: MolkkyPrimeConstants.season202627FirstDivScoreUrl, text: "スコアシート保存フォルダ（Googleドライブ）" }
+        { href: MkplConstants.season202627YksiSheetUrl, text: "日程・結果・順位表スプレッドシート" },
+        // { href: MkplConstants.currentSeasonFirstDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
+        { href: MkplConstants.allSeasonStatsSheetUrl, text: "リーグ通算成績（Googleスプレッドシート）" },
+        { href: MkplConstants.season202627FirstDivScoreUrl, text: "スコアシート保存フォルダ（Googleドライブ）" }
     ];
     // appendLinks('#mkpl-yksi-links', yksiLinks);
 
     const kaksiLinks = [
-        { href: MolkkyPrimeConstants.season202627KaksiSheetUrl, text: "日程・結果・順位表スプレッドシート" },
-        // { href: MolkkyPrimeConstants.currentSeasonSecondDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
-        { href: MolkkyPrimeConstants.season202627SecondDivScoreUrl, text: "スコアシート保存フォルダ（Googleドライブ）" }
+        { href: MkplConstants.season202627KaksiSheetUrl, text: "日程・結果・順位表スプレッドシート" },
+        // { href: MkplConstants.currentSeasonSecondDivGuideUrl, text: "シーズンガイド（Googleプレゼンテーション）" },
+        { href: MkplConstants.season202627SecondDivScoreUrl, text: "スコアシート保存フォルダ（Googleドライブ）" }
     ];
     // appendLinks('#mkpl-kaksi-links', kaksiLinks);
 
     $('#mkpl-news-links').html(`
-        <a href="${MolkkyPrimeConstants.newsLinks}" target="_blank">ニュース一覧へ</a>
+        <a href="${MkplConstants.newsLinks}" target="_blank">ニュース一覧へ</a>
     `);
 };
 
@@ -237,13 +127,13 @@ const appendLinks = (containerId, links) => {
  * 説明文設定
  */
 const setupDescriptions = () => {
-    $('#mkpl-rank-rules-yksi').html(MolkkyPrimeConstants.rankRulesYksi);
-    $('#mkpl-rank-rules-kaksi').html(MolkkyPrimeConstants.rankRulesKaksi);
+    $('#mkpl-rank-rules-yksi').html(MkplConstants.rankRulesYksi);
+    $('#mkpl-rank-rules-kaksi').html(MkplConstants.rankRulesKaksi);
 
-    $('#top-yksi-schedule-link').html(createDescriptionHtml(MolkkyPrimeConstants.season202425AllDivSheetUrl));
-    $('#top-kaksi-schedule-link').html(createDescriptionHtml(MolkkyPrimeConstants.season202425AllDivSheetUrl));
+    $('#top-yksi-schedule-link').html(createDescriptionHtml(MkplConstants.season202425AllDivSheetUrl));
+    $('#top-kaksi-schedule-link').html(createDescriptionHtml(MkplConstants.season202425AllDivSheetUrl));
 
-    $('#top-opt-detail').html(MolkkyPrimeConstants.optDetail);
+    $('#top-opt-detail').html(MkplConstants.optDetail);
 };
 
 /**
@@ -259,7 +149,7 @@ const createDescriptionHtml = (url) => `
  * クラブリンク設定
  */
 const setupClubLinks = () => {
-    MolkkyPrimeConstants.yksiClubSnsUrls.forEach(row => {
+    MkplConstants.yksiClubSnsUrls.forEach(row => {
         $('#top-yksi-club-links').append(`
             <li class="is-size-6"><a href="${row['url']}">${row['name']}</a></li>
         `);
@@ -306,15 +196,20 @@ function appendAward(datasJson, division) {
             } else {
                 tie++;
             }
+            const clubIcon = getClubMiniIconHtml(row['cid'], "./");
             return `
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank}</td>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">
+                    <td class="is-size-7 is-narrow has-text-right">${rank}</td>
+                    <td class="is-size-7 has-text-left">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">
-                        <a href="./club/?cid=${row['cid']}">${row['cname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${qhpro}</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${qhByThrow}</td>
+                    <td class="is-size-7 has-text-left">
+                        <div class="is-flex is-align-items-center is-justify-content-flex-start">
+                            ${clubIcon}
+                            <a href="./club/?cid=${row['cid']}">${row['cname']}</a>
+                        </div>
+                    </td>
+                    <td class="is-size-7 is-narrow has-text-right">${qhpro}</td>
+                    <td class="is-size-7 is-narrow has-text-right">${qhByThrow}</td>
                 </tr>
             `;
         }).join("");
@@ -343,15 +238,20 @@ function appendAward(datasJson, division) {
             } else {
                 tie++;
             }
+            const clubIcon = getClubMiniIconHtml(row['cid'], "./");
             return `
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank}</td>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">
+                    <td class="is-size-7 is-narrow has-text-right">${rank}</td>
+                    <td class="is-size-7 has-text-left">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">
-                        <a href="./club/?cid=${row['cid']}">${row['cname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${fapro}</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${throws}</td>
+                    <td class="is-size-7 has-text-left">
+                        <div class="is-flex is-align-items-center is-justify-content-flex-start">
+                            ${clubIcon}
+                            <a href="./club/?cid=${row['cid']}">${row['cname']}</a>
+                        </div>
+                    </td>
+                    <td class="is-size-7 is-narrow has-text-right">${fapro}</td>
+                    <td class="is-size-7 is-narrow has-text-right">${throws}</td>
                 </tr>
             `;
         }).join("");
@@ -379,15 +279,20 @@ function appendAward(datasJson, division) {
             } else {
                 tie++;
             }
+            const clubIcon = getClubMiniIconHtml(row['cid'], "./");
             return `
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank}</td>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">
+                    <td class="is-size-7 is-narrow has-text-right">${rank}</td>
+                    <td class="is-size-7 has-text-left">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">
-                        <a href="./club/?cid=${row["cid"]}">${row["cname"]}</a></td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${opt}</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${throws}</td>
+                    <td class="is-size-7 has-text-left">
+                        <div class="is-flex is-align-items-center is-justify-content-flex-start">
+                            ${clubIcon}
+                            <a href="./club/?cid=${row["cid"]}">${row["cname"]}</a>
+                        </div>
+                    </td>
+                    <td class="is-size-7 is-narrow has-text-right">${opt}</td>
+                    <td class="is-size-7 is-narrow has-text-right">${throws}</td>
                 </tr>
             `;
         }).join("");
@@ -413,14 +318,19 @@ function appendAward(datasJson, division) {
                 tie++;
             }
             if (rank > 10) { return };
+            const clubIcon = getClubMiniIconHtml(row['cid'], "./");
             return `
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank}</td>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">
+                    <td class="is-size-7 is-narrow has-text-right">${rank}</td>
+                    <td class="is-size-7 has-text-left">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">
-                        <a href="./club/?cid=${row['cid']}">${row['cname']}</a></td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${finish}</td>
+                    <td class="is-size-7 has-text-left">
+                        <div class="is-flex is-align-items-center is-justify-content-flex-start">
+                            ${clubIcon}
+                            <a href="./club/?cid=${row['cid']}">${row['cname']}</a>
+                        </div>
+                    </td>
+                    <td class="is-size-7 is-narrow has-text-right">${finish}</td>
                 </tr>
             `;
         }).join("");
@@ -428,117 +338,3 @@ function appendAward(datasJson, division) {
     }
 }
 
-/**
- * 順位表設定
- * @param {*} datas 
- * @param {*} datasJson 
- * @param {*} tableId 
- * @param {*} progressId 
- */
-function appendStandings(datasJson, tableId, progressId, group) {
-    // グループが分かれている場合フィルタリング（25-26シーズンはチャレンジのみ）
-    if (group != "") {
-        datasJson = datasJson.filter(item => {
-            return item.group === group;
-        });
-    }
-    const rowsHtml = datasJson.map((rank) => {
-        const ranknum = Number(rank["rank"]);
-        if (ranknum < 1) { return; }
-        const clubName = rank["cname"];
-        const clubInfo = getClubMapFromId(rank["cid"]);
-        const shortClubName = clubInfo && clubInfo.shortName ? clubInfo.shortName : clubName;
-        const relativeRoot = location.pathname.startsWith("/schedule/") ? "../" : "./";
-        const clubIcon = clubInfo && clubInfo.miniIcon ?
-            `<img src="${relativeRoot}asset/club/mini/${clubInfo.miniIcon}_mini.png" alt="${clubName}" width="20" height="20" class="mr-1" />` : "";
-        const clubLink = `${relativeRoot}club/?cid=${rank["cid"]}`;
-        const recentCellHtml = `<td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered is-hidden-mobile">${rank["recent"] ?? ""}</td>`;
-        const fullClubNameCell = `
-            <td class="${SMALL_TEXT_SIZE} is-hidden-mobile">
-                <div class="is-flex is-align-items-center">
-                    ${clubIcon}
-                    <a href="${clubLink}">${clubName}</a>
-                </div>
-            </td>
-        `;
-        const shortClubNameCell = `
-            <td class="${SMALL_TEXT_SIZE} is-hidden-tablet">
-                <div class="is-flex is-align-items-center">
-                    ${clubIcon}
-                    <a href="${clubLink}">${shortClubName}</a>
-                </div>
-            </td>
-        `;
-        return `
-            <tr>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${ranknum}</td>
-                ${fullClubNameCell}
-                ${shortClubNameCell}
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["game"]}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right has-text-weight-bold">${rank["winpoint"]}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["win"]}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["lose"]}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["draw"]}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank["setper"] ? rank["setper"].toFixed(2) : ""}</td>
-                ${recentCellHtml}
-            </tr>
-        `;
-    }).join("");
-    $(tableId).append(rowsHtml);
-    $(progressId).empty();
-}
-
-/**
- * 日程設定
- * @param {*} datas 
- * @param {*} datasJson 
- * @param {*} tableId 
- * @param {*} progressId 
- */
-function appendSchedule(datasJson, tableId, progressId, division) {
-
-    const rowsHtml = datasJson.map((game) => {
-        // 日付のフォーマット処理
-        const gamedate = game["date"] ? new Date(game["date"]).toLocaleDateString() : "日程調整中";
-
-        // 動画リンクの生成
-        const video = game["videourl"] ? ` <a href="${game["videourl"]}" target="_blank"> [動画]</a>` : "";
-
-        // クラブリンクの生成
-        let hcn = `<a href="./club/?cid=${game["hcid"]}">${game["hcn"]}</a>`;
-        let acn = `<a href="./club/?cid=${game["acid"]}">${game["acn"]}</a>`;
-
-        // スタイル適用用のクラス
-        let hcnTdClass = "";
-        let acnTdClass = "";
-
-        // 勝敗のハイライト処理
-        if (game["hsn"] !== game["asn"]) {
-            const highlightClass = division === "YKSI" ? "has-background-primary-80" : "has-background-success-80";
-            if (game["hsn"] > game["asn"]) {
-                hcn = `<strong>${hcn}</strong>`;
-                hcnTdClass = highlightClass;
-            } else {
-                acn = `<strong>${acn}</strong>`;
-                acnTdClass = highlightClass;
-            }
-        }
-
-        let group = game["gid"].substr(-2) < 21 ? "A" : "B";
-
-        return `
-            <tr>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">${game["sec"]}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered"><a class="has-text-link" href="./match/?gid=${game["gid"]}">${gamedate}</a>${video}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${hcnTdClass}">${hcn}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">
-                    <a class="has-text-link" href="./match/?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a>
-                </td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${acnTdClass}">${acn}</td>
-            </tr>
-        `;
-    }).join("");
-
-    $(tableId).append(rowsHtml);
-    $(progressId).empty();
-}

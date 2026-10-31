@@ -21564,6 +21564,10 @@ table th {
   vertical-align: top;
 }
 
+tr.has-border-info-40 {
+  border-bottom: 2px solid var(--bulma-info-40) !important;
+}
+
 .is-middle {
   vertical-align: middle !important;
 }

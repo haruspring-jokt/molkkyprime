@@ -1,6 +1,5 @@
 // データ取得先スプレッドシートAPIURL
 const EMPTY_CID = "CZZ";
-const SMALL_TEXT_SIZE = "is-size-7";
 
 (function ($) {
     /**
@@ -28,12 +27,7 @@ const SMALL_TEXT_SIZE = "is-size-7";
  * @param {string} playerId 選手ID
  */
 function initDisplay(playerId) {
-    var url = `https://storage.googleapis.com/molkkyprime-hp/playerPage.json`;
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
+    JsonRepository.fetchPlayerPageJson().done(function (datas) {
         const filteredPlayerInfo = datas.playerInfo.filter((player) => {
             return player.pid === playerId;
         });
@@ -57,11 +51,7 @@ function initDisplay(playerId) {
  */
 function fetchPlayerGames(info) {
     if (!info) return;
-    $.ajax({
-        url: `https://storage.googleapis.com/molkkyprime-hp/matchPage.json`,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
+    JsonRepository.fetchMatchPageJson().done(function (datas) {
         // homePlayersId / awayPlayersId はカンマ区切りの選手ID
         const games = (datas.match || []).filter(function (game) {
             return isPlayerInGameTeam(game, "homePlayersId", info.pid)
@@ -100,13 +90,13 @@ function appendPlayerGames(games, info) {
 
         return `
             <tr>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left">${season}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered"><a class="has-text-link" href="../match/?gid=${game["gid"]}">${game["sec"]}</a>${video}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">${hcn}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${resultClass}">
+                <td class="is-size-7 is-narrow has-text-left">${season}</td>
+                <td class="is-size-7 is-narrow has-text-centered"><a class="has-text-link" href="../match/?gid=${game["gid"]}">${game["sec"]}</a>${video}</td>
+                <td class="is-size-7 is-narrow has-text-centered">${hcn}</td>
+                <td class="is-size-7 is-narrow has-text-centered ${resultClass}">
                     <a class="has-text-link" href="../match/?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a>
                 </td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">${acn}</td>
+                <td class="is-size-7 is-narrow has-text-centered">${acn}</td>
             </tr>
         `;
     }).join("");
@@ -159,11 +149,11 @@ function getPlayerGameResultClass(game, playerClubId) {
  */
 function createPlayerData(info, data) {
     // ディビジョン判別（cid -> ディビジョン名 を取得して比較）
-    const divisionName = typeof getDivisionCodeFrom === 'function'
-        ? getDivisionCodeFrom(info.cid)
+    const divisionName = typeof MkplConstants !== 'undefined'
+        ? (MkplConstants.divisionCodeMapById.get(info.cid) || "")
         : "";
-    const isYksi = divisionName === MolkkyPrimeConstants.firstDivName;
-    const isKaksi = divisionName === MolkkyPrimeConstants.secondDivName;
+    const isYksi = divisionName === MkplConstants.firstDivName;
+    const isKaksi = divisionName === MkplConstants.secondDivName;
 
     // 各テーブル共通の集計を準備してから、用途別の表を組み立てる
     const tableData = preparePlayerTableData(data);
@@ -600,8 +590,8 @@ function getCurrentSeasonIndex(seasons) {
     if (seasons.length === 0) {
         return -1;
     }
-    const seasonName = typeof MolkkyPrimeConstants !== "undefined"
-        ? MolkkyPrimeConstants.curerntSeasonFirstDivName
+    const seasonName = typeof MkplConstants !== "undefined"
+        ? MkplConstants.curerntSeasonFirstDivName
         : "";
     const currentYears = seasonName.match(/(\d{4})-(\d{4})/);
     if (!currentYears) {
@@ -621,9 +611,9 @@ function getCurrentSeasonIndex(seasons) {
 
 function appendInfo(info, totals, isYksi, isKaksi) {
     $(".player-profile-name").append(`<span>${info.playerName}</span>`);
-    $(".player-profile-belongto").append(`<span>${getClubNameTd(info.cid, convertClubFromCid(info.cid), "")}</span>`);
+    $(".player-profile-belongto").append(`<span>${getClubNameTd(info.cid, MkplConstants.clubNameMapById.get(info.cid) || "", "")}</span>`);
     $('.player-profile-image').html(`
-        <img class="" src="../asset/club/club_${convertClubCodeFromCid(info.cid)}.png" alt="picture of ${info.cid}" />`);
+        <img class="" src="../asset/club/club_${MkplConstants.clubCodeMapById.get(info.cid) || ""}.png" alt="picture of ${info.cid}" />`);
 
     $(".player-profile-pid").append(`<span>${info.pid}</span>`);
     $(".player-profile-pname").append(`<span>${info.playerName}</span>`);

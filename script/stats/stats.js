@@ -28,18 +28,14 @@ function initSeasonSelects(rows) {
 }
 
 function fetchData() {
-    fetchStatsPageJson().done(function (datas) {
+    JsonRepository.fetchStatsPageJson().done(function (datas) {
         statsData = datas;
         $("#stats-progress").hide();
         initSeasonSelects(statsData["statsClub"] || []);
         renderClubStats();
         renderPlayerSection();
     });
-    $.ajax({
-        url: `https://storage.googleapis.com/molkkyprime-hp/playerPage.json`,
-        type: "GET",
-        dataType: "json",
-    }).done(function (datas) {
+    JsonRepository.fetchPlayerPageJson().done(function (datas) {
         playerPageData = datas["playerData"] || [];
         renderPlayerSection();
     });
@@ -441,8 +437,8 @@ function getClubRecords(rows, season) {
         records = rows.filter(row => row.season === season);
     }
     if (season === "all") {
-        const divisionOrder = [MolkkyPrimeConstants.firstDivName, MolkkyPrimeConstants.secondDivName, ""];
-        const rank = r => divisionOrder.indexOf(getDivisionCodeFrom(r.clubId));
+        const divisionOrder = [MkplConstants.firstDivName, MkplConstants.secondDivName, ""];
+        const rank = r => divisionOrder.indexOf(MkplConstants.divisionCodeMapById.get(r.clubId) || "");
         return records.sort((a, b) => rank(a) - rank(b) || String(a.clubId).localeCompare(String(b.clubId)));
     }
     return records.sort((a, b) => String(a.clubId).localeCompare(String(b.clubId)));
@@ -598,12 +594,12 @@ function buildClubFirstFaultTable(records) {
 }
 
 // 選手別ランキングの対象人数（同順位は10位を超えても全員表示する）
-const PLAYER_RANKING_LIMIT = MolkkyPrimeConstants.playerRankingLimit;
+const PLAYER_RANKING_LIMIT = MkplConstants.playerRankingLimit;
 // 26-27シーズンの規定セット数と、シーズン開始月（9月）・シーズン月数
-const SEASON_2627_REQUIRED_SET = MolkkyPrimeConstants.season2627RequiredSet;
-const SEASON_2627_MONTHS = MolkkyPrimeConstants.season2627Months;
-const SEASON_2627_START_MONTH = MolkkyPrimeConstants.season2627StartMonth;
-const ALL_SEASONS_REQUIRED_THROW = MolkkyPrimeConstants.allSeasonsRequiredThrow;
+const SEASON_2627_REQUIRED_SET = MkplConstants.season2627RequiredSet;
+const SEASON_2627_MONTHS = MkplConstants.season2627Months;
+const SEASON_2627_START_MONTH = MkplConstants.season2627StartMonth;
+const ALL_SEASONS_REQUIRED_THROW = MkplConstants.allSeasonsRequiredThrow;
 
 // シーズン別の規定。通算は最も緩い23-23の規定投数で判定する
 function isQualifiedPlayer(season, rec) {

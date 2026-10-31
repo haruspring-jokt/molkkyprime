@@ -1,5 +1,3 @@
-const SMALL_TEXT_SIZE = "is-size-7";
-
 // データ取得先スプレッドシートAPIURL
 $(function () {
     /**
@@ -19,40 +17,35 @@ function appendConstLinks() {
     };
     const detailMsg = "詳細はスプレッドシートへ";
     // 画像
-    $('#yksi-card-image').html(addImg(`../past/${MolkkyPrimeConstants.currentYksiCoverUrl}`), "mkpl-yksi-cover");
-    $('#kaksi-card-image').html(addImg(`../past/${MolkkyPrimeConstants.currentKaksiCoverUrl}`), "mkpl-kaksi-cover");
+    $('#yksi-card-image').html(addImg(`../past/${MkplConstants.currentYksiCoverUrl}`), "mkpl-yksi-cover");
+    $('#kaksi-card-image').html(addImg(`../past/${MkplConstants.currentKaksiCoverUrl}`), "mkpl-kaksi-cover");
     // 順位表
     $('#list').append(`
         <p class="content is-size-7"><a
-        href="${MolkkyPrimeConstants.season202627AllDivSheetUrl}"
+        href="${MkplConstants.season202627AllDivSheetUrl}"
         target="_blank">${detailMsg}</a></p>
     `);
     // リーグ名
-    $('#league-name-yksi').text(MolkkyPrimeConstants.curerntSeasonFirstDivName);
-    $('#league-name-kaksi').text(MolkkyPrimeConstants.curerntSeasonSecondDivName);
+    $('#league-name-yksi').text(MkplConstants.curerntSeasonFirstDivName);
+    $('#league-name-kaksi').text(MkplConstants.curerntSeasonSecondDivName);
     // 順位表説明
-    $('#mkpl-rank-rules-yksi').html(MolkkyPrimeConstants.rankRulesYksi);
-    $('#mkpl-rank-rules-kaksi').html(MolkkyPrimeConstants.rankRulesKaksi);
+    $('#mkpl-rank-rules-yksi').html(MkplConstants.rankRulesYksi);
+    $('#mkpl-rank-rules-kaksi').html(MkplConstants.rankRulesKaksi);
     // 日程表説明
     $('#top-yksi-schedule-link').html(`
         <p class="content is-size-7"><a
-            href="${MolkkyPrimeConstants.season202627YksiSheetUrl}"
+            href="${MkplConstants.season202627YksiSheetUrl}"
             target="_blank">${detailMsg}</a></p>
     `);
     $('#top-kaksi-schedule-link').html(`
         <p class="content is-size-7"><a
-            href="${MolkkyPrimeConstants.season202627KaksiSheetUrl}"
+            href="${MkplConstants.season202627KaksiSheetUrl}"
             target="_blank">${detailMsg}</a></p>
     `);
 }
 
 function fetchData() {
-    var url = `https://storage.googleapis.com/molkkyprime-hp/schedulePage.json`;
-    $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    }).done(function (datas) {
+    JsonRepository.fetchShedulePageJson().done(function (datas) {
         var datasStringify = JSON.stringify(datas);
         var datasJson = JSON.parse(datasStringify);
 
@@ -67,105 +60,3 @@ function fetchData() {
     });
 }
 
-/**
- * 順位表設定
- * @param {*} datas 
- * @param {*} datasJson 
- * @param {*} tableId 
- * @param {*} progressId 
- */
-function appendStandings(datasJson, tableId, progressId, group) {
-    // グループが分かれている場合フィルタリング（25-26シーズンはチャレンジのみ）
-    if (group != "") {
-        datasJson = datasJson.filter(item => {
-            return item.group === group;
-        });
-    }
-    datasJson.some(function (rank, i) {
-        var ranknum = Number(rank['rank']);
-        if (ranknum < 1) { return; }
-        var clubName = rank['cname'];
-        var clubInfo = getClubMapFromId(rank['cid']);
-        var shortClubName = (clubInfo && clubInfo.shortName) ? clubInfo.shortName : clubName;
-        var relativeRoot = location.pathname.startsWith('/schedule/') ? '../' : './';
-        var clubIcon = (clubInfo && clubInfo.miniIcon)
-            ? `<img src="${relativeRoot}asset/club/mini/${clubInfo.miniIcon}_mini.png" alt="${clubName}" width="20" height="20" class="mr-1" />`
-            : '';
-        var clubLink = `${relativeRoot}club/?cid=${rank['cid']}`;
-        var recentCellHtml = `<td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered is-hidden-mobile">${rank['recent'] ?? ''}</td>`;
-        var fullClubNameCell = `
-            <td class="${SMALL_TEXT_SIZE} is-hidden-mobile">
-                <div class="is-flex is-align-items-center">
-                    ${clubIcon}
-                    <a href="${clubLink}">${clubName}</a>
-                </div>
-            </td>
-        `;
-        var shortClubNameCell = `
-            <td class="${SMALL_TEXT_SIZE} is-hidden-tablet">
-                <div class="is-flex is-align-items-center">
-                    ${clubIcon}
-                    <a href="${clubLink}">${shortClubName}</a>
-                </div>
-            </td>
-        `;
-        $(tableId).append(`
-            <tr>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${ranknum}</td>
-            ${fullClubNameCell}
-            ${shortClubNameCell}
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['game']}</td>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right has-text-weight-bold">${rank['winpoint']}</td>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['win']}</td>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['lose']}</td>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${rank['draw']}</td>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${(Math.round(rank['setper'] * 100) / 100).toFixed(2)}</td>
-            ${recentCellHtml}
-            </tr>
-        `);
-    });
-    $(progressId).empty();
-}
-
-/**
- * 日程設定
- * @param {*} datas 
- * @param {*} datasJson 
- * @param {*} tableId 
- * @param {*} progressId 
- */
-function appendSchedule(datasJson, tableId, progressId, division) {
-    datasJson.some(function (game, i) {
-        var gamedate = (game['date']) ? new Date(game['date']).toLocaleDateString() : "";
-        var video = (game['videourl'] != "")
-            ? ` <a href="${game['videourl']}" target="_blank"> [動画]</a>` : "";
-        var hcn = `<a href="../club/?cid=${game['hcid']}">${game['hcn']}</a>`;
-        var acn = `<a href="../club/?cid=${game['acid']}">${game['acn']}</a>`;
-        var hcnTdClass = "";
-        var acnTdClass = "";
-        if (!(game['hsn'] == game['asn'])) {
-            if (game['hsn'] > game['asn']) {
-                hcn = '<strong>' + hcn + "</strong>";
-                hcnTdClass = (division == "YKSI") ? "has-background-primary-80" : "has-background-success-80";
-            } else {
-                acn = "<strong>" + acn + "</strong>";
-                acnTdClass = (division == "YKSI") ? "has-background-primary-80" : "has-background-success-80";
-            }
-        }
-
-        let group = game["gid"].substr(-2) < 21 ? "A" : "B";
-
-        $(tableId).append(
-            `
-            <tr>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">${game['sec']}</td>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered"><a class="has-text-link" href="../match/?gid=${game['gid']}">${gamedate}</a>${video}</td>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${hcnTdClass}">${hcn}</td>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered"><a class="has-text-link" href="../match/?gid=${game['gid']}">${game['hsn']} - ${game['asn']}</a></td>
-            <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${acnTdClass}">${acn}</td>
-            </tr>
-            `
-        );
-    });
-    $(progressId).empty();
-}

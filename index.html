@@ -18,7 +18,11 @@
 
     <!-- molkkyprime -->
     <link rel="stylesheet" href="./my-bulma-project.css">
+    <script src="./script/mkplConstants.js"></script>
+
     <script src="./script/script.js"></script>
+    <script src="./script/standingsUtil.js"></script>
+    <script src="./script/scheduleUtil.js"></script>
     <script src="./script/top.js"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-C4W483V0S8"></script>
@@ -127,7 +131,10 @@
                             <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">敗</th>
                             <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">分</th>
                             <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">率</th>
-                            <th class="is-primary is-size-7 has-text-light has-text-center is-narrow is-hidden-mobile">最近</th>
+                            <th class="is-primary is-size-7 has-text-light has-text-center is-narrow is-hidden" data-standings-column="tiebreak">直対</th>
+                            <th class="is-primary is-size-7 has-text-light has-text-center is-narrow" data-standings-column="pointdiff">得失</th>
+                            <th class="is-primary is-size-7 has-text-light has-text-center is-narrow is-hidden" data-standings-column="fourcount">4人</th>
+                            <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">最近</th>
                         </tr>
                         <!-- yksi standings -->
                     </table>
@@ -241,7 +248,10 @@
                             <th class="is-success is-size-7 has-text-light has-text-center is-narrow">敗</th>
                             <th class="is-success is-size-7 has-text-light has-text-center is-narrow">分</th>
                             <th class="is-success is-size-7 has-text-light has-text-center is-narrow">率</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow is-hidden-mobile">最近</th>
+                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow is-hidden" data-standings-column="tiebreak">直対</th>
+                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow" data-standings-column="pointdiff">得失</th>
+                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow is-hidden" data-standings-column="fourcount">4人</th>
+                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">最近</th>
                         </tr>
                         <!-- kaksi standings -->
                     </table>

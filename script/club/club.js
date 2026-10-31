@@ -3,7 +3,6 @@ const EMPTY_CID = "CZZ";
 const TH_TAG_FROM = `<th class="is-primary is-size-7 has-text-centered">`;
 const TH_TAG_NARROW_FROM = `<th class="is-primary is-size-7 has-text-centered is-narrow">`;
 const TH_TAG_TO = `</th>`;
-const SMALL_TEXT_SIZE = "is-size-7";
 // playerPage.jsonの最新シーズンのレコード（アシスト数の取得用）
 let latestSeasonPlayerData = [];
 
@@ -47,19 +46,19 @@ let latestSeasonPlayerData = [];
 function appendConstLinks(cid) {
     $('#club-menu-list').html(`
         <li><a href="./#club-data" class="has-text-link is-size-6">クラブデータ</a></li>
-        <li><a href="${MolkkyPrimeConstants.clubPlayerSheetUrl}"
+        <li><a href="${MkplConstants.clubPlayerSheetUrl}"
         class="has-text-link is-size-7" target="_blank">詳細はスプレッドシートへ</a></li>
     `);
-    let sheetUrl = cid == null ? MolkkyPrimeConstants.curerntSeasonYksiSheetUrl : "";
+    let sheetUrl = cid == null ? MkplConstants.curerntSeasonYksiSheetUrl : "";
     if (cid) {
-        const divisionName = typeof getDivisionCodeFrom === 'function'
-            ? getDivisionCodeFrom(cid)
+        const divisionName = typeof MkplConstants !== 'undefined'
+            ? (MkplConstants.divisionCodeMapById.get(cid) || "")
             : "";
-        const isYksi = divisionName === MolkkyPrimeConstants.firstDivName;
-        const isKaksi = divisionName === MolkkyPrimeConstants.secondDivName;
+        const isYksi = divisionName === MkplConstants.firstDivName;
+        const isKaksi = divisionName === MkplConstants.secondDivName;
         sheetUrl = !isYksi && !isKaksi ? "" :
-            isYksi ? MolkkyPrimeConstants.curerntSeasonYksiSheetUrl :
-                isKaksi ? MolkkyPrimeConstants.curerntSeasonKaksiSheetUrl : "";
+            isYksi ? MkplConstants.curerntSeasonYksiSheetUrl :
+                isKaksi ? MkplConstants.curerntSeasonKaksiSheetUrl : "";
     }
     if (sheetUrl != "") {
         $('#club-detail').html(`
@@ -98,22 +97,13 @@ function extractLatestSeasonPlayerData(datas) {
  * @param {string} cid クラブID
  */
 function initDisplay(cid) {
-    var url = `https://storage.googleapis.com/molkkyprime-hp/clubPage.json`;
     // playerPage.jsonの取得に失敗してもクラブ表示は継続する
-    var playerRequest = $.ajax({
-        url: `https://storage.googleapis.com/molkkyprime-hp/playerPage.json`,
-        type: 'GET',
-        dataType: 'json',
-    }).then(function (datas) {
+    var playerRequest = JsonRepository.fetchPlayerPageJson().then(function (datas) {
         return $.Deferred().resolve(datas).promise();
     }, function () {
         return $.Deferred().resolve(null).promise();
     });
-    var clubRequest = $.ajax({
-        url: url,
-        type: 'GET',
-        dataType: 'json',
-    });
+    var clubRequest = JsonRepository.fetchClubPageJson();
     $.when(clubRequest, playerRequest).done(function (clubResult, playerDatas) {
         var datas = clubResult[0];
         latestSeasonPlayerData = extractLatestSeasonPlayerData(playerDatas);
@@ -122,7 +112,7 @@ function initDisplay(cid) {
         var pageData = JSON.parse(datasStringify);
 
         // セレクトボックスにクラブ一覧を設定する
-        var clubId = (convertClubFromCid(cid) != "") ? cid : EMPTY_CID;
+        var clubId = (MkplConstants.clubNameMapById.get(cid) || "") != "" ? cid : EMPTY_CID;
         var defaultCid = createClubSelectBox(pageData['clubs'], clubId);
 
         // データ設定
@@ -158,8 +148,8 @@ function createClubSelectBox(clubs, cid) {
             // 非表示対象クラブ
             return;
         }
-        var division = club['division'] === MolkkyPrimeConstants.firstDivName ? '【ユクシ】' :
-            club['division'] === MolkkyPrimeConstants.secondDivName ? '【チャレンジ】' : "【非参加】";
+        var division = club['division'] === MkplConstants.firstDivName ? '【ユクシ】' :
+            club['division'] === MkplConstants.secondDivName ? '【チャレンジ】' : "【非参加】";
         var isDefaultClub = club['cid'] == cid ? 'selected' : '';
         $('select[name="club-data"]').append(`
             <option value="${club['cid']}" label="${division + club['clubHpName']}" ${isDefaultClub}></option>
@@ -186,8 +176,8 @@ function createClubData(clubs, players, scheduleYksi, scheduleKaksi, totalMatch,
     })[0];
 
     // ディビジョン判別フラグ
-    var isYksi = club['division'] == MolkkyPrimeConstants.firstDivName;
-    var isKaksi = club['division'] == MolkkyPrimeConstants.secondDivName;
+    var isYksi = club['division'] == MkplConstants.firstDivName;
+    var isKaksi = club['division'] == MkplConstants.secondDivName;
 
     // クラブ情報の設定
     appendClub(club, cid, isYksi, isKaksi);
@@ -374,7 +364,7 @@ function renderClubQnfChart(qh, fa) {
 function appendClub(club, cid, isYksi, isKaksi) {
 
     // クラブ名・アイコン
-    var divisionName = isYksi ? MolkkyPrimeConstants.firstDivFullName : MolkkyPrimeConstants.secondDivFullName;
+    var divisionName = isYksi ? MkplConstants.firstDivFullName : MkplConstants.secondDivFullName;
     $('#club-name').html(club['clubHpName']);
     $('#club-division').html(divisionName);
     $('#club-image').html(`
@@ -457,11 +447,11 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
         var acnTdClass = "";
         $("#club-games").append(`
             <tr>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered">${game['sec']}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered"><a class="" href="../match/?gid=${game['gid']}">${gamedate}</a>${video}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${hcnTdClass}">${hcn}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${resultClass}">${result}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered ${acnTdClass}">${acn}</td>
+                <td class="is-size-7 is-narrow has-text-centered">${game['sec']}</td>
+                <td class="is-size-7 is-narrow has-text-centered"><a class="" href="../match/?gid=${game['gid']}">${gamedate}</a>${video}</td>
+                <td class="is-size-7 is-narrow has-text-centered ${hcnTdClass}">${hcn}</td>
+                <td class="is-size-7 is-narrow has-text-centered ${resultClass}">${result}</td>
+                <td class="is-size-7 is-narrow has-text-centered ${acnTdClass}">${acn}</td>
             </tr>
         `);
     });
@@ -490,7 +480,7 @@ function appendTotalMatchTable(totalMatch, cid) {
     if (rows.length === 0) {
         $("#club-total-match-table").append(`
             <tr>
-                <td class="${SMALL_TEXT_SIZE} has-text-centered" colspan="6">データなし</td>
+                <td class="is-size-7 has-text-centered" colspan="6">データなし</td>
             </tr>
         `);
         return;
@@ -508,12 +498,12 @@ function appendTotalMatchTable(totalMatch, cid) {
         var rivalLink = rivalClubId ? `<a href="../club/?cid=${rivalClubId}">${rivalName}</a>` : rivalName;
         $("#club-total-match-table").append(`
             <tr>
-                <td class="${SMALL_TEXT_SIZE} has-text-left">${rivalLink}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${match['totalWin'] || 0}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${match['totalLose'] || 0}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${match['totalEven'] || 0}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${formatMatchResult(match['homeWin'] || 0, match['homeLose'] || 0, match['homeEven'] || 0)}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${formatMatchResult(match['awayWin'] || 0, match['awayLose'] || 0, match['awayEven'] || 0)}</td>
+                <td class="is-size-7 has-text-left">${rivalLink}</td>
+                <td class="is-size-7 is-narrow has-text-right">${match['totalWin'] || 0}</td>
+                <td class="is-size-7 is-narrow has-text-right">${match['totalLose'] || 0}</td>
+                <td class="is-size-7 is-narrow has-text-right">${match['totalEven'] || 0}</td>
+                <td class="is-size-7 is-narrow has-text-right">${formatMatchResult(match['homeWin'] || 0, match['homeLose'] || 0, match['homeEven'] || 0)}</td>
+                <td class="is-size-7 is-narrow has-text-right">${formatMatchResult(match['awayWin'] || 0, match['awayLose'] || 0, match['awayEven'] || 0)}</td>
             </tr>
         `);
     });
@@ -552,14 +542,14 @@ function appendPlayers(players, cid, isYksi) {
         if (isStaff) {
             $('#player-table').append(`
                 <tr>
-                    <td class="${SMALL_TEXT_SIZE} has-text-left">${playerName}</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">-</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">-</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left">-</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-left">-</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">-</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">-</td>
-                    <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">-</td>
+                    <td class="is-size-7 has-text-left">${playerName}</td>
+                    <td class="is-size-7 is-narrow has-text-right">-</td>
+                    <td class="is-size-7 is-narrow has-text-right">-</td>
+                    <td class="is-size-7 is-narrow has-text-left">-</td>
+                    <td class="is-size-7 is-narrow has-text-left">-</td>
+                    <td class="is-size-7 is-narrow has-text-right">-</td>
+                    <td class="is-size-7 is-narrow has-text-right">-</td>
+                    <td class="is-size-7 is-narrow has-text-right">-</td>
                 </tr>
             `);
             return;
@@ -586,14 +576,14 @@ function appendPlayers(players, cid, isYksi) {
             ? (Math.round(player['averageBlakePoint'] * 10) / 10).toFixed(1) + "" : "";
         $('#player-table').append(`
             <tr>
-                <td class="${SMALL_TEXT_SIZE} has-text-left"><a href="../player/?pid=${player.pid}">${playerName}</a></td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${game}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${set}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-centered px-0 py-0">${mainOrder}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow is-family-monospace has-text-right">${qhf}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${fin}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${assist}</td>
-                <td class="${SMALL_TEXT_SIZE} is-narrow has-text-right">${averageBlakePoint}</td>
+                <td class="is-size-7 has-text-left"><a href="../player/?pid=${player.pid}">${playerName}</a></td>
+                <td class="is-size-7 is-narrow has-text-right">${game}</td>
+                <td class="is-size-7 is-narrow has-text-right">${set}</td>
+                <td class="is-size-7 is-narrow has-text-centered px-0 py-0">${mainOrder}</td>
+                <td class="is-size-7 is-narrow is-family-monospace has-text-right">${qhf}</td>
+                <td class="is-size-7 is-narrow has-text-right">${fin}</td>
+                <td class="is-size-7 is-narrow has-text-right">${assist}</td>
+                <td class="is-size-7 is-narrow has-text-right">${averageBlakePoint}</td>
             </tr>
         `);
     });
