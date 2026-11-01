@@ -21577,7 +21577,7 @@ tr.has-border-info-40 {
 }
 
 .is-size-8 {
-  font-size: 0.65rem !important;
+  font-size: 0.6rem !important;
 }
 
 @media screen and (max-width: 768px) {
@@ -21585,7 +21585,7 @@ tr.has-border-info-40 {
     font-size: 0.85rem !important;
   }
   .is-size-8-mobile {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important;
   }
 }
 @media screen and (min-width: 769px), print {
@@ -21593,7 +21593,7 @@ tr.has-border-info-40 {
     font-size: 0.85rem !important;
   }
   .is-size-8-tablet {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important;
   }
 }
 @media screen and (max-width: 1023px) {
@@ -21601,7 +21601,7 @@ tr.has-border-info-40 {
     font-size: 0.75rem !important;
   }
   .is-size-8-touch {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important;
   }
 }
 @media screen and (min-width: 1024px) {
@@ -21609,7 +21609,7 @@ tr.has-border-info-40 {
     font-size: 0.85rem !important;
   }
   .is-size-8-desktop {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important;
   }
 }
 @media screen and (min-width: 1216px) {
@@ -21617,7 +21617,7 @@ tr.has-border-info-40 {
     font-size: 0.85rem !important;
   }
   .is-size-8-widescreen {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important;
   }
 }
 @media screen and (min-width: 1408px) {
@@ -21625,7 +21625,7 @@ tr.has-border-info-40 {
     font-size: 0.85rem !important;
   }
   .is-size-8-fullhd {
-    font-size: 0.65rem !important;
+    font-size: 0.6rem !important;
   }
 }
 body {
