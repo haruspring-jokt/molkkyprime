@@ -176,7 +176,7 @@ class MkplConstants {
     }
     // 通算記録ランキングに必要な投てき数
     static get allSeasonsRequiredThrow() {
-        return 60;
+        return 100;
     }
 
     // =================================================

@@ -47,6 +47,7 @@ function renderClubStats() {
     const records = getClubRecords(statsData["statsClub"] || [], season);
     $("#club-stats-tables").html(
         buildClubMainStatsTable(records, season)
+        + buildClubWinTurnTable(records)
         + buildClubFirstFaultTable(records)
         + buildClubQnfTable(records, CLUB_PHASES, "フェーズ別Q-N-F・OPT")
         + buildClubQnfTable(records, CLUB_THROW_ORDERS, "オーダー別Q-N-F・OPT")
@@ -234,8 +235,8 @@ function renderOptScatterChart(records) {
     });
 }
 
-const CLUB_SUM_FIELDS = ["setNum", "setWinNum", "attackSetNum", "attackSetWinNum",
-    "defenseSetNum", "defenseSetWinNum", "throwNum", "qhNum", "faultNum",
+const CLUB_SUM_FIELDS = ["setNum", "setWinNum", "winTurnThrows", "attackSetNum", "attackSetWinNum", "attackWinTurnThrows",
+    "defenseSetNum", "defenseSetWinNum", "defenseWinTurnThrows", "throwNum", "qhNum", "faultNum",
     "firstFaultSetNum", "enemyFirstFaultSetNum", "attackFirstFaultSetNum", "attackEnemyFirstFaultSetNum",
     "defenseFirstFaultSetNum", "defenseEnemyFirstFaultSetNum"]
     .concat(Array.from({ length: 12 }, (_, i) => [`turn${i + 1}Throws`, `turn${i + 1}Qh`, `turn${i + 1}Fault`]).flat())
@@ -376,7 +377,7 @@ function buildClubOtherStatsTable(records) {
         <h4 class="is-size-5 mt-5">その他データ</h4>
         <div class="table-container">
             <table class="table is-fullwidth is-narrow">
-                <thead><tr>${heads.map(h => `<th class="${STATS_TH_CLASS}">${h}</th>`).join("")}</tr></thead>
+                <thead><tr>${heads.map((h, i) => `<th class="${STATS_TH_CLASS}${i === 0 ? "" : " is-narrow"}">${h}</th>`).join("")}</tr></thead>
                 <tbody>${rows}${averageRow}</tbody>
             </table>
         </div>`;
@@ -392,9 +393,11 @@ function buildClubQnfTable(records, groups, title) {
     });
     const rowOf = (labelHtml, groupStats, withBest) => {
         const cells = groupStats.map((s, i) => {
-            const boldQ = withBest && roundRate(s.Q, s.T) === best[i].q;
+            const qRate = roundRate(s.Q, s.T);
+            const boldQ = withBest && best[i].q !== null && qRate === best[i].q;
             const boldF = withBest && roundRate(s.F, s.T) === best[i].f;
-            return `<td class="is-size-7 has-text-right is-family-monospace"${optBackgroundClass(s)}>${buildQnfText(s, boldQ, boldF)}</td>`;
+            const bestQClass = boldQ ? " has-background-warning-95" : "";
+            return `<td class="is-size-7 has-text-right is-family-monospace${bestQClass}"${optBackgroundClass(s)}>${buildQnfText(s, boldQ, boldF)}</td>`;
         }).join("");
         return `<tr><td class="is-size-7 has-text-weight-medium">${labelHtml}</td>${cells}</tr>`;
     };
@@ -473,16 +476,39 @@ function escapeHtml(text) {
 }
 
 function buildClubMainStatsTable(records, season) {
-    // best: "max"=最大が最良 / "min"=最小が最良 / null=優劣なし
+    // best: "max"=最大が最良 / "min"=最小が最良 / オブジェクトは内訳ごとの判定
     // value は表示精度に丸めた値（欠損はnull）
     const pct = (n, d) => roundPercent(ratio(n, d));
     const intPct = (n, d) => { const v = ratio(n, d); return v === null ? null : Math.round(v * 100); };
+    const setRates = r => ({
+        set: intPct(r.setWinNum, r.setNum),
+        attack: intPct(r.attackSetWinNum, r.attackSetNum),
+        defense: intPct(r.defenseSetWinNum, r.defenseSetNum),
+    });
     const columns = [
-        { head: "ｾｯﾄ率", value: r => intPct(r.setWinNum, r.setNum), format: formatIntPercentCell, best: "max" },
-        { head: "先攻", value: r => intPct(r.attackSetWinNum, r.attackSetNum), format: formatIntPercentCell, best: "max" },
-        { head: "後攻", value: r => intPct(r.defenseSetWinNum, r.defenseSetNum), format: formatIntPercentCell, best: "max" },
+        {
+            head: "セット率", value: setRates, best: { set: "max", attack: "max", defense: "max" },
+            format: (v, best) => {
+                const formatRate = (rate, bestRate) => {
+                    if (rate === null) { return "-"; }
+                    const text = formatIntPercentCell(rate);
+                    return rate === bestRate ? `<span class="has-text-info has-text-weight-bold">${text}</span>` : text;
+                };
+                const label = text => `<span class="is-size-8 has-text-grey-light">${text}</span>`;
+                return `${formatRate(v.set, best && best.set)} ${label("(先)")} ${formatRate(v.attack, best && best.attack)} ${label("(後)")} ${formatRate(v.defense, best && best.defense)}`;
+            },
+        },
         { head: "QH", value: r => pct(r.qhNum, r.throwNum), format: formatPercentCellGrey, best: "max" },
         { head: "FA", value: r => pct(r.faultNum, r.throwNum), format: formatPercentCellGrey, best: "min" },
+        {
+            head: "Q/F",
+            value: r => {
+                const value = ratio(r.qhNum, r.faultNum);
+                return value === null ? null : Math.round(value * 10) / 10;
+            },
+            format: v => v.toFixed(1),
+            best: "max",
+        },
     ];
     // OPT = 各巡のOPT合計 / 投てき数（通算・リーグ平均にも対応）
     columns.push({
@@ -498,6 +524,12 @@ function buildClubMainStatsTable(records, season) {
     // 同値は全て最良扱いにする
     const bestValues = columns.map(col => {
         if (!col.best) { return null; }
+        if (typeof col.best === "object") {
+            return Object.fromEntries(Object.entries(col.best).map(([key, direction]) => {
+                const vals = records.map(r => col.value(r)[key]).filter(v => v !== null);
+                return [key, vals.length ? Math[direction](...vals) : null];
+            }));
+        }
         const vals = records.map(col.value).filter(v => v !== null);
         return vals.length ? Math[col.best === "max" ? "max" : "min"](...vals) : null;
     });
@@ -506,7 +538,8 @@ function buildClubMainStatsTable(records, season) {
             const v = col.value(r);
             const isBest = v !== null && v === bestValues[i];
             const cls = isBest ? " has-text-info has-text-weight-bold" : "";
-            return `<td class="is-size-7 has-text-right${cls}">${v === null ? "-" : col.format(v)}</td>`;
+            const text = v === null ? "-" : col.format(v, bestValues[i]);
+            return `<td class="is-size-7 has-text-right${cls}">${text}</td>`;
         }).join("");
         return `
         <tr>
@@ -538,9 +571,63 @@ function buildClubMainStatsTable(records, season) {
                 - セット率：セットの勝率。先攻／後攻はそれぞれ先攻セット、後攻セットの勝率。<br/>
                 - QH：QH（Quality Hit）率。狙い通りの投てき。<br/>
                 - FA：フォルト率。0点となった投てき。<br/>
+                - Q/F：QH/FA。1回のフォルトあたりに発生するQH数。<br/>
                 - OPT：On Plus Throing。得点効率を示す独自指標。
                     <a href="https://molkkyprime.notion.site/40144c08fead80f39e43c9fa580f172a" target="_blank">詳しくは個人賞ガイドで説明しています。</a>
             </p>
+        </div>`;
+}
+
+function buildClubWinTurnTable(records) {
+    const average = (throws, wins) => {
+        const value = ratio(throws, wins);
+        return value === null ? null : Math.round(value * 10) / 10;
+    };
+    const winRate = (wins, sets) => {
+        const value = ratio(wins, sets);
+        return value === null ? null : Math.round(value * 100);
+    };
+    const columns = [
+        { head: "ターン数", value: r => average(r.winTurnThrows, r.setWinNum), format: v => v.toFixed(1), best: "min" },
+        { head: "ｾｯﾄ率", value: r => winRate(r.setWinNum, r.setNum), format: formatIntPercentCell },
+        { head: "先攻", value: r => average(r.attackWinTurnThrows, r.attackSetWinNum), format: v => v.toFixed(1), best: "min" },
+        { head: "(率)", value: r => winRate(r.attackSetWinNum, r.attackSetNum), format: formatIntPercentCell },
+        { head: "後攻", value: r => average(r.defenseWinTurnThrows, r.defenseSetWinNum), format: v => v.toFixed(1), best: "min" },
+        { head: "(率)", value: r => winRate(r.defenseSetWinNum, r.defenseSetNum), format: formatIntPercentCell },
+    ];
+    const bestValues = columns.map(col => {
+        if (!col.best) { return null; }
+        const values = records.map(col.value).filter(value => value !== null);
+        return values.length ? Math[col.best === "max" ? "max" : "min"](...values) : null;
+    });
+    const cellsOf = (r, withBest = false) => columns.map((col, i) => {
+        const value = col.value(r);
+        const isBest = withBest && col.best && value !== null && value === bestValues[i];
+        const cls = isBest ? " has-text-info has-text-weight-bold" : "";
+        return `<td class="is-size-7 has-text-right${cls}">${value === null ? "-" : col.format(value)}</td>`;
+    }).join("");
+    const rows = records.map(r => `
+        <tr>
+            <td class="is-size-7 has-text-weight-medium">
+                <a href="../club/?cid=${encodeURIComponent(r.clubId)}">${escapeHtml(r.clubShortName)}</a></td>
+            ${cellsOf(r, true)}
+        </tr>`).join("");
+    const total = {};
+    CLUB_SUM_FIELDS.forEach(f => total[f] = records.reduce((sum, r) => sum + (Number(r[f]) || 0), 0));
+    const averageRow = records.length ? `
+        <tr class="has-background-white-ter">
+            <td class="is-size-7">リーグ平均</td>
+            ${cellsOf(total)}
+        </tr>` : "";
+    const heads = ["クラブ", ...columns.map(c => c.head)];
+    return `
+        <h4 class="is-size-5 mt-5">勝利時ターン数</h4>
+        ${buildTableDescription("勝利したセットの平均投てき数を示すデータ。")}
+        <div class="table-container">
+            <table class="table is-fullwidth is-narrow">
+                <thead><tr>${heads.map(h => `<th class="${STATS_TH_CLASS}">${h}</th>`).join("")}</tr></thead>
+                <tbody>${rows}${averageRow}</tbody>
+            </table>
         </div>`;
 }
 
@@ -586,7 +673,7 @@ function buildClubFirstFaultTable(records) {
         </tr>` : "";
     return `
         <h4 class="is-size-5 mt-5">ファーストフォルト（FF）
-            <p class="subtitle is-size-65">2023-24シーズンから集計</p></h4>
+            <p class="subtitle is-size-65">2023-24シーズンから集計開始</p></h4>
         <div class="table-container">
             <table class="table is-fullwidth is-narrow">
                 <thead><tr>${["クラブ", ...columns.map(c => c.head)].map(h => `<th class="${STATS_TH_CLASS}">${h}</th>`).join("")}</tr></thead>
@@ -635,6 +722,7 @@ function getPlayerRecords(rows, season) {
     const base = row => ({
         pid: row.pid, playerName: row.playerName, cid: row.cid, clubName: row.clubName,
         set: num(row.set), throw: num(row.throw), qh: num(row.qh), fault: num(row.fault),
+        o38: num(row.o38), o38Qh: num(row.o38Qh), o26: num(row.o26), o26Qh: num(row.o26Qh),
         finish: num(row.finish), assist: num(row.assist), blake: num(row.blake), blakeSum: num(row.blakeSum),
         optSum: num(row.opt) * num(row.throw),
     });
@@ -646,7 +734,8 @@ function getPlayerRecords(rows, season) {
             const rec = base(row);
             const acc = map.get(row.pid);
             if (!acc) { map.set(row.pid, rec); return; }
-            ["set", "throw", "qh", "fault", "finish", "assist", "blake", "blakeSum", "optSum"].forEach(f => acc[f] += rec[f]);
+            ["set", "throw", "qh", "fault", "o38", "o38Qh", "o26", "o26Qh",
+                "finish", "assist", "blake", "blakeSum", "optSum"].forEach(f => acc[f] += rec[f]);
         });
         records = Array.from(map.values());
     } else {
@@ -759,6 +848,9 @@ function renderPlayerSection() {
     };
     const qhRate = r => r.qh / r.throw;
     const faultRate = r => r.fault / r.throw;
+    const qhFaRate = r => r.fault > 0 ? r.qh / r.fault : Infinity;
+    const o38QhRate = r => r.o38Qh / r.o38;
+    const o26QhRate = r => r.o26Qh / r.o26;
     const qhPct = makePctFormatter(qhRate);
     const faultPct = makePctFormatter(faultRate);
 
@@ -783,6 +875,26 @@ function renderPlayerSection() {
         buildPlayerRankingTable("アシストランキング", "* 自分がQHを決め、次のチームメイトが50点となった回数", records.filter(r => r.assist > 0), "desc", r => r.assist,
             PLAYER_BASE_COLUMNS.concat([{ head: "アシスト", cell: r => r.assist }])),
         buildBlakeRankingTable(records),
+        buildPlayerRankingTable("QH/FAランキング", "* QH / フォルト数のランキング。規定到達者のみ", qualified, "desc", qhFaRate,
+            PLAYER_BASE_COLUMNS.concat([
+                {
+                    head: "QH/FA",
+                    cell: r => `${r.fault > 0 ? qhFaRate(r).toFixed(2) : "99.99"} `
+                        + `<span class="has-text-grey-light">(${r.qh} / ${r.fault})</span>`,
+                },
+            ])),
+        buildPlayerRankingTable("38点以降QHランキング", "38点以上あるターンでのQHランキング。規定到達者のみ。",
+            qualified.filter(r => r.o38 > 0), "desc", o38QhRate,
+            PLAYER_BASE_COLUMNS.concat([
+                { head: "QH率", cell: r => formatPercentHtml(o38QhRate(r) * 100, 1) },
+                { head: "QH/投", cell: r => `${r.o38Qh}/${r.o38}` },
+            ])),
+        buildPlayerRankingTable("26点以降QHランキング", "26点以上あるターンでのQHランキング。規定到達者のみ。",
+            qualified.filter(r => r.o26 > 0), "desc", o26QhRate,
+            PLAYER_BASE_COLUMNS.concat([
+                { head: "QH率", cell: r => formatPercentHtml(o26QhRate(r) * 100, 1) },
+                { head: "QH/投", cell: r => `${r.o26Qh}/${r.o26}` },
+            ])),
     ].join("");
     $("#player-stats-rankings").html(html);
 }
