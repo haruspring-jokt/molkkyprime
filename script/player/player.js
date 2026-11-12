@@ -70,8 +70,20 @@ function fetchPlayerGames(info) {
 function appendPlayerGames(games, info) {
     const seasonOf = (game) => game["season"] ? String(game["season"]) : getSeasonConfig(game["gid"] || "").seasonText;
     const sorted = games.slice().sort((a, b) => {
+        const dateOf = (game) => {
+            if (!game["date"]) { return null; }
+            const date = new Date(game["date"]);
+            if (Number.isNaN(date.getTime())) { return null; }
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+        };
+        const aDate = dateOf(a);
+        const bDate = dateOf(b);
+        if (aDate === null && bDate !== null) { return 1; }
+        if (aDate !== null && bDate === null) { return -1; }
+        if (aDate !== bDate) { return bDate - aDate; }
         const bySeason = seasonOf(b).localeCompare(seasonOf(a), undefined, { numeric: true });
-        return bySeason !== 0 ? bySeason : Number(b["sec"]) - Number(a["sec"]);
+        return bySeason !== 0 ? bySeason
+            : String(b["sec"] ?? "").localeCompare(String(a["sec"] ?? ""), undefined, { numeric: true });
     });
     const rowsHtml = sorted.map((game) => {
         const division = getSeasonConfig(game["gid"] || "").division;

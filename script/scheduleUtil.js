@@ -100,7 +100,7 @@ const filterMonthEntries = (monthEntries = []) => {
  */
 function appendSchedule(datasJson, tableId, progressId, division) {
     const entries = Array.isArray(datasJson) ? datasJson : [];
-    const textSize = typeof SMALL_TEXT_SIZE !== "undefined" ? SMALL_TEXT_SIZE : "is-size-7";
+    const textSize = "is-size-65";
     const relativeRoot = location.pathname.startsWith("/schedule/") ? "../" : "./";
 
     const formatClubCell = (cid, clubHtml, tdClass = "") => {
@@ -137,12 +137,23 @@ function appendSchedule(datasJson, tableId, progressId, division) {
             }
         }
 
+        const homeScore = Number(game["hsn"]);
+        const awayScore = Number(game["asn"]);
+        const hasScores = (game["isdone"] === true || Number(game["isdonenumber"]) === 1)
+            && game["hsn"] !== "" && game["hsn"] != null
+            && game["asn"] !== "" && game["asn"] != null
+            && Number.isFinite(homeScore) && Number.isFinite(awayScore);
+        const homeScoreHtml = hasScores && homeScore > awayScore
+            ? `<span class="number-font has-text-weight-bold">${game["hsn"]}</span>` : game["hsn"];
+        const awayScoreHtml = hasScores && awayScore > homeScore
+            ? `<span class="number-font has-text-weight-bold">${game["asn"]}</span>` : game["asn"];
+
         return `
             <tr>
                 <td class="${textSize} is-narrow has-text-centered">${game["sec"]}</td>
                 <td class="${textSize} is-narrow has-text-centered"><a class="has-text-link" href="${relativeRoot}match/?gid=${game["gid"]}">${gamedate}</a>${video}</td>
                 ${formatClubCell(game["hcid"], hcn, hcnTdClass)}
-                <td class="${textSize} is-narrow has-text-centered"><a class="has-text-link" href="${relativeRoot}match/?gid=${game["gid"]}">${game["hsn"]} - ${game["asn"]}</a></td>
+                <td class="${textSize} is-narrow has-text-centered"><a class="has-text-link" href="${relativeRoot}match/?gid=${game["gid"]}">${homeScoreHtml} - ${awayScoreHtml}</a></td>
                 ${formatClubCell(game["acid"], acn, acnTdClass)}
             </tr>
         `;

@@ -1,4 +1,8 @@
 const SMALL_TEXT_SIZE = "is-size-7";
+const SMALL_TEXT_SIZE_6 = "is-size-6";
+const SMALL_TEXT_SIZE_5 = "is-size-5";
+const SMALL_TEXT_SIZE_8 = "is-size-8";
+const SMALL_TEXT_SIZE_65 = "is-size-65";
 
 /**
  * 順位表を追加するパスの解決
@@ -68,7 +72,11 @@ function appendStandings(datasJson, tableId, progressId, group) {
         });
     }
 
+    const textSize8 = typeof SMALL_TEXT_SIZE !== "undefined" ? SMALL_TEXT_SIZE : "is-size-8";
     const textSize = typeof SMALL_TEXT_SIZE !== "undefined" ? SMALL_TEXT_SIZE : "is-size-7";
+    const textSize6 = typeof SMALL_TEXT_SIZE_6 !== "undefined" ? SMALL_TEXT_SIZE_6 : "is-size-6";
+    const textSize5 = typeof SMALL_TEXT_SIZE_5 !== "undefined" ? SMALL_TEXT_SIZE_5 : "is-size-5";
+    const textSize65 = typeof SMALL_TEXT_SIZE_65 !== "undefined" ? SMALL_TEXT_SIZE_65 : "is-size-65";
     const isChallenge = String(tableId).includes("kaksi");
     const shouldShowTiebreak = (Array.isArray(datasJson) ? datasJson : []).some(item => Number(item["tiebreak"] ?? 0) !== 0);
     const showFourCount = !isChallenge;
@@ -83,12 +91,12 @@ function appendStandings(datasJson, tableId, progressId, group) {
         const relativeRoot = getStandingsRelativeRoot();
         const clubIcon = getClubMiniIconHtml(rank["cid"], relativeRoot);
         const clubLink = `${relativeRoot}club/?cid=${rank["cid"]}`;
-        const recentCellHtml = `<td class="is-size-8 is-narrow has-text-centered" data-standings-column="recent">${rank["recent"] ?? ""}</td>`;
+        const recentCellHtml = `<td class="${textSize8} is-narrow has-text-left" data-standings-column="recent">${rank["recent"] ?? ""}</td>`;
         const tiebreakCell = `<td class="${textSize} is-narrow has-text-right${shouldShowTiebreak ? "" : " is-hidden"}" data-standings-column="tiebreak">${rank["tiebreak"] ?? ""}</td>`;
-        const pointDiffCell = `<td class="is-size-8 is-narrow has-text-right" data-standings-column="pointdiff">${rank["pointdiff"] ?? ""}</td>`;
-        const fourCountCell = `<td class="is-size-8 is-narrow has-text-right${showFourCount ? "" : " is-hidden"}" data-standings-column="fourcount">${rank["fourcount"] ?? ""}</td>`;
+        const pointDiffCell = `<td class="${textSize8} is-narrow has-text-right" data-standings-column="pointdiff">${rank["pointdiff"] ?? ""}</td>`;
+        const fourCountCell = `<td class="${textSize8} is-narrow has-text-right${showFourCount ? "" : " is-hidden"}" data-standings-column="fourcount">${rank["fourcount"] ?? ""}</td>`;
         const fullClubNameCell = `
-            <td class="${textSize} is-hidden-mobile">
+            <td class="${textSize6} is-hidden-mobile">
                 <div class="is-flex is-align-items-center has-text-weight-medium">
                     ${clubIcon}
                     <a href="${clubLink}">${clubName}</a>
@@ -96,7 +104,7 @@ function appendStandings(datasJson, tableId, progressId, group) {
             </td>
         `;
         const shortClubNameCell = `
-            <td class="${textSize} is-hidden-tablet">
+            <td class="${textSize6} is-hidden-tablet">
                 <div class="is-flex is-align-items-center has-text-weight-medium">
                     ${clubIcon}
                     <a href="${clubLink}">${shortClubName}</a>
@@ -107,15 +115,15 @@ function appendStandings(datasJson, tableId, progressId, group) {
 
         return `
             <tr class="${rowClasses.join(" ")}">
-                <td class="${textSize} is-narrow has-text-right">${ranknum}</td>
+                <td class="${textSize6} is-narrow has-text-right standings-number has-text-weight-bold">${ranknum}</td>
                 ${fullClubNameCell}
                 ${shortClubNameCell}
-                <td class="is-size-6 is-narrow has-text-right has-text-weight-bold">${rank["winpoint"]}</td>
+                <td class="${textSize5} is-narrow has-text-right has-text-weight-bold standings-number">${rank["winpoint"]}</td>
                 <td class="${textSize} is-narrow has-text-right">${rank["game"]}</td>
                 <td class="${textSize} is-narrow has-text-right">${rank["win"]}</td>
                 <td class="${textSize} is-narrow has-text-right">${rank["lose"]}</td>
                 <td class="${textSize} is-narrow has-text-right">${rank["draw"]}</td>
-                <td class="${textSize} is-narrow has-text-right">${rank["setper"] ? rank["setper"].toFixed(2) : ""}</td>
+                <td class="${textSize65} is-narrow has-text-right has-text-weight-bold standings-number">${rank["setper"] ? rank["setper"].toFixed(2) : ""}</td>
                 ${tiebreakCell}
                 ${pointDiffCell}
                 ${fourCountCell}

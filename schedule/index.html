@@ -11,6 +11,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -107,6 +108,16 @@
                             max="100"></progress></div>
                     <div class="content" id="mkpl-rank-rules-yksi"></div>
                 </div>
+                <div class="content" id="yksi-scoreboard-top">
+                    <h4 class="is-size-5">対戦表</h4>
+                    <button id="yksi-scoreboard-switch" class="button is-small is-primary has-text-light my-2 is-size-6" type="button"
+                        aria-controls="yksi-scoreboard" aria-pressed="false" disabled>ホーム・アウェイを入れかえる</button>
+                    <p id="yksi-scoreboard-perspective" class="is-size-7" aria-live="polite">行：ホーム、列：アウェイ。背景色はホームの勝敗を表します。</p>
+                    <p class="is-size-7">セル上段は対戦月、下段は行側 - 列側のセット数です。</p>
+                    <div id="yksi-scoreboard-progress"><progress class="progress is-small is-primary"
+                            max="100"></progress></div>
+                    <div id="yksi-scoreboard" class="table-container is-overflow-y-auto scoreboard-container"></div>
+                </div>
                 <div class="content" id="yksi-matches-top">
                     <h4 class="is-size-5">試合一覧</h4>
                     <div class="table-container container is-max-tablet">
@@ -162,6 +173,16 @@
                             max="100"></progress></div>
                 </div>
                 <div class="content" id="mkpl-rank-rules-kaksi"></div>
+                <div class="content" id="kaksi-scoreboard-top">
+                    <h4 class="is-size-5">対戦表</h4>
+                    <button id="kaksi-scoreboard-switch" class="button is-small is-primary has-text-light my-2 is-size-6" type="button"
+                        aria-controls="kaksi-scoreboard" aria-pressed="false" disabled>ホーム・アウェイを入れかえる</button>
+                    <p id="kaksi-scoreboard-perspective" class="is-size-7" aria-live="polite">行：ホーム、列：アウェイ。背景色はホームの勝敗を表します。</p>
+                    <p class="is-size-7">セル上段は対戦月、下段は行側 - 列側のセット数です。</p>
+                    <div id="kaksi-scoreboard-progress"><progress class="progress is-small is-primary"
+                            max="100"></progress></div>
+                    <div id="kaksi-scoreboard" class="table-container is-overflow-y-auto scoreboard-container"></div>
+                </div>
                 <div class="content" id="kaksi-matches-top">
                     <h4 class="is-size-5">試合一覧</h4>
                     <div class="table-container container is-max-tablet">

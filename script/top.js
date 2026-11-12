@@ -199,8 +199,8 @@ function appendAward(datasJson, division) {
             const clubIcon = getClubMiniIconHtml(row['cid'], "./");
             return `
                 <tr>
-                    <td class="is-size-7 is-narrow has-text-right">${rank}</td>
-                    <td class="is-size-7 has-text-left has-text-weight-medium">
+                    <td class="is-size-6 is-narrow has-text-right number-font has-text-weight-bold">${rank}</td>
+                    <td class="is-size-6 has-text-left has-text-weight-medium">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="is-size-7 has-text-left ">
                         <div class="is-flex is-align-items-center is-justify-content-flex-start">
@@ -208,7 +208,7 @@ function appendAward(datasJson, division) {
                             <a href="./club/?cid=${row['cid']}">${row['cname']}</a>
                         </div>
                     </td>
-                    <td class="is-size-7 is-narrow has-text-right">${qhpro}</td>
+                    <td class="is-size-6 is-narrow has-text-right number-font has-text-weight-bold">${qhpro}</td>
                     <td class="is-size-7 is-narrow has-text-right">${qhByThrow}</td>
                 </tr>
             `;
@@ -241,8 +241,8 @@ function appendAward(datasJson, division) {
             const clubIcon = getClubMiniIconHtml(row['cid'], "./");
             return `
                 <tr>
-                    <td class="is-size-7 is-narrow has-text-right">${rank}</td>
-                    <td class="is-size-7 has-text-left has-text-weight-medium">
+                    <td class="is-size-6 is-narrow has-text-right number-font has-text-weight-bold">${rank}</td>
+                    <td class="is-size-6 has-text-left has-text-weight-medium">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="is-size-7 has-text-left">
                         <div class="is-flex is-align-items-center is-justify-content-flex-start">
@@ -250,7 +250,7 @@ function appendAward(datasJson, division) {
                             <a href="./club/?cid=${row['cid']}">${row['cname']}</a>
                         </div>
                     </td>
-                    <td class="is-size-7 is-narrow has-text-right">${fapro}</td>
+                    <td class="is-size-6 is-narrow has-text-right number-font has-text-weight-bold">${fapro}</td>
                     <td class="is-size-7 is-narrow has-text-right">${throws}</td>
                 </tr>
             `;
@@ -282,8 +282,8 @@ function appendAward(datasJson, division) {
             const clubIcon = getClubMiniIconHtml(row['cid'], "./");
             return `
                 <tr>
-                    <td class="is-size-7 is-narrow has-text-right">${rank}</td>
-                    <td class="is-size-7 has-text-left has-text-weight-medium">
+                    <td class="is-size-6 is-narrow has-text-right number-font has-text-weight-bold">${rank}</td>
+                    <td class="is-size-6 has-text-left has-text-weight-medium">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="is-size-7 has-text-left">
                         <div class="is-flex is-align-items-center is-justify-content-flex-start">
@@ -291,7 +291,7 @@ function appendAward(datasJson, division) {
                             <a href="./club/?cid=${row["cid"]}">${row["cname"]}</a>
                         </div>
                     </td>
-                    <td class="is-size-7 is-narrow has-text-right">${opt}</td>
+                    <td class="is-size-6 is-narrow has-text-right number-font has-text-weight-bold">${opt}</td>
                     <td class="is-size-7 is-narrow has-text-right">${throws}</td>
                 </tr>
             `;
@@ -321,8 +321,8 @@ function appendAward(datasJson, division) {
             const clubIcon = getClubMiniIconHtml(row['cid'], "./");
             return `
                 <tr>
-                    <td class="is-size-7 is-narrow has-text-right">${rank}</td>
-                    <td class="is-size-7 has-text-left has-text-weight-medium">
+                    <td class="is-size-6 is-narrow has-text-right number-font has-text-weight-bold">${rank}</td>
+                    <td class="is-size-6 has-text-left has-text-weight-medium">
                         <a href="./player/?pid=${row.pid}">${row['pname']}</a></td>
                     <td class="is-size-7 has-text-left">
                         <div class="is-flex is-align-items-center is-justify-content-flex-start">
@@ -330,11 +330,10 @@ function appendAward(datasJson, division) {
                             <a href="./club/?cid=${row['cid']}">${row['cname']}</a>
                         </div>
                     </td>
-                    <td class="is-size-7 is-narrow has-text-right">${finish}</td>
+                    <td class="is-size-6 is-narrow has-text-right number-font has-text-weight-bold">${finish}</td>
                 </tr>
             `;
         }).join("");
         $(`#${division}-award-fin`).append(finRowsHtml);
     }
 }
-

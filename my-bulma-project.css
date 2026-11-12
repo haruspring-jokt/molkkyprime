@@ -21632,6 +21632,12 @@ body {
   min-width: 320px !important;
 }
 
+.standings-number,
+.number-font {
+  font-family: "Chakra Petch", "Noto Sans JP", sans-serif;
+  font-style: italic;
+}
+
 .player-data-season {
   table-layout: auto !important;
 }
@@ -21643,6 +21649,51 @@ body {
 
 .player-data-season td {
   white-space: nowrap;
+}
+
+.scoreboard-container {
+  max-height: 70vh;
+}
+
+.scoreboard-table {
+  border-collapse: separate !important;
+  border-spacing: 0;
+  table-layout: fixed;
+  width: max-content;
+}
+
+.scoreboard-table th,
+.scoreboard-table td {
+  height: 3.25rem;
+  max-height: 3.25rem;
+  overflow: hidden;
+  min-width: 3.5rem;
+  white-space: nowrap;
+  width: 3.5rem;
+}
+
+.scoreboard-link {
+  align-content: center;
+  display: block;
+  height: 100%;
+}
+
+.scoreboard-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.scoreboard-table tr > :first-child {
+  left: 0;
+  min-width: 6.5rem;
+  position: sticky;
+  z-index: 1;
+  width: 6.5rem;
+}
+
+.scoreboard-table thead tr > :first-child {
+  z-index: 3;
 }
 
 .mkpl-under-header {

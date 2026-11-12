@@ -424,6 +424,20 @@ function appendGames(scheduleYksi, scheduleKaksi, cid, isYksi, isKaksi) {
             return j.hcid == cid || j.acid == cid;
         });
     }
+    schedules.sort(function (a, b) {
+        const getDate = function (game) {
+            if (!game.date) { return null; }
+            const date = new Date(game.date);
+            if (Number.isNaN(date.getTime())) { return null; }
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+        };
+        const aDate = getDate(a);
+        const bDate = getDate(b);
+        if (aDate === null && bDate !== null) { return 1; }
+        if (aDate !== null && bDate === null) { return -1; }
+        if (aDate !== bDate) { return aDate - bDate; }
+        return String(a.sec ?? "").localeCompare(String(b.sec ?? ""), undefined, { numeric: true });
+    });
     // ヘッダー
     $("#club-games").html(`
         <tr class="is-primary">
