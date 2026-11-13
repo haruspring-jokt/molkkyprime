@@ -92,9 +92,9 @@ function appendStandings(datasJson, tableId, progressId, group) {
         const clubIcon = getClubMiniIconHtml(rank["cid"], relativeRoot);
         const clubLink = `${relativeRoot}club/?cid=${rank["cid"]}`;
         const recentCellHtml = `<td class="${textSize8} is-narrow has-text-left" data-standings-column="recent">${rank["recent"] ?? ""}</td>`;
-        const tiebreakCell = `<td class="${textSize} is-narrow has-text-right${shouldShowTiebreak ? "" : " is-hidden"}" data-standings-column="tiebreak">${rank["tiebreak"] ?? ""}</td>`;
-        const pointDiffCell = `<td class="${textSize8} is-narrow has-text-right" data-standings-column="pointdiff">${rank["pointdiff"] ?? ""}</td>`;
-        const fourCountCell = `<td class="${textSize8} is-narrow has-text-right${showFourCount ? "" : " is-hidden"}" data-standings-column="fourcount">${rank["fourcount"] ?? ""}</td>`;
+        const tiebreakCell = `<td class="${textSize} is-narrow has-text-right standings-number${shouldShowTiebreak ? "" : " is-hidden"}" data-standings-column="tiebreak">${rank["tiebreak"] ?? ""}</td>`;
+        const pointDiffCell = `<td class="${textSize8} is-narrow has-text-right standings-number" data-standings-column="pointdiff">${rank["pointdiff"] ?? ""}</td>`;
+        const fourCountCell = `<td class="${textSize8} is-narrow has-text-right standings-number${showFourCount ? "" : " is-hidden"}" data-standings-column="fourcount">${rank["fourcount"] ?? ""}</td>`;
         const fullClubNameCell = `
             <td class="${textSize6} is-hidden-mobile">
                 <div class="is-flex is-align-items-center has-text-weight-medium">
@@ -119,10 +119,10 @@ function appendStandings(datasJson, tableId, progressId, group) {
                 ${fullClubNameCell}
                 ${shortClubNameCell}
                 <td class="${textSize5} is-narrow has-text-right has-text-weight-bold standings-number">${rank["winpoint"]}</td>
-                <td class="${textSize} is-narrow has-text-right">${rank["game"]}</td>
-                <td class="${textSize} is-narrow has-text-right">${rank["win"]}</td>
-                <td class="${textSize} is-narrow has-text-right">${rank["lose"]}</td>
-                <td class="${textSize} is-narrow has-text-right">${rank["draw"]}</td>
+                <td class="${textSize65} is-narrow has-text-right standings-number has-text-weight-bold">${rank["game"]}</td>
+                <td class="${textSize65} is-narrow has-text-right standings-number has-text-weight-bold has-text-success-40">${rank["win"]}</td>
+                <td class="${textSize65} is-narrow has-text-right standings-number has-text-weight-bold has-text-danger-40">${rank["lose"]}</td>
+                <td class="${textSize65} is-narrow has-text-right standings-number has-text-weight-bold">${rank["draw"]}</td>
                 <td class="${textSize65} is-narrow has-text-right has-text-weight-bold standings-number">${rank["setper"] ? rank["setper"].toFixed(2) : ""}</td>
                 ${tiebreakCell}
                 ${pointDiffCell}
@@ -133,6 +133,7 @@ function appendStandings(datasJson, tableId, progressId, group) {
     }).join("");
 
     $(tableId).append(rowsHtml);
+    $(tableId).find("th, td").addClass("px-1");
     syncStandingsExtraColumnVisibility(tableId, datasJson);
     $(progressId).empty();
 }

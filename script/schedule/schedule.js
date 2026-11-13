@@ -104,7 +104,9 @@ function appendScoreboard(division, rankRows, matchRows, awayPerspective = false
     });
 
     const root = "../";
-    const homeHeaderClass = "has-background-primary has-text-light";
+    const homeHeaderClass = division === "kaksi"
+        ? "has-background-success-45 has-text-light"
+        : "has-background-primary has-text-light";
     const awayHeaderClass = "has-background-grey has-text-light has-text-black";
     const clubHeaders = clubs.map(club => `
         <th scope="col" class="${awayPerspective ? homeHeaderClass : awayHeaderClass} is-size-7 is-vcentered p-0">

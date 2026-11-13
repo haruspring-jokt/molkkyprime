@@ -11,7 +11,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@1,400;1,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@1,400;1,700&display=swap"
+        rel="stylesheet">
 
     <!-- jquery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -96,10 +97,14 @@
                                 <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">敗</th>
                                 <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">分</th>
                                 <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">率</th>
-                                <th class="is-primary is-size-8 has-text-light has-text-center is-narrow is-vcentered is-hidden" data-standings-column="tiebreak">直対</th>
-                                <th class="is-primary is-size-8 has-text-light has-text-center is-narrow is-vcentered" data-standings-column="pointdiff">得失</th>
-                                <th class="is-primary is-size-8 has-text-light has-text-center is-narrow is-vcentered is-hidden" data-standings-column="fourcount">4人</th>
-                                <th class="is-primary is-size-8 has-text-light has-text-center is-narrow is-vcentered">最近</th>
+                                <th class="is-primary is-size-8 has-text-light has-text-center is-narrow is-vcentered is-hidden"
+                                    data-standings-column="tiebreak">直対</th>
+                                <th class="is-primary is-size-8 has-text-light has-text-center is-narrow is-vcentered"
+                                    data-standings-column="pointdiff">得失</th>
+                                <th class="is-primary is-size-8 has-text-light has-text-center is-narrow is-vcentered is-hidden"
+                                    data-standings-column="fourcount">4人</th>
+                                <th class="is-primary is-size-8 has-text-light has-text-center is-narrow is-vcentered">
+                                    最近</th>
                             </tr>
                             <!-- yksi standings -->
                         </table>
@@ -110,10 +115,11 @@
                 </div>
                 <div class="content" id="yksi-scoreboard-top">
                     <h4 class="is-size-5">対戦表</h4>
-                    <button id="yksi-scoreboard-switch" class="button is-small is-primary has-text-light my-2 is-size-6" type="button"
-                        aria-controls="yksi-scoreboard" aria-pressed="false" disabled>ホーム・アウェイを入れかえる</button>
-                    <p id="yksi-scoreboard-perspective" class="is-size-7" aria-live="polite">行：ホーム、列：アウェイ。背景色はホームの勝敗を表します。</p>
-                    <p class="is-size-7">セル上段は対戦月、下段は行側 - 列側のセット数です。</p>
+                    <button id="yksi-scoreboard-switch" class="button is-small is-primary has-text-light my-2 is-size-6"
+                        type="button" aria-controls="yksi-scoreboard" aria-pressed="false"
+                        disabled>ホーム・アウェイを入れかえる</button>
+                    <p id="yksi-scoreboard-perspective" class="is-size-7" aria-live="polite">
+                        行：ホーム、列：アウェイ。背景色はホームの勝敗を表します。</p>
                     <div id="yksi-scoreboard-progress"><progress class="progress is-small is-primary"
                             max="100"></progress></div>
                     <div id="yksi-scoreboard" class="table-container is-overflow-y-auto scoreboard-container"></div>
@@ -121,15 +127,15 @@
                 <div class="content" id="yksi-matches-top">
                     <h4 class="is-size-5">試合一覧</h4>
                     <div class="table-container container is-max-tablet">
-                    <table id="yksi-schedule" class="table is-fullwidth is-narrow match-table">
-                        <tr class="is-primary">
-                            <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">節</th>
-                            <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">日程</th>
-                            <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">ホーム</th>
-                            <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">結果</th>
-                            <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">アウェイ</th>
-                        </tr>
-                    </table>
+                        <table id="yksi-schedule" class="table is-fullwidth is-narrow match-table">
+                            <tr class="is-primary">
+                                <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">節</th>
+                                <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">日程</th>
+                                <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">ホーム</th>
+                                <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">結果</th>
+                                <th class="is-primary is-size-7 has-text-light has-text-center is-narrow">アウェイ</th>
+                            </tr>
+                        </table>
                     </div>
                     <div id="yksi-schedule-progress"><progress class="progress is-small is-primary"
                             max="100"></progress>
@@ -151,23 +157,42 @@
                 <div class="content">
                     <h4 class="is-size-5">チャレンジ 順位表（各クラブ全14試合）</h4>
                     <div class="table-container container is-max-tablet">
-                    <table id="kaksi-standings" class="table is-fullwidth is-narrow standings-table">
-                        <tr class="is-success">
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">位</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center">クラブ</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">点</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">試</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">勝</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">敗</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">分</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">率</th>
-                            <th class="is-success is-size-8 has-text-light has-text-center is-narrow is-vcentered is-hidden" data-standings-column="tiebreak">直対</th>
-                            <th class="is-success is-size-8 has-text-light has-text-center is-narrow is-vcentered" data-standings-column="pointdiff">得失</th>
-                            <th class="is-success is-size-8 has-text-light has-text-center is-narrow is-vcentered is-hidden" data-standings-column="fourcount">4人</th>
-                            <th class="is-success is-size-8 has-text-light has-text-center is-narrow is-vcentered">最近</th>
-                        </tr>
-                        <!-- kaksi group a standings -->
-                    </table>
+                        <table id="kaksi-standings" class="table is-fullwidth is-narrow standings-table">
+                            <tr class="has-background-success-45">
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    位</th>
+                                <th class="has-background-success-45 is-size-7 has-text-light has-text-center">クラブ</th>
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    点</th>
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    試</th>
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    勝</th>
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    敗</th>
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    分</th>
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    率</th>
+                                <th class="has-background-success-45 is-size-8 has-text-light has-text-center is-narrow is-vcentered is-hidden"
+                                    data-standings-column="tiebreak">直対</th>
+                                <th class="has-background-success-45 is-size-8 has-text-light has-text-center is-narrow is-vcentered"
+                                    data-standings-column="pointdiff">得失</th>
+                                <th class="has-background-success-45 is-size-8 has-text-light has-text-center is-narrow is-vcentered is-hidden"
+                                    data-standings-column="fourcount">4人</th>
+                                <th
+                                    class="has-background-success-45 is-size-8 has-text-light has-text-center is-narrow is-vcentered">
+                                    最近</th>
+                            </tr>
+                            <!-- kaksi group a standings -->
+                        </table>
                     </div>
                     <div id="kaksi-standings-progress"><progress class="progress is-small is-success"
                             max="100"></progress></div>
@@ -175,10 +200,12 @@
                 <div class="content" id="mkpl-rank-rules-kaksi"></div>
                 <div class="content" id="kaksi-scoreboard-top">
                     <h4 class="is-size-5">対戦表</h4>
-                    <button id="kaksi-scoreboard-switch" class="button is-small is-primary has-text-light my-2 is-size-6" type="button"
-                        aria-controls="kaksi-scoreboard" aria-pressed="false" disabled>ホーム・アウェイを入れかえる</button>
-                    <p id="kaksi-scoreboard-perspective" class="is-size-7" aria-live="polite">行：ホーム、列：アウェイ。背景色はホームの勝敗を表します。</p>
-                    <p class="is-size-7">セル上段は対戦月、下段は行側 - 列側のセット数です。</p>
+                    <button id="kaksi-scoreboard-switch"
+                        class="button is-small is-success has-background-success-45 has-text-light my-2 is-size-6"
+                        type="button" aria-controls="kaksi-scoreboard" aria-pressed="false"
+                        disabled>ホーム・アウェイを入れかえる</button>
+                    <p id="kaksi-scoreboard-perspective" class="is-size-7" aria-live="polite">
+                        行：ホーム、列：アウェイ。背景色はホームの勝敗を表します。</p>
                     <div id="kaksi-scoreboard-progress"><progress class="progress is-small is-primary"
                             max="100"></progress></div>
                     <div id="kaksi-scoreboard" class="table-container is-overflow-y-auto scoreboard-container"></div>
@@ -186,15 +213,25 @@
                 <div class="content" id="kaksi-matches-top">
                     <h4 class="is-size-5">試合一覧</h4>
                     <div class="table-container container is-max-tablet">
-                    <table id="kaksi-schedule" class="table is-fullwidth is-narrow match-table">
-                        <tr class="is-success">
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">節</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">日程</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">ホーム</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">結果</th>
-                            <th class="is-success is-size-7 has-text-light has-text-center is-narrow">アウェイ</th>
-                        </tr>
-                    </table>
+                        <table id="kaksi-schedule" class="table is-fullwidth is-narrow match-table">
+                            <tr class="has-background-success-45">
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    節</th>
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    日程</th>
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    ホーム</th>
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    結果</th>
+                                <th
+                                    class="has-background-success-45 is-size-7 has-text-light has-text-center is-narrow">
+                                    アウェイ</th>
+                            </tr>
+                        </table>
                     </div>
                     <div id="kaksi-schedule-progress"><progress class="progress is-small is-success"
                             max="100"></progress></div>

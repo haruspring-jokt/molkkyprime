@@ -65,10 +65,12 @@ function appendMatch(data, playerIdsByName) {
     // 試合概要の挿入
     const gid = match['gid'] || "";
     const config = getSeasonConfig(gid);
+    const textColorClass = config.division === 2 ? "has-text-success-40" : "has-text-primary";
     const season = config.season;
     const spread = config.spread;
     const scoreSheetLink = config.scoreSheetLink;
     $("#match-season-name").append(season);
+    $("#match-home-label").removeClass("has-text-primary has-text-success-40").addClass(textColorClass);
 
     var date = (match['date']) ? new Date(match['date']).toLocaleDateString() : "";
     $("#match-match-name").append(`${group} 第${match['sec']}節 ${date}`);
@@ -101,7 +103,8 @@ function appendMatch(data, playerIdsByName) {
             lineHeight: '1',
             verticalAlign: 'middle'
         })
-        .toggleClass('has-text-primary', isHomeSetWinner);
+        .removeClass('has-text-primary has-text-success-45')
+        .toggleClass(textColorClass, isHomeSetWinner);
 
     $('#match-away-set-score')
         .html(awayScoreHtml)
@@ -113,7 +116,8 @@ function appendMatch(data, playerIdsByName) {
             lineHeight: '1',
             verticalAlign: 'middle'
         })
-        .toggleClass('has-text-primary', isAwaySetWinner);
+        .removeClass('has-text-primary has-text-success-45')
+        .toggleClass(textColorClass, isAwaySetWinner);
 
     // 両クラブの通算対戦成績を取得する
     const totalMatch = Array.isArray(data.totalMatch) ? data.totalMatch : [];
@@ -170,6 +174,9 @@ function appendMatch(data, playerIdsByName) {
  * 試合全体のセット得点表を作成する
  */
 function buildSetOverviewTable(match, setCount) {
+    const isChallenge = getSeasonConfig(match.gid || "").division === 2;
+    const winnerBackground = isChallenge ? "has-background-success-90" : "has-background-primary-90";
+    const winnerText = isChallenge ? "has-text-success-20" : "has-text-primary-20";
     const displayedSetCount = Math.max(8, setCount);
     const setColumnWidth = 65 / displayedSetCount;
     const columns = `
@@ -188,10 +195,10 @@ function buildSetOverviewTable(match, setCount) {
     const teamRows = teams.map(function (team) {
         const scores = Array.from({ length: displayedSetCount }, function (_, index) {
             const score = match[`${team.prefix}${index + 1}`] ?? "";
-            const scoreClass = Number(score) === 50 ? "has-background-primary-90 has-text-weight-bold" : "";
+            const scoreClass = Number(score) === 50 ? `${winnerBackground} has-text-weight-bold` : "";
             return `<td class="${scoreClass} is-size-65">${score}</td>`;
         }).join("");
-        const totalClass = team.isWinner ? "has-background-primary-90 has-text-weight-bold has-text-primary-30" : "";
+        const totalClass = team.isWinner ? `${winnerBackground} has-text-weight-bold ${winnerText}` : "";
         return `
             <tr>
                 <th class="${totalClass} is-size-65">${team.name}</th>
@@ -224,6 +231,7 @@ function buildSetOverviewTable(match, setCount) {
  * @returns 
  */
 function buildSetDetailTable(setRow, match, playerIdsByName) {
+    const isChallenge = getSeasonConfig(match.gid || "").division === 2;
     const homePoints = parseCsv(setRow.homePointRow);
     const awayPoints = parseCsv(setRow.awayPointRow);
     const homeResults = parseCsv(setRow.homeQnf);
@@ -266,7 +274,8 @@ function buildSetDetailTable(setRow, match, playerIdsByName) {
         // クラブ名セル、合計点セル
         // 50点勝利、または0点敗北時の背景色設定
         const totalClass = Number(team.total) === 50
-            ? "has-text-primary-20 has-background-primary-90" : "has-text-grey";
+            ? (isChallenge ? "has-text-success-20 has-background-success-90" : "has-text-primary-20 has-background-primary-90")
+            : "has-text-grey";
 
         // 暫定の合計点推移
         let overScoreTurns = [];
@@ -416,6 +425,7 @@ function formatThrowResult(point, result) {
  * @returns 
  */
 function buildTeamStatsTable(match) {
+    const optColorClass = getSeasonConfig(match.gid || "").division === 2 ? "has-text-success-45" : "has-text-primary";
     const teams = [
         { name: match.hcn, prefix: "home" },
         { name: match.acn, prefix: "away" },
@@ -476,7 +486,7 @@ function buildTeamStatsTable(match) {
                 <td class="is-size-65 has-text-right">${q > 0 && q === maxQ ? crown("has-text-success") : ""}${q}</td>
                 <td class="is-size-65 has-text-right">${n}</td>
                 <td class="is-size-65 has-text-right">${f}</td>
-                <td class="is-size-65 has-text-right"><span class="has-text-primary">${opt > 0 && opt === maxOpt ? crown("has-text-primary") : ""}${formatOpt(opt)}</span></td>
+                <td class="is-size-65 has-text-right"><span class="${optColorClass}">${opt > 0 && opt === maxOpt ? crown(optColorClass) : ""}${formatOpt(opt)}</span></td>
                 <td class="is-size-65 has-text-right">${fin}</td>
             </tr>`);
         }
@@ -495,7 +505,7 @@ function buildTeamStatsTable(match) {
                 <td class="is-size-65 has-text-weight-bold has-text-right">${qh} (${qhPer})</td>
                 <td class="is-size-65 has-text-weight-bold has-text-right">${nh} (${nhPer})</td>
                 <td class="is-size-65 has-text-weight-bold has-text-right">${fa} (${faPer})</td>
-                <td class="is-size-65 has-text-weight-bold has-text-right"><span class="has-text-primary">${opt}</span></td>
+                <td class="is-size-65 has-text-weight-bold has-text-right"><span class="${optColorClass}">${opt}</span></td>
                 <td class="is-size-65 has-text-weight-bold has-text-right">${teamFin}</td>
             </tr>${playerRows.join("")}`;
     }).join("");
